@@ -1,4 +1,4 @@
-export type FrontmatterValue = string | boolean | string[];
+import type { FrontmatterValue } from "../types.ts";
 
 function unquote(value: string): string {
   const first = value[0];
