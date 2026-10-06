@@ -12,6 +12,7 @@
     "typecheck": "tsc"
   },
   "dependencies": {
+    "globby": "^16.2.4",
     "markdown-it": "^15.0.2"
   },
   "devDependencies": {
