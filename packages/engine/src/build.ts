@@ -1,5 +1,4 @@
-import { mkdir, readFile, writeFile } from "node:fs/promises";
-import { join } from "node:path";
+import { readFile } from "node:fs/promises";
 import MarkdownIt from "markdown-it";
 import { loadConfig } from "./config.ts";
 import findPosts from "./content/findPosts.ts";

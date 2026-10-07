@@ -9,7 +9,7 @@ function Post({ post }: LayoutProps) {
       </head>
       <body>
         <h1> This is a Post Component on Blog </h1>
-        {/** biome-ignore lint/security/noDangerouslySetInnerHtml: <explanation> */}
+        {/** biome-ignore lint/security/noDangerouslySetInnerHtml: expected to render .md */}
         <article dangerouslySetInnerHTML={{ __html: post.html }} />
       </body>
     </html>

@@ -16,5 +16,4 @@ function splitFrontmatter(source: string) {
   };
 }
 
-
 export default splitFrontmatter;
