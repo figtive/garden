@@ -6,6 +6,8 @@ import findPosts from "./content/findPosts.ts";
 import parseFrontmatter from "./content/parseFrontmatter.ts";
 import splitFrontmatter from "./content/splitFrontMatter.ts";
 import validateFrontmatter from "./content/validateFrontmatter.ts";
+import postRenderer from "./renderer/postRenderer.tsx";
+import type { LayoutProps } from "./types.ts";
 
 export default async () => {
   const config = await loadConfig();
@@ -20,14 +22,14 @@ export default async () => {
 
     const meta = validateFrontmatter(metaObj, post.file);
 
-    const html = `<!doctype html>
-<html>
-  <head><meta charset="utf-8"><title>${meta.title}</title></head>
-  <body>${md.render(body)}</body>
-</html>`;
+    const props: LayoutProps = {
+      post: {
+        ...meta,
+        html: md.render(body),
+        slug: post.slug,
+      },
+    };
 
-    const outDir = join("dist", post.folder, post.slug);
-    await mkdir(outDir, { recursive: true });
-    await writeFile(join(outDir, "index.html"), html);
+    await postRenderer(config.layouts.post, props, post);
   }
 };
