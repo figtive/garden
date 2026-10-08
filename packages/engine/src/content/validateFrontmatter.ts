@@ -21,7 +21,7 @@ function isValidDate(dateString: string): boolean {
   );
 }
 
-function validateFrontmatter(
+export function validateFrontmatter(
   meta: Record<string, FrontmatterValue>,
   file: string,
 ): PostMeta {
@@ -67,5 +67,3 @@ function validateFrontmatter(
 
   return { title, date, description, tags, draft } as PostMeta;
 }
-
-export default validateFrontmatter;

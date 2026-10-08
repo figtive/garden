@@ -34,7 +34,7 @@ function parseValue(raw: string, lineNumber: number) {
   return unquote(raw);
 }
 
-function parseFrontmatter(source: string) {
+export function parseFrontmatter(source: string) {
   const data: Record<string, FrontmatterValue> = {};
 
   for (const [i, line] of source.split("\n").entries()) {
@@ -66,5 +66,3 @@ function parseFrontmatter(source: string) {
   }
   return data;
 }
-
-export default parseFrontmatter;

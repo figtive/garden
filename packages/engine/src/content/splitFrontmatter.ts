@@ -1,4 +1,4 @@
-function splitFrontmatter(source: string) {
+export function splitFrontmatter(source: string) {
   const lines = source.split(/\r?\n/);
 
   if (lines[0] !== "---") {
@@ -15,5 +15,3 @@ function splitFrontmatter(source: string) {
     body: lines.slice(end + 1).join("\n"),
   };
 }
-
-export default splitFrontmatter;
