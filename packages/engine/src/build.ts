@@ -1,34 +1,28 @@
-import { readFile } from "node:fs/promises";
 import MarkdownIt from "markdown-it";
 import { loadConfig } from "./config.ts";
-import findPosts from "./content/findPosts.ts";
-import parseFrontmatter from "./content/parseFrontmatter.ts";
-import splitFrontmatter from "./content/splitFrontMatter.ts";
-import validateFrontmatter from "./content/validateFrontmatter.ts";
-import postRenderer from "./renderer/postRenderer.tsx";
-import type { LayoutProps } from "./types.ts";
+import { findPosts } from "./content/findPosts.ts";
+import { loadPost } from "./content/loadPost.ts";
+import { isPublished } from "./plugins/drafts.ts";
+import { renderPage } from "./renderer/renderPage.tsx";
+import type { Post } from "./types.ts";
+import { byDateNewestFirst } from "./utils/sort.ts";
 
-export default async () => {
+export async function build() {
   const config = await loadConfig();
-  const posts = await findPosts(config);
+  const files = await findPosts(config);
 
   const md = new MarkdownIt();
 
+  const all = await Promise.all(files.map((file) => loadPost(file, md)));
+
+  // all the filters
+  const posts = all
+    .filter(({ meta }: Post) => isPublished(meta))
+    .sort(({ meta: metaA }, { meta: metaB }) =>
+      byDateNewestFirst(metaA.date, metaB.date),
+    );
+
   for (const post of posts) {
-    const source = await readFile(post.file, "utf-8");
-    const { frontmatter, body } = splitFrontmatter(source);
-    const metaObj = parseFrontmatter(frontmatter);
-
-    const meta = validateFrontmatter(metaObj, post.file);
-
-    const props: LayoutProps = {
-      post: {
-        ...meta,
-        html: md.render(body),
-        slug: post.slug,
-      },
-    };
-
-    await postRenderer(config.layouts.post, props, post);
+    await renderPage(config.layouts.post, { post, posts }, post.route.url);
   }
-};
+}
