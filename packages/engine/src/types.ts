@@ -1,4 +1,6 @@
 import type { ComponentType } from "react";
+import type { DefaultPlugins } from "./plugins/defaultPlugins.ts";
+import type { InferPost, Plugin } from "./plugins/definePlugin.ts";
 
 export type FrontmatterValue = string | boolean | string[];
 
@@ -16,7 +18,7 @@ export type PostMeta = {
   draft?: boolean;
 };
 
-export type Post = {
+export type Post<Out = Record<never, never>> = {
   route: {
     collection: string;
     slug: string;
@@ -26,14 +28,19 @@ export type Post = {
   content: {
     html: string;
   };
-  // to do for plugin infer types
+  pluginOutput: Out;
 };
 
-export type UserConfig = {
+export type UserConfig<P extends readonly Plugin[] = readonly Plugin[]> = {
   content?: string;
-  layouts: { post: ComponentType<LayoutProps> };
+  plugins?: P;
+  layouts: { post: ComponentType<LayoutProps<InferPost<NoInfer<P>>>> };
 };
 
-export type Config = UserConfig & { content: string };
+export type Config<P extends readonly Plugin[] = readonly Plugin[]> =
+  UserConfig<P> & { content: string } & { plugins: P };
 
-export type LayoutProps = { post: Post; posts: Post[] };
+export type LayoutProps<TPost = InferPost<DefaultPlugins>> = {
+  post: TPost;
+  posts: TPost[];
+};
