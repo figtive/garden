@@ -22,6 +22,7 @@ export async function loadPost(file: PostFile, md: MarkdownIt) {
     content: {
       html: md.render(body),
     },
+    pluginOutput: {},
   };
 
   return post;

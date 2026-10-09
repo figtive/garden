@@ -16,6 +16,9 @@
     "enabled": true,
     "rules": {
       "preset": "recommended",
+      "performance": {
+        "noAccumulatingSpread": "off"
+      },
       "style": {
         "useBlockStatements": "error",
         "useConst": "error",

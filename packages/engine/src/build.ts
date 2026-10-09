@@ -2,9 +2,9 @@ import MarkdownIt from "markdown-it";
 import { loadConfig } from "./config.ts";
 import { findPosts } from "./content/findPosts.ts";
 import { loadPost } from "./content/loadPost.ts";
-import { isPublished } from "./plugins/drafts.ts";
+import { isEmitter, isFilter, isTransformer } from "./plugins/definePlugin.ts";
 import { renderPage } from "./renderer/renderPage.tsx";
-import type { Post } from "./types.ts";
+import { writeEmittedFile } from "./renderer/writeEmittedFile.ts";
 import { byDateNewestFirst } from "./utils/sort.ts";
 
 export async function build() {
@@ -15,14 +15,28 @@ export async function build() {
 
   const all = await Promise.all(files.map((file) => loadPost(file, md)));
 
-  // all the filters
-  const posts = all
-    .filter(({ meta }: Post) => isPublished(meta))
-    .sort(({ meta: metaA }, { meta: metaB }) =>
-      byDateNewestFirst(metaA.date, metaB.date),
-    );
+  const filters = config.plugins.filter(isFilter);
+  const transformers = config.plugins.filter(isTransformer);
+  const emitters = config.plugins.filter(isEmitter);
+
+  const kept = all.filter((post) => filters.every((f) => f.filter(post.meta)));
+
+  const posts = kept
+    .map((post) =>
+      transformers.reduce(
+        (acc, curr) => ({
+          ...acc,
+          pluginOutput: { ...acc.pluginOutput, ...curr.transform(acc) },
+        }),
+        post,
+      ),
+    )
+    .sort((a, b) => byDateNewestFirst(a.meta.date, b.meta.date));
 
   for (const post of posts) {
     await renderPage(config.layouts.post, { post, posts }, post.route.url);
   }
+
+  const emitted = emitters.flatMap((e) => e.emit(posts));
+  await Promise.all(emitted.map(writeEmittedFile));
 }

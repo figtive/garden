@@ -1,5 +1,8 @@
-import type { PostMeta } from "../types.ts";
+import { definePlugin } from "./definePlugin.ts";
 
-export function isPublished(meta: PostMeta) {
-  return !meta.draft;
-}
+export const draftsPlugin = () =>
+  definePlugin({
+    name: "drafts",
+    pluginType: "filter",
+    filter: (meta) => !meta.draft,
+  });
