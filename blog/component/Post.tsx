@@ -1,7 +1,7 @@
-import type { LayoutProps } from "@figtive/garden-engine";
-import type { Post as GardenPost } from "../plugin.ts";
+import type { PostPageProps } from "@figtive/garden-engine";
+import type { BlogPost } from "../plugin.ts";
 
-function Post({ post, posts }: LayoutProps<GardenPost>) {
+function Post({ post, posts }: PostPageProps<BlogPost>) {
   return (
     <html lang="en">
       <head>

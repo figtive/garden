@@ -14,4 +14,4 @@ export const mood = () =>
   });
 
 export const plugins = [...defaultPlugins, mood()];
-export type Post = InferPost<typeof plugins>;
+export type BlogPost = InferPost<typeof plugins>;
