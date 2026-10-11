@@ -1,6 +1,6 @@
 import { posix } from "node:path";
 import { globby } from "globby";
-import type { Config, PostFile } from "../types.ts";
+import type { Config, PostFile } from "../types/index.ts";
 
 export const findPosts = async (config: Config): Promise<PostFile[]> => {
   const files = await globby("*/*/index.md", {

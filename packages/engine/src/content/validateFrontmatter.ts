@@ -1,5 +1,5 @@
 import { REQUIRED_FRONTMATTER_KEYS } from "../constants.ts";
-import type { FrontmatterValue, PostMeta } from "../types.ts";
+import type { FrontmatterValue, PostMeta } from "../types/index.ts";
 
 function isValidDate(dateString: string): boolean {
   if (!/^\d{4}-\d{2}-\d{2}$/.test(dateString)) {

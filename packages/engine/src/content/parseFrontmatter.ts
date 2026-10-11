@@ -1,4 +1,4 @@
-import type { FrontmatterValue } from "../types.ts";
+import type { FrontmatterValue } from "../types/index.ts";
 
 function unquote(value: string): string {
   const first = value[0];

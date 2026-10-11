@@ -1,6 +1,6 @@
 import { readFile } from "node:fs/promises";
 import type { MarkdownIt } from "markdown-it";
-import type { Post, PostFile } from "../types.ts";
+import type { Post, PostFile } from "../types/index.ts";
 import { parseFrontmatter } from "./parseFrontmatter.ts";
 import { splitFrontmatter } from "./splitFrontmatter.ts";
 import { validateFrontmatter } from "./validateFrontmatter.ts";

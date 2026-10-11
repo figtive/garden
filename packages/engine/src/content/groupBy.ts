@@ -1,4 +1,4 @@
-import type { Group } from "../types.ts";
+import type { Group } from "../types/index.ts";
 
 export function groupBy<TPost>(
   posts: TPost[],

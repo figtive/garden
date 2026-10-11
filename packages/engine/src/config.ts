@@ -6,8 +6,7 @@ import {
   type DefaultPlugins,
   defaultPlugins,
 } from "./plugins/defaultPlugins.ts";
-import type { Plugin } from "./plugins/definePlugin.ts";
-import type { Config, UserConfig } from "./types.ts";
+import type { Config, Plugin, UserConfig } from "./types/index.ts";
 
 const defineGardenConfig = <const P extends readonly Plugin[] = DefaultPlugins>(
   config: UserConfig<P>,

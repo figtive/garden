@@ -1,12 +1,13 @@
 import type { ComponentType } from "react";
 import { groupBy } from "../content/groupBy.ts";
-import type { Post, SiteData } from "../types.ts";
-import {
-  definePage,
-  type GroupPageProps,
-  type PageProps,
-  type PostPageProps,
-} from "./definePage.ts";
+import type {
+  GroupPageProps,
+  PageProps,
+  Post,
+  PostPageProps,
+  SiteData,
+} from "../types/index.ts";
+import { definePage } from "./definePage.ts";
 
 export const generateStaticPage = <TPost>(
   url: string,

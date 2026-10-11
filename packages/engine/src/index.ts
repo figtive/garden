@@ -11,21 +11,7 @@ import {
 import { defaultPlugins } from "./plugins/defaultPlugins.ts";
 import { definePlugin } from "./plugins/definePlugin.ts";
 
-export type {
-  GroupPageProps,
-  PageProps,
-  PostPageProps,
-} from "./pages/definePage.ts";
-
-export type { InferPost } from "./plugins/definePlugin.ts";
-
-export type {
-  Group,
-  PostMeta,
-  PostWithDefaultPlugins,
-  SiteData,
-  UserConfig,
-} from "./types.ts";
+export type * from "./types/index.ts";
 
 export {
   build,
