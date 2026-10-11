@@ -1,4 +1,4 @@
-import type { ComponentType } from "react";
+import type { Page } from "./pages/definePage.ts";
 import type { DefaultPlugins } from "./plugins/defaultPlugins.ts";
 import type { InferPost, Plugin } from "./plugins/definePlugin.ts";
 
@@ -9,6 +9,8 @@ export type PostFile = {
   collection: string; // "posts"
   slug: string; // "hello-world"
 };
+
+export type Group<TPost> = { key: string; posts: TPost[] };
 
 export type PostMeta = {
   title: string;
@@ -31,16 +33,28 @@ export type Post<Out = Record<never, never>> = {
   pluginOutput: Out;
 };
 
-export type UserConfig<P extends readonly Plugin[] = readonly Plugin[]> = {
-  content?: string;
-  plugins?: P;
-  layouts: { post: ComponentType<LayoutProps<InferPost<NoInfer<P>>>> };
+export type SiteData<TPost> = {
+  posts: TPost[];
 };
+
+export type PostWithDefaultPlugins = InferPost<DefaultPlugins>;
 
 export type Config<P extends readonly Plugin[] = readonly Plugin[]> =
   UserConfig<P> & { content: string } & { plugins: P };
 
-export type LayoutProps<TPost = InferPost<DefaultPlugins>> = {
-  post: TPost;
-  posts: TPost[];
+export type PostLayoutProps<TPost = PostWithDefaultPlugins> =
+  SiteData<TPost> & {
+    post: TPost;
+  };
+
+export type IndexLayoutProps<TPost = PostWithDefaultPlugins> = SiteData<TPost>;
+
+export type TagsLayoutProps<TPost = PostWithDefaultPlugins> = SiteData<TPost>;
+
+export type TagLayoutProps<TPost = PostWithDefaultPlugins> = SiteData<TPost>;
+
+export type UserConfig<P extends readonly Plugin[] = readonly Plugin[]> = {
+  content?: string;
+  plugins?: P;
+  pages: readonly Page<InferPost<NoInfer<P>>>[];
 };

@@ -2,6 +2,7 @@ import MarkdownIt from "markdown-it";
 import { loadConfig } from "./config.ts";
 import { findPosts } from "./content/findPosts.ts";
 import { loadPost } from "./content/loadPost.ts";
+import { collectRoutes } from "./pages/collectRoutes.ts";
 import { isEmitter, isFilter, isTransformer } from "./plugins/definePlugin.ts";
 import { renderPage } from "./renderer/renderPage.tsx";
 import { writeEmittedFile } from "./renderer/writeEmittedFile.ts";
@@ -10,7 +11,6 @@ import { byDateNewestFirst } from "./utils/sort.ts";
 export async function build() {
   const config = await loadConfig();
   const files = await findPosts(config);
-
   const md = new MarkdownIt();
 
   const all = await Promise.all(files.map((file) => loadPost(file, md)));
@@ -33,8 +33,12 @@ export async function build() {
     )
     .sort((a, b) => byDateNewestFirst(a.meta.date, b.meta.date));
 
-  for (const post of posts) {
-    await renderPage(config.layouts.post, { post, posts }, post.route.url);
+  const site = { posts };
+  console.log(posts);
+  const routes = await collectRoutes(config.pages, site);
+
+  for (const route of routes) {
+    await renderPage(route.element, route.url);
   }
 
   const emitted = emitters.flatMap((e) => e.emit(posts));
