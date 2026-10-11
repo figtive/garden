@@ -11,9 +11,11 @@ import { byDateNewestFirst } from "./utils/sort.ts";
 export async function build() {
   const config = await loadConfig();
   const files = await findPosts(config);
-  const md = new MarkdownIt();
+  const md = new MarkdownIt({ html: true });
 
-  const all = await Promise.all(files.map((file) => loadPost(file, md)));
+  const all = await Promise.all(
+    files.map((file) => loadPost(file, md, config)),
+  );
 
   const filters = config.plugins.filter(isFilter);
   const transformers = config.plugins.filter(isTransformer);
@@ -34,7 +36,7 @@ export async function build() {
     .sort((a, b) => byDateNewestFirst(a.meta.date, b.meta.date));
 
   const site = { posts };
-  console.log(posts);
+
   const routes = await collectRoutes(config.pages, site);
 
   for (const route of routes) {

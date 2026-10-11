@@ -14,6 +14,7 @@ const defineGardenConfig = <const P extends readonly Plugin[] = DefaultPlugins>(
   ...config,
   content: config.content ?? DEFAULT_CONTENT_PATH,
   plugins: (config.plugins ?? defaultPlugins) as unknown as P,
+  directives: config.directives ?? {},
 });
 
 const loadConfig = async (root = process.cwd()): Promise<Config> => {
