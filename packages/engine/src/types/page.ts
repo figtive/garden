@@ -37,3 +37,13 @@ export type Page<TPost> = {
     site: SiteData<TPost>,
   ) => Promise<{ url: string; element: ReactElement }[]>;
 };
+export type StyleGroup = {
+  files: string[];
+  precedence?: string;
+};
+
+export type Styles = string[] | StyleGroup;
+
+export type PageOptions = {
+  styles?: Styles;
+};

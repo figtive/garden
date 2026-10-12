@@ -7,6 +7,7 @@ export type UserConfig<P extends readonly Plugin[] = readonly Plugin[]> = {
   plugins?: P;
   directives?: Record<string, Directive>;
   pages: readonly Page<InferPost<NoInfer<P>>>[];
+  styles?: string[];
 };
 
 export type Config<P extends readonly Plugin[] = readonly Plugin[]> =

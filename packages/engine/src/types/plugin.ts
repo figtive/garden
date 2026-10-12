@@ -15,7 +15,7 @@ export type TransformerPlugin<Out extends object = object> = {
 export type EmitterPlugin = {
   name: string;
   pluginType: "emitter";
-  emit: (posts: Post[]) => EmittedFile[];
+  emit: (options: { posts: Post[] }) => EmittedFile[] | Promise<EmittedFile[]>;
 };
 
 export type EmittedFile =

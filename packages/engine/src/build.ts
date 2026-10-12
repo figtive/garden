@@ -5,6 +5,7 @@ import { loadPost } from "./content/loadPost.ts";
 import { collectRoutes } from "./pages/collectRoutes.ts";
 import { isEmitter, isFilter, isTransformer } from "./plugins/definePlugin.ts";
 import { renderPage } from "./renderer/renderPage.tsx";
+import { withStyles } from "./renderer/withStyles.tsx";
 import { writeEmittedFile } from "./renderer/writeEmittedFile.ts";
 import { byDateNewestFirst } from "./utils/sort.ts";
 
@@ -40,9 +41,15 @@ export async function build() {
   const routes = await collectRoutes(config.pages, site);
 
   for (const route of routes) {
-    await renderPage(route.element, route.url);
+    await renderPage(
+      withStyles(route.element, config?.styles ?? [], "global"),
+      route.url,
+    );
   }
 
-  const emitted = emitters.flatMap((e) => e.emit(posts));
+  const emitted = (
+    await Promise.all(emitters.map((e) => e.emit({ posts })))
+  ).flat();
+
   await Promise.all(emitted.map(writeEmittedFile));
 }
