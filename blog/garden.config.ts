@@ -12,8 +12,12 @@ import { plugins } from "./plugin.ts";
 
 export default defineGardenConfig({
   content: "./content",
+  styles: ["/base.css"],
   plugins,
-  pages: [generateStaticPage("/", Home), generatePostPages(Post)],
+  pages: [
+    generateStaticPage("/", Home, { styles: ["/home.css"] }),
+    generatePostPages(Post),
+  ],
   directives: {
     youtube: defineDirective({
       props: (raw) => {
