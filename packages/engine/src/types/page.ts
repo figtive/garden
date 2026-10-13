@@ -1,5 +1,6 @@
 import type { ComponentType, ReactElement } from "react";
 import type { DefaultPlugins } from "../plugins/defaultPlugins.ts";
+import type { HeadMeta } from "./head.ts";
 import type { InferPost } from "./plugin.ts";
 
 export type PostWithDefaultPlugins = InferPost<DefaultPlugins>;
@@ -32,11 +33,6 @@ export type PageDefinition<TPost, Props> = {
   component: ComponentType<SiteData<TPost> & Props>;
 };
 
-export type Page<TPost> = {
-  routes: (
-    site: SiteData<TPost>,
-  ) => Promise<{ url: string; element: ReactElement }[]>;
-};
 export type StyleGroup = {
   files: string[];
   precedence?: string;
@@ -44,6 +40,19 @@ export type StyleGroup = {
 
 export type Styles = string[] | StyleGroup;
 
-export type PageOptions = {
+export type PageOption<T, Props> = T | ((props: Props) => T);
+
+export type PageMeta<Props> = PageOption<Partial<HeadMeta>, Props>;
+
+export type PageOptions<Props = object> = {
   styles?: Styles;
+  meta?: PageMeta<Props>;
+};
+
+export type Page<TPost> = {
+  routes: (
+    site: SiteData<TPost>,
+  ) => Promise<
+    { url: string; element: ReactElement; meta: Partial<HeadMeta> }[]
+  >;
 };

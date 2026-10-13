@@ -1,10 +1,11 @@
 import { createElement } from "react";
 import { withStyles } from "../renderer/withStyles.tsx";
-import type { Page, PageDefinition, PageOptions } from "../types/index.ts";
+import type { Page, PageDefinition, PageOptions } from "../types/page.ts";
+import { resolveOption } from "../utils/resolver.ts";
 
 export function definePage<TPost, Props extends object>(
   page: PageDefinition<TPost, Props>,
-  extraOptions?: PageOptions,
+  options: PageOptions<Props> = {},
 ): Page<TPost> {
   return {
     routes: async (site) => {
@@ -12,9 +13,10 @@ export function definePage<TPost, Props extends object>(
 
       return routes.map((route) => ({
         url: route.url,
+        meta: resolveOption(options.meta, route.props, {}),
         element: withStyles(
           createElement(page.component, { ...site, ...route.props }),
-          extraOptions?.styles ?? [],
+          options.styles ?? [],
           "page",
         ),
       }));

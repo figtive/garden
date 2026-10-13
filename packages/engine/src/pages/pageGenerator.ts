@@ -2,12 +2,14 @@ import type { ComponentType } from "react";
 import { groupBy } from "../content/groupBy.ts";
 import type {
   GroupPageProps,
+  HeadMeta,
   PageOptions,
   PageProps,
   Post,
   PostPageProps,
   SiteData,
 } from "../types/index.ts";
+import { resolveOption } from "../utils/resolver.ts";
 import { definePage } from "./definePage.ts";
 
 export const generateStaticPage = <TPost>(
@@ -16,9 +18,21 @@ export const generateStaticPage = <TPost>(
   options: PageOptions = {},
 ) => definePage({ paths: () => [{ url, props: {} }], component }, options);
 
+function postMeta(post: Post): Partial<HeadMeta> {
+  return {
+    title: post.meta.title,
+    description: post.meta.description,
+    type: "article",
+    image: post.meta.image,
+    publishedTime: post.meta.date,
+    modifiedTime: post.meta.updated,
+    tags: post.meta.tags,
+  };
+}
+
 export const generatePostPages = <TPost extends Post>(
   component: ComponentType<PostPageProps<TPost>>,
-  options: PageOptions = {},
+  options: PageOptions<{ post: TPost }> = {},
 ) =>
   definePage(
     {
@@ -26,7 +40,13 @@ export const generatePostPages = <TPost extends Post>(
         site.posts.map((post) => ({ url: post.route.url, props: { post } })),
       component,
     },
-    options,
+    {
+      ...options,
+      meta: (props) => ({
+        ...postMeta(props.post),
+        ...resolveOption(options.meta, props, {}),
+      }),
+    },
   );
 
 export const generateTagPages = <TPost extends Post>(
@@ -47,5 +67,11 @@ export const generateTagPages = <TPost extends Post>(
         })),
       component,
     },
-    options,
+    {
+      ...options,
+      meta: (props) => ({
+        title: `#${props.group.key}`,
+        ...resolveOption(options.meta, props, {}),
+      }),
+    },
   );

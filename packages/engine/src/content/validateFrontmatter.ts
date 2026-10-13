@@ -29,7 +29,15 @@ export function validateFrontmatter(
     throw new Error(`${file}: ${message}`);
   };
 
-  const { title, date, description, tags = [], draft = false } = meta;
+  const {
+    title,
+    date,
+    description,
+    tags = [],
+    draft = false,
+    updated,
+    image,
+  } = meta;
 
   const missing = REQUIRED_FRONTMATTER_KEYS.filter(
     (key) => !Object.hasOwn(meta, key),
@@ -57,6 +65,19 @@ export function validateFrontmatter(
     fail(`"date" must be a real date in YYYY-MM-DD format, got "${date}"`);
   }
 
+  if (
+    updated !== undefined &&
+    (typeof updated !== "string" || !isValidDate(updated))
+  ) {
+    fail(
+      `"updated" must be a real date in YYYY-MM-DD format, got "${updated}"`,
+    );
+  }
+
+  if (image !== undefined && typeof image !== "string") {
+    fail(`"image" must be a path`);
+  }
+
   if (!Array.isArray(tags)) {
     fail(`"tags" must be a list, e.g. [a, b]`);
   }
@@ -65,5 +86,5 @@ export function validateFrontmatter(
     fail(`"draft" must be true or false`);
   }
 
-  return { title, date, description, tags, draft } as PostMeta;
+  return { title, date, description, tags, draft, updated, image } as PostMeta;
 }

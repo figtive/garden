@@ -12,6 +12,8 @@ export type PostMeta = {
   description: string;
   tags?: string[];
   draft?: boolean;
+  updated?: string;
+  image?: string;
 };
 
 export type Post<Out = Record<never, never>> = {

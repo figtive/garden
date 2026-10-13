@@ -1,3 +1,4 @@
+import { rm } from "node:fs/promises";
 import MarkdownIt from "markdown-it";
 import { loadConfig } from "./config.ts";
 import { findPosts } from "./content/findPosts.ts";
@@ -5,11 +6,15 @@ import { loadPost } from "./content/loadPost.ts";
 import { collectRoutes } from "./pages/collectRoutes.ts";
 import { isEmitter, isFilter, isTransformer } from "./plugins/definePlugin.ts";
 import { renderPage } from "./renderer/renderPage.tsx";
+import { withHead } from "./renderer/withHead.tsx";
+import { withMeta } from "./renderer/withMeta.tsx";
 import { withStyles } from "./renderer/withStyles.tsx";
 import { writeEmittedFile } from "./renderer/writeEmittedFile.ts";
+import type { HeadMeta } from "./types/head.ts";
 import { byDateNewestFirst } from "./utils/sort.ts";
 
 export async function build() {
+  await rm("dist", { recursive: true, force: true });
   const config = await loadConfig();
   const files = await findPosts(config);
   const md = new MarkdownIt({ html: true });
@@ -41,10 +46,21 @@ export async function build() {
   const routes = await collectRoutes(config.pages, site);
 
   for (const route of routes) {
-    await renderPage(
-      withStyles(route.element, config?.styles ?? [], "global"),
-      route.url,
+    const head: HeadMeta = {
+      title: config.site.title,
+      ...route.meta,
+      url: route.url,
+    };
+
+    const element = withHead(
+      withMeta(
+        withStyles(route.element, config.styles ?? [], "global"),
+        head,
+        config.site,
+      ),
+      config.site,
     );
+    await renderPage(element, route.url);
   }
 
   const emitted = (
