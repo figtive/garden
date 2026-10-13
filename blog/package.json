@@ -3,7 +3,7 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "build": "tsx build.ts",
+    "build": "tsx --env-file-if-exists=.env build.ts",
     "typecheck": "tsc"
   },
   "dependencies": {

@@ -8,10 +8,8 @@ function Home({ posts }: PageProps<BlogPost>) {
 
   return (
     <html lang="en">
-      <head>
-        <meta charSet="utf-8" />
-        <title>Home</title>
-      </head>
+      <head />
+
       <body>
         <h2>latest</h2>
         {latest && (

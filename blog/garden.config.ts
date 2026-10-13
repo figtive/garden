@@ -12,11 +12,16 @@ import { plugins } from "./plugin.ts";
 
 export default defineGardenConfig({
   content: "./content",
+  site: {
+    title: "This is a blog site.",
+    url: process.env.GARDEN_SITE_URL ?? "http://localhost:3000",
+    head: [{ tag: "link", rel: "icon", href: "/figtive-icon.png" }],
+  },
   styles: ["/base.css"],
   plugins,
   pages: [
     generateStaticPage("/", Home, { styles: ["/home.css"] }),
-    generatePostPages(Post),
+    generatePostPages(Post, { meta: { image: "/figtive-icon.png" } }),
   ],
   directives: {
     youtube: defineDirective({

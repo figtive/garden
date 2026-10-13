@@ -4,10 +4,7 @@ import type { BlogPost } from "../plugin.ts";
 function Post({ post, posts }: PostPageProps<BlogPost>) {
   return (
     <html lang="en">
-      <head>
-        <meta charSet="utf-8" />
-        <title>{post.meta.title}</title>
-      </head>
+      <head />
       <body>
         <h1>
           {" "}
