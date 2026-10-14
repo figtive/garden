@@ -1,6 +1,6 @@
 import type { ReactElement } from "react";
 import type { Page, SiteData } from "../types/index.ts";
-import { isValidUrl } from "../utils/validator.ts";
+import { isValidUrl } from "../utils/url.ts";
 
 type ResolvedRoute = { url: string; element: ReactElement };
 

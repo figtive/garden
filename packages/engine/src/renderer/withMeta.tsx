@@ -1,8 +1,6 @@
 import { createElement, Fragment, type ReactElement } from "react";
 import type { HeadMeta, SiteConfig } from "../types/index.ts";
-
-const absoluteUrl = (site: SiteConfig, path: string) =>
-  path.startsWith("http") ? path : `${site.url}${site.basePath ?? ""}${path}`;
+import { absoluteUrl } from "../utils/url.ts";
 
 const meta = (key: string, content: string) =>
   key.startsWith("og:") || key.startsWith("article:")
