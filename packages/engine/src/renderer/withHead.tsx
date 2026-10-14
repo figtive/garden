@@ -18,8 +18,12 @@ const headTag = (site: SiteConfig, { tag, ...attrs }: HeadTag, i: number) =>
     ...(tag === "script" && { async: true }),
   });
 
-export function withHead(element: ReactElement, site: SiteConfig) {
-  const tags = (site.head ?? []).map((tag, i) => headTag(site, tag, i));
+export function withHead(
+  element: ReactElement,
+  tags: HeadTag[],
+  site: SiteConfig,
+) {
+  const elements = tags.map((tag, i) => headTag(site, tag, i));
 
-  return createElement(Fragment, null, ...tags, element);
+  return createElement(Fragment, null, ...elements, element);
 }

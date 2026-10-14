@@ -7,7 +7,7 @@ export async function writeEmittedFile(file: EmittedFile) {
   await mkdir(dirname(out), { recursive: true });
   if ("content" in file) {
     await writeFile(out, file.content);
-  } else {
+  } else if ("from" in file) {
     await copyFile(file.from, out);
   }
 }

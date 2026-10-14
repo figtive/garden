@@ -11,6 +11,7 @@ import { withMeta } from "./renderer/withMeta.tsx";
 import { withStyles } from "./renderer/withStyles.tsx";
 import { writeEmittedFile } from "./renderer/writeEmittedFile.ts";
 import type { HeadMeta } from "./types/head.ts";
+import { resolveOption } from "./utils/resolver.ts";
 import { byDateNewestFirst } from "./utils/sort.ts";
 
 export async function build() {
@@ -45,6 +46,11 @@ export async function build() {
 
   const routes = await collectRoutes(config.pages, site);
 
+  const pluginHead = config.plugins.flatMap((plugin) =>
+    resolveOption(plugin.head, config.site, []),
+  );
+  const headTags = [...(config.site.head ?? []), ...pluginHead];
+
   for (const route of routes) {
     const head: HeadMeta = {
       title: config.site.title,
@@ -58,13 +64,14 @@ export async function build() {
         head,
         config.site,
       ),
+      headTags,
       config.site,
     );
     await renderPage(element, route.url);
   }
 
   const emitted = (
-    await Promise.all(emitters.map((e) => e.emit({ posts })))
+    await Promise.all(emitters.map((e) => e.emit({ posts, site: config.site })))
   ).flat();
 
   await Promise.all(emitted.map(writeEmittedFile));

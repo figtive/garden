@@ -1,21 +1,29 @@
+import type { SiteConfig } from "./config.ts";
+import type { HeadTag } from "./head.ts";
 import type { Post, PostMeta } from "./post.ts";
 
-export type FilterPlugin = {
+export type PluginHead = HeadTag[] | ((site: SiteConfig) => HeadTag[]);
+
+type BasePlugin<T extends string> = {
   name: string;
-  pluginType: "filter";
+  head?: PluginHead;
+  pluginType: T;
+};
+
+export type FilterPlugin = BasePlugin<"filter"> & {
   filter: (meta: PostMeta) => boolean;
 };
 
-export type TransformerPlugin<Out extends object = object> = {
-  name: string;
-  pluginType: "transformer";
-  transform: (post: Post) => Out;
-};
+export type TransformerPlugin<Out extends object = object> =
+  BasePlugin<"transformer"> & {
+    transform: (post: Post) => Out;
+  };
 
-export type EmitterPlugin = {
-  name: string;
-  pluginType: "emitter";
-  emit: (options: { posts: Post[] }) => EmittedFile[] | Promise<EmittedFile[]>;
+export type EmitterPlugin = BasePlugin<"emitter"> & {
+  emit: (options: {
+    posts: Post[];
+    site: SiteConfig;
+  }) => EmittedFile[] | Promise<EmittedFile[]>;
 };
 
 export type EmittedFile =
