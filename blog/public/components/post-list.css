@@ -1,0 +1,91 @@
+@layer garden.base {
+  .post-list {
+    padding: 0;
+    margin: 0;
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) max-content;
+    column-gap: 18px;
+    border: 1px solid var(--color-border);
+    list-style: none;
+  }
+
+  .post-list__row {
+    display: grid;
+    grid-column: 1 / -1;
+    grid-template-columns: subgrid;
+  }
+
+  .post-list__row + .post-list__row {
+    border-top: 1px solid var(--color-divider);
+  }
+
+  .post-list__link {
+    padding: 10px 14px;
+    display: grid;
+    grid-column: 1 / -1;
+    grid-template-columns: subgrid;
+    align-items: center;
+    outline-offset: -2px;
+    text-decoration: none;
+    color: var(--color-text);
+
+    &:hover,
+    &:focus-visible {
+      background: var(--color-surface);
+    }
+  }
+
+  .post-list__title {
+    min-width: 0;
+    font-size: var(--text-description);
+    line-height: 1.4;
+    overflow-wrap: anywhere;
+  }
+
+  .post-list__link:hover .post-list__title {
+    color: var(--color-link);
+  }
+
+  .post-list__tags,
+  .post-list__stage {
+    display: none;
+  }
+
+  .post-list__tags {
+    justify-self: end;
+    font-family: var(--font-display);
+    font-size: 0.75rem;
+    line-height: 1.4;
+    color: var(--color-text-faint);
+  }
+
+  .post-list__date {
+    justify-self: end;
+    font-family: var(--font-code);
+    font-size: var(--text-meta);
+    font-variant-numeric: tabular-nums;
+    line-height: 1.4;
+    white-space: nowrap;
+    color: var(--color-text-faint);
+  }
+
+  @media (width >= 30rem) {
+    .post-list {
+      grid-template-columns: minmax(0, 1fr) auto max-content;
+    }
+
+    .post-list__stage {
+      display: flex;
+    }
+  }
+
+  @media (width >= 47.5rem) {
+    .post-list {
+      grid-template-columns: minmax(0, 1fr) auto auto max-content;
+    }
+
+    .post-list__tags {
+      display: block;
+    }
+  }
+}

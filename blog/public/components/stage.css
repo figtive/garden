@@ -1,0 +1,40 @@
+@layer garden.base {
+  .stage {
+    --stage-color: var(--color-text-faint);
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    font-family: var(--font-code);
+    font-size: 0.78125rem;
+    line-height: 1;
+    white-space: nowrap;
+    color: var(--color-text-muted);
+  }
+
+  .stage__icon {
+    width: 15px;
+    height: 15px;
+    flex: none;
+    shape-rendering: crispEdges;
+  }
+
+  .stage__petals {
+    fill: var(--stage-color);
+  }
+
+  .stage__center {
+    fill: var(--color-link);
+  }
+
+  .stage[data-stage="seedling"] {
+    --stage-color: var(--color-brown);
+  }
+
+  .stage[data-stage="budding"] {
+    --stage-color: var(--color-info);
+  }
+
+  .stage[data-stage="evergreen"] {
+    --stage-color: var(--color-success);
+  }
+}

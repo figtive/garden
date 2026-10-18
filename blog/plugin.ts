@@ -3,6 +3,7 @@ import {
   definePlugin,
   type InferPost,
 } from "@figtive/garden-engine";
+import type { StageName } from "./component/Stage.tsx";
 
 export const mood = () =>
   definePlugin({
@@ -13,5 +14,14 @@ export const mood = () =>
     }),
   });
 
-export const plugins = [...defaultPlugins, mood()];
+export const gardenStage = () =>
+  definePlugin({
+    name: "gardenStage",
+    pluginType: "transformer",
+    transform: (): { stage: StageName } => ({
+      stage: "evergreen",
+    }),
+  });
+
+export const plugins = [...defaultPlugins, mood(), gardenStage()];
 export type BlogPost = InferPost<typeof plugins>;
