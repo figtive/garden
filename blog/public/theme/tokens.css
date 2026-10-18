@@ -1,0 +1,143 @@
+@layer garden.tokens, garden.base, user;
+
+@layer garden.tokens {
+  :root {
+    color-scheme: dark;
+
+    /* Colors */
+    --color-background: oklch(12% 0.01 50);
+    --color-surface: oklch(19% 0.01 50);
+    --color-divider: oklch(23% 0.01 50);
+    --color-border: oklch(33% 0.01 50);
+
+    --color-text: oklch(93% 0.005 50);
+    --color-text-muted: oklch(73% 0.01 50);
+    --color-text-faint: oklch(60% 0.01 50);
+
+    --color-primary: oklch(70% 0.09 320);
+    --color-link: oklch(81% 0.15 68);
+
+    --color-info: oklch(76% 0.1 245);
+    --color-success: oklch(76% 0.15 150);
+    --color-error: oklch(67% 0.18 25);
+
+    --color-brown: oklch(0.4929 0.182 61.41);
+
+    --font-body: Outfit, system-ui, sans-serif;
+    --font-display: "IBM Plex Mono", ui-monospace, monospace;
+    --font-code: "Fira Code", ui-monospace, monospace;
+
+    /* Layout */
+    --margin-width: 168px;
+    --gutter: 48px;
+    --content-width: 660px;
+    --sidebar-width: 190px;
+
+    /* Fluid helpers */
+    /* 1px at the default font size; follows the user's font-size setting */
+    --default-px: 0.0625rem;
+
+    /* grows from 0 at a 360px viewport to 1 --default-px at 1200px */
+    --fluid: calc((100vw - 360 * var(--default-px)) / 840);
+
+    /* Type scale
+           clamp(MIN * --default-px, MIN * --default-px + (MAX - MIN) * --fluid, MAX * --default-px) */
+    --text-meta: calc(13 * var(--default-px));
+    --text-description: clamp(
+      16 *
+      var(--default-px),
+      16 *
+      var(--default-px) +
+      1 *
+      var(--fluid),
+      17 *
+      var(--default-px)
+    );
+    --text-body: clamp(
+      17 *
+      var(--default-px),
+      17 *
+      var(--default-px) +
+      1 *
+      var(--fluid),
+      18 *
+      var(--default-px)
+    );
+    --text-subheading: clamp(
+      18 *
+      var(--default-px),
+      18 *
+      var(--default-px) +
+      1 *
+      var(--fluid),
+      19 *
+      var(--default-px)
+    );
+    --text-lede: clamp(
+      19 *
+      var(--default-px),
+      19 *
+      var(--default-px) +
+      2 *
+      var(--fluid),
+      21 *
+      var(--default-px)
+    );
+    --text-quote: clamp(
+      20 *
+      var(--default-px),
+      20 *
+      var(--default-px) +
+      4 *
+      var(--fluid),
+      24 *
+      var(--default-px)
+    );
+    --text-heading: clamp(
+      21 *
+      var(--default-px),
+      21 *
+      var(--default-px) +
+      4 *
+      var(--fluid),
+      25 *
+      var(--default-px)
+    );
+    --text-intro: clamp(
+      22 *
+      var(--default-px),
+      22 *
+      var(--default-px) +
+      4 *
+      var(--fluid),
+      26 *
+      var(--default-px)
+    );
+    --text-title: clamp(
+      30 *
+      var(--default-px),
+      30 *
+      var(--default-px) +
+      14 *
+      var(--fluid),
+      44 *
+      var(--default-px)
+    );
+
+    /* Spacing */
+    --page-padding: clamp(
+      16 *
+      var(--default-px),
+      16 *
+      var(--default-px) +
+      8 *
+      var(--fluid),
+      24 *
+      var(--default-px)
+    );
+
+    /* Breakpoints (media queries can't read variables):
+           roomy >= 32.5rem  (520px): header keyboard hints
+           wide  >= 56.25rem (900px): margin column next to content */
+  }
+}

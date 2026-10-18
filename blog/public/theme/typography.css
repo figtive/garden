@@ -1,0 +1,162 @@
+@layer garden.base {
+  .text-title,
+  .prose h1 {
+    margin: 0;
+    font-family: var(--font-display);
+    font-size: var(--text-title);
+    font-weight: 700;
+    line-height: 1.1;
+    letter-spacing: -0.045em;
+    text-wrap: balance;
+    color: var(--color-text);
+  }
+
+  .text-heading,
+  .prose h2 {
+    margin: 0;
+    font-family: var(--font-display);
+    font-size: var(--text-heading);
+    font-weight: 600;
+    line-height: 1.25;
+    letter-spacing: -0.03em;
+    text-wrap: balance;
+    color: var(--color-primary);
+  }
+
+  .text-subheading,
+  .prose h3 {
+    margin: 0;
+    font-family: var(--font-display);
+    font-size: var(--text-subheading);
+    font-weight: 600;
+    line-height: 1.35;
+    letter-spacing: -0.02em;
+    text-wrap: balance;
+    color: var(--color-text);
+  }
+
+  .text-intro {
+    max-width: 34ch;
+    margin: 0;
+    font-size: var(--text-intro);
+    font-weight: 400;
+    line-height: 1.5;
+    letter-spacing: -0.01em;
+    text-wrap: pretty;
+  }
+
+  .text-lede {
+    max-width: 46ch;
+    margin: 0;
+    font-size: var(--text-lede);
+    line-height: 1.55;
+    text-wrap: pretty;
+    color: var(--color-text-muted);
+  }
+
+  .text-description {
+    max-width: 58ch;
+    margin: 0;
+    font-size: var(--text-description);
+    line-height: 1.6;
+    text-wrap: pretty;
+    color: var(--color-text-muted);
+  }
+
+  .text-quote {
+    max-width: 30ch;
+    margin: 0;
+    font-size: var(--text-quote);
+    font-weight: 500;
+    line-height: 1.45;
+    letter-spacing: -0.01em;
+    text-wrap: balance;
+  }
+
+  .text-meta {
+    font-family: var(--font-display);
+    font-size: var(--text-meta);
+    font-weight: 400;
+    font-variant-numeric: tabular-nums;
+    line-height: 1.5;
+    color: var(--color-text-faint);
+  }
+
+  /* Post body for markdown */
+  .prose {
+    --flow: 1.1em;
+    --flow-section: 1.8em;
+    --flow-tight: 0.6em;
+  }
+
+  .prose p,
+  .prose li {
+    text-wrap: pretty;
+  }
+
+  /* Spacing between blocks. Keep these after the heading roles:
+       same specificity, so the later rule wins. */
+  .prose > * {
+    margin-block: 0;
+  }
+
+  .prose > * + * {
+    margin-top: var(--flow);
+  }
+
+  .prose > * + :is(h2, h3) {
+    margin-top: var(--flow-section);
+  }
+
+  .prose > :is(h2, h3) + * {
+    margin-top: var(--flow-tight);
+  }
+
+  .prose :is(ul, ol) {
+    padding-left: 1.25em;
+  }
+
+  .prose li + li,
+  .prose li > :is(ul, ol) {
+    margin-top: 0.45em;
+  }
+
+  .prose li::marker {
+    color: var(--color-primary);
+  }
+
+  .prose strong {
+    font-weight: 600;
+    color: var(--color-text);
+  }
+
+  .prose blockquote {
+    padding-left: 1em;
+    margin-inline: 0;
+    border-left: 2px solid var(--color-border);
+    color: var(--color-text-muted);
+  }
+
+  .prose > hr {
+    margin-block: 2.5em;
+    border: 0;
+    border-top: 1px solid var(--color-divider);
+  }
+
+  .prose :not(pre) > code {
+    padding: 2px 5px;
+    border-radius: 2px;
+    font-size: 0.84em;
+    font-weight: 500;
+    background: var(--color-surface);
+  }
+
+  .prose pre {
+    padding: 1em 1.25em;
+    overflow-x: auto;
+    font-size: 0.875rem;
+    line-height: 1.75;
+    tab-size: 2;
+    background: var(--color-surface);
+  }
+}

@@ -1,0 +1,137 @@
+@layer garden.base {
+  .page {
+    max-width: calc(
+      var(--margin-width) +
+      var(--gutter) +
+      var(--content-width) +
+      var(--gutter) +
+      var(--sidebar-width)
+    );
+    margin-inline: auto;
+  }
+
+  /* Row: one column on small screens, margin column on wide ones */
+  .row {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .row__side {
+    margin-bottom: 8px;
+  }
+
+  .row__side:empty {
+    display: none;
+  }
+
+  .row__main {
+    min-width: 0;
+    overflow-wrap: anywhere;
+  }
+
+  .site-header {
+    padding-top: 26px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 12px 24px;
+  }
+
+  .crumbs {
+    min-width: 0;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    align-items: baseline;
+    flex-wrap: wrap;
+    gap: 4px 8px;
+    list-style: none;
+  }
+
+  .crumbs__item {
+    min-width: 0;
+    display: flex;
+    gap: 8px;
+  }
+
+  .crumbs__item + .crumbs__item::before {
+    content: "/";
+    color: var(--color-border);
+  }
+
+  .crumbs__link {
+    text-decoration: none;
+    color: var(--color-text-muted);
+
+    &:hover {
+      color: var(--color-link);
+    }
+  }
+
+  .crumbs__root {
+    font-weight: 600;
+    color: var(--color-primary);
+  }
+
+  .crumbs__current {
+    max-width: 20ch;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    color: var(--color-text);
+  }
+
+  /* Site footer */
+  .site-footer {
+    padding-bottom: 56px;
+    margin-top: clamp(
+      72 *
+      var(--default-px),
+      72 *
+      var(--default-px) +
+      38 *
+      var(--fluid),
+      110 *
+      var(--default-px)
+    );
+  }
+
+  .site-footer__links {
+    display: flex;
+    align-items: baseline;
+    flex-wrap: wrap;
+    gap: 6px 22px;
+  }
+
+  .site-footer__links a {
+    text-decoration: none;
+    color: inherit;
+
+    &:hover {
+      color: var(--color-text);
+    }
+  }
+
+  @media (width >= 32.5rem) {
+    .crumbs__current {
+      max-width: 34ch;
+    }
+  }
+
+  @media (width >= 56.25rem) {
+    .row {
+      grid-template-columns: var(--margin-width) minmax(0, var(--content-width));
+      column-gap: var(--gutter);
+    }
+
+    .row__side {
+      padding-top: 4px;
+      margin-bottom: 0;
+    }
+
+    .row__main {
+      grid-column: 2;
+    }
+  }
+}
