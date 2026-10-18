@@ -6,8 +6,8 @@ import {
 } from "@figtive/garden-engine";
 import GiganticText from "./component/directives/GiganticText.tsx";
 import YoutubePlayer from "./component/directives/YoutubePlayer.tsx";
-import Home from "./component/Home.tsx";
-import Post from "./component/Post.tsx";
+import Home from "./pages/Home.tsx";
+import Post from "./pages/Post.tsx";
 import { plugins } from "./plugin.ts";
 
 export default defineGardenConfig({
@@ -17,7 +17,13 @@ export default defineGardenConfig({
     url: process.env.GARDEN_SITE_URL ?? "http://localhost:3000",
     head: [{ tag: "link", rel: "icon", href: "/figtive-icon.png" }],
   },
-  styles: ["/base.css"],
+  styles: [
+    "/theme/tokens.css",
+    "/theme/base.css",
+    "/theme/typography.css",
+    "/theme/layout.css",
+    "/components/components.css",
+  ],
   plugins,
   pages: [
     generateStaticPage("/", Home, { styles: ["/home.css"] }),
