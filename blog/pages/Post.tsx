@@ -15,11 +15,9 @@ function Post({ post }: PostPageProps<BlogPost>) {
         </Row>
 
         <Row side={`${post.pluginOutput.readingTime} min read`}>
-          <article
-            className="prose"
-            // biome-ignore lint/security/noDangerouslySetInnerHtml: expected to render .md
-            dangerouslySetInnerHTML={{ __html: post.content.html }}
-          />
+          <article className="prose">
+            <post.content.Content />
+          </article>
         </Row>
       </main>
     </Layout>
