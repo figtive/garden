@@ -1,3 +1,6 @@
+import type { ComponentType } from "react";
+import type { Block, ContentProps } from "./tokens.ts";
+
 export type FrontmatterValue = string | boolean | string[];
 
 export type PostFile = {
@@ -24,7 +27,8 @@ export type Post<Out = Record<never, never>> = {
   };
   meta: PostMeta;
   content: {
-    html: string;
+    tokens: Block[];
+    Content: ComponentType<ContentProps>;
   };
   pluginOutput: Out;
 };

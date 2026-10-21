@@ -1,5 +1,4 @@
 import { rm } from "node:fs/promises";
-import MarkdownIt from "markdown-it";
 import { loadConfig } from "./config.ts";
 import { findPosts } from "./content/findPosts.ts";
 import { loadPost } from "./content/loadPost.ts";
@@ -18,11 +17,8 @@ export async function build() {
   await rm("dist", { recursive: true, force: true });
   const config = await loadConfig();
   const files = await findPosts(config);
-  const md = new MarkdownIt({ html: true });
 
-  const all = await Promise.all(
-    files.map((file) => loadPost(file, md, config)),
-  );
+  const all = await Promise.all(files.map((file) => loadPost(file, config)));
 
   const filters = config.plugins.filter(isFilter);
   const transformers = config.plugins.filter(isTransformer);

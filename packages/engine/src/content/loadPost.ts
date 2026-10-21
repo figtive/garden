@@ -1,13 +1,13 @@
 import { readFile } from "node:fs/promises";
-import type { MarkdownIt } from "markdown-it";
-import { renderDirectives } from "../renderer/renderDirectives.tsx";
+import { renderBlocks } from "../renderer/renderBlock.tsx";
+import { createBlockComponents } from "../renderer/tokenMapper.tsx";
 import type { Config, Post, PostFile } from "../types/index.ts";
-import { extractDirectives } from "./extractDirectives.ts";
 import { parseFrontmatter } from "./parseFrontmatter.ts";
 import { splitFrontmatter } from "./splitFrontmatter.ts";
+import { tokenizeMarkdown } from "./tokenize/index.ts";
 import { validateFrontmatter } from "./validateFrontmatter.ts";
 
-export async function loadPost(file: PostFile, md: MarkdownIt, config: Config) {
+export async function loadPost(file: PostFile, config: Config) {
   const source = await readFile(file.file, "utf-8");
   const { frontmatter, body } = splitFrontmatter(source);
   const metaObj = parseFrontmatter(frontmatter);
@@ -16,15 +16,8 @@ export async function loadPost(file: PostFile, md: MarkdownIt, config: Config) {
 
   const meta = validateFrontmatter(metaObj, file.file);
 
-  const { body: bodyWithPlaceholders, directives } = extractDirectives(
-    body,
-    registeredDirectives,
-  );
-  const html = renderDirectives(
-    md.render(bodyWithPlaceholders),
-    directives,
-    config.directives,
-  );
+  const tokens = tokenizeMarkdown(body, registeredDirectives);
+  const defaultComponents = createBlockComponents(config.directives);
 
   const post: Post = {
     meta,
@@ -34,7 +27,9 @@ export async function loadPost(file: PostFile, md: MarkdownIt, config: Config) {
       url: `/${file.collection}/${file.slug}/`,
     },
     content: {
-      html: html,
+      tokens,
+      Content: ({ components }) =>
+        renderBlocks(tokens, { ...defaultComponents, ...components }),
     },
     pluginOutput: {},
   };
