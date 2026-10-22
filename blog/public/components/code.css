@@ -1,0 +1,56 @@
+@layer garden.base {
+  .code {
+    margin: 0;
+  }
+
+  .code__title {
+    margin-bottom: 8px;
+    font-family: var(--font-display);
+    font-size: var(--text-meta);
+    line-height: 1;
+    color: var(--color-text-faint);
+  }
+
+  .code pre {
+    padding: 18px 0;
+    margin: 0;
+    overflow-x: auto;
+    border-radius: 2px;
+    font-family: var(--font-code);
+    font-size: 0.875rem;
+    line-height: 1.75;
+    tab-size: 2;
+    color: var(--code-foreground, var(--color-text));
+    background: var(--code-background, var(--color-surface));
+  }
+
+  .code code {
+    min-width: max-content;
+    display: block;
+    counter-reset: line;
+  }
+
+  .code__line {
+    padding-right: 24px;
+    display: block;
+  }
+
+  .code__line::before {
+    content: counter(line);
+    width: 42px;
+    padding-right: 18px;
+    display: inline-block;
+    counter-increment: line;
+    text-align: right;
+    color: var(--code-line-number, var(--color-text-faint));
+    user-select: none;
+  }
+
+  .code__line[data-highlighted] {
+    background: color-mix(in oklch, var(--color-link) 11%, transparent);
+  }
+
+  .code__line[data-highlighted]::before {
+    color: var(--color-link);
+  }
+}

@@ -8,7 +8,7 @@ function Post({ post }: PostPageProps<BlogPost>) {
 
   return (
     <Layout crumbs={crumbs}>
-      <main>
+      <main className="post">
         <Row side={<time dateTime={post.meta.date}>{post.meta.date}</time>}>
           <h1 className="text-title">{post.meta.title}</h1>
           <p className="text-lede">{post.meta.description}</p>

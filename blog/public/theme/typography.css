@@ -84,9 +84,14 @@
 
   /* Post body for markdown */
   .prose {
-    --flow: 1.1em;
-    --flow-section: 1.8em;
+    --flow: 1.35em;
+    --flow-section: 2.4em;
     --flow-tight: 0.6em;
+    --flow-wide: 1.9em;
+  }
+
+  .prose :is(h2, h3) {
+    scroll-margin-top: 28px;
   }
 
   .prose p,
@@ -112,6 +117,11 @@
     margin-top: var(--flow-tight);
   }
 
+  .prose > * + :is(.code, .alert, .table, .image),
+  .prose > :is(.code, .alert, .table, .image) + :not(h2, h3) {
+    margin-top: var(--flow-wide);
+  }
+
   .prose :is(ul, ol) {
     padding-left: 1.25em;
   }
@@ -125,16 +135,66 @@
     color: var(--color-primary);
   }
 
+  .prose ol > li::marker {
+    font-family: var(--font-display);
+    font-size: 0.875rem;
+  }
+
   .prose strong {
     font-weight: 600;
-    color: var(--color-text);
+    color: var(--color-text-strong);
   }
 
   .prose blockquote {
-    padding-left: 1em;
+    position: relative;
     margin-inline: 0;
-    border-left: 2px solid var(--color-border);
-    color: var(--color-text-muted);
+    padding-left: 28px;
+    font-size: var(--text-subheading);
+    line-height: 1.6;
+  }
+
+  .prose blockquote > * {
+    margin-block: 0;
+  }
+
+  .prose blockquote > * + * {
+    margin-top: 0.6em;
+  }
+
+  .prose blockquote::before {
+    content: "\201C";
+    position: absolute;
+    top: -2px;
+    left: 0;
+    font-family: var(--font-display);
+    font-size: calc(40 * var(--default-px));
+    font-weight: 600;
+    line-height: 1;
+    color: var(--color-primary);
+  }
+
+  .prose blockquote blockquote {
+    --quote-rule: var(--color-link);
+    padding-left: 16px;
+    border-left: 1px solid
+      color-mix(in oklab, var(--quote-rule) 70%, var(--color-background));
+    font-size: var(--text-description);
+  }
+
+  .prose blockquote blockquote blockquote {
+    --quote-rule: var(--color-info);
+  }
+
+  .prose blockquote blockquote blockquote blockquote {
+    --quote-rule: var(--color-success);
+  }
+
+  .prose blockquote blockquote blockquote blockquote blockquote {
+    --quote-rule: var(--color-primary);
+  }
+
+  .prose blockquote blockquote::before {
+    content: none;
   }
 
   .prose > hr {
@@ -151,12 +211,15 @@
     background: var(--color-surface);
   }
 
-  .prose pre {
-    padding: 1em 1.25em;
-    overflow-x: auto;
-    font-size: 0.875rem;
-    line-height: 1.75;
-    tab-size: 2;
-    background: var(--color-surface);
+  @media (width >= 56.25rem) {
+    .prose blockquote {
+      padding-left: 0;
+    }
+
+    .prose blockquote::before {
+      left: auto;
+      right: 100%;
+      padding-right: 12px;
+    }
   }
 }

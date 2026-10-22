@@ -1,0 +1,28 @@
+@layer garden.base {
+  .image {
+    position: relative;
+    margin: 0;
+  }
+
+  .image img {
+    border-radius: 2px;
+  }
+
+  .image__caption {
+    margin-top: 8px;
+    font-family: var(--font-display);
+    font-size: var(--text-meta);
+    line-height: 1.6;
+    color: var(--color-text-faint);
+  }
+
+  @media (width >= 56.25rem) {
+    .image__caption {
+      position: absolute;
+      top: 0;
+      left: calc(-1 * (var(--margin-width) + var(--gutter)));
+      width: var(--margin-width);
+      margin: 0;
+    }
+  }
+}

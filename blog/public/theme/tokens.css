@@ -10,9 +10,10 @@
     --color-divider: oklch(23% 0.01 50);
     --color-border: oklch(33% 0.01 50);
 
-    --color-text: oklch(93% 0.005 50);
-    --color-text-muted: oklch(73% 0.01 50);
-    --color-text-faint: oklch(60% 0.01 50);
+    --color-text: oklch(95.5% 0.004 91.4);
+    --color-text-strong: oklch(100% 0 0);
+    --color-text-muted: oklch(79% 0.01 50);
+    --color-text-faint: oklch(68% 0.01 50);
 
     --color-primary: oklch(70% 0.09 320);
     --color-link: oklch(81% 0.15 68);
@@ -22,6 +23,9 @@
     --color-error: oklch(67% 0.18 25);
 
     --color-brown: oklch(0.4929 0.182 61.41);
+
+    --color-warning: oklch(84% 0.15 95);
+    --color-caution: oklch(74% 0.16 55);
 
     --font-body: Outfit, system-ui, sans-serif;
     --font-display: "IBM Plex Mono", ui-monospace, monospace;

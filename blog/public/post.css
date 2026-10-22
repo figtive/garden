@@ -1,0 +1,25 @@
+@layer garden.base {
+  .post {
+    padding-top: clamp(
+      32 *
+      var(--default-px),
+      32 *
+      var(--default-px) +
+      32 *
+      var(--fluid),
+      64 *
+      var(--default-px)
+    );
+    display: grid;
+    gap: clamp(
+      32 *
+      var(--default-px),
+      32 *
+      var(--default-px) +
+      20 *
+      var(--fluid),
+      52 *
+      var(--default-px)
+    );
+  }
+}

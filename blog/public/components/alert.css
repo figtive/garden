@@ -1,0 +1,63 @@
+@layer garden.base {
+  .alert {
+    --alert-color: var(--color-primary);
+    position: relative;
+    padding-left: 14px;
+    border-left: 1px solid var(--alert-color);
+    font-size: var(--text-description);
+    line-height: 1.65;
+  }
+
+  .alert[data-kind="tip"] {
+    --alert-color: var(--color-info);
+  }
+
+  .alert[data-kind="warning"] {
+    --alert-color: var(--color-error);
+  }
+
+  .alert[data-kind="caution"] {
+    --alert-color: var(--color-warning);
+  }
+
+  .alert[data-kind="careful"] {
+    --alert-color: var(--color-caution);
+  }
+
+  .alert[data-kind="success"] {
+    --alert-color: var(--color-success);
+  }
+
+  .alert > * {
+    margin-block: 0;
+  }
+
+  .alert > * + * {
+    margin-top: 0.6em;
+  }
+
+  .alert__label {
+    margin-bottom: 6px;
+    display: flex;
+    gap: 6px;
+    font-family: var(--font-display);
+    font-size: var(--text-meta);
+    font-weight: 500;
+    line-height: 1.6;
+    color: var(--alert-color);
+  }
+
+  .alert__label + * {
+    margin-top: 0;
+  }
+
+  @media (width >= 56.25rem) {
+    .alert__label {
+      position: absolute;
+      top: 0;
+      left: calc(-1 * (var(--margin-width) + var(--gutter)));
+      width: var(--margin-width);
+      margin: 0;
+    }
+  }
+}
