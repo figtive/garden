@@ -3,7 +3,7 @@ import type {
   Directive,
   LooseDirectiveDefinitions,
   StrictDirectiveDefinitions,
-} from "../types/index.ts";
+} from "../../types/index.ts";
 
 export function defineDirective(options: LooseDirectiveDefinitions): Directive;
 

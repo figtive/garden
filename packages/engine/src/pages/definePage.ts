@@ -1,5 +1,5 @@
 import { createElement } from "react";
-import { withStyles } from "../renderer/withStyles.tsx";
+import { withStyles } from "../render/page/withStyles.tsx";
 import type { Page, PageDefinition, PageOptions } from "../types/page.ts";
 import { resolveOption } from "../utils/resolver.ts";
 

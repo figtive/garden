@@ -1,5 +1,5 @@
 import { createElement, Fragment, type ReactElement } from "react";
-import type { HeadTag, SiteConfig } from "../types/index.ts";
+import type { HeadTag, SiteConfig } from "../../types/index.ts";
 
 const withBase = (site: SiteConfig, value: string | boolean) =>
   typeof value === "string" && value.startsWith("/")

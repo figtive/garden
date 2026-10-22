@@ -1,5 +1,5 @@
 import { createElement, Fragment, type ReactElement } from "react";
-import type { Styles } from "../types/index.ts";
+import type { Styles } from "../../types/index.ts";
 
 export function withStyles(
   element: ReactElement,

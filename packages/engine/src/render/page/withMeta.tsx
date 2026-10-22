@@ -1,6 +1,6 @@
 import { createElement, Fragment, type ReactElement } from "react";
-import type { HeadMeta, SiteConfig } from "../types/index.ts";
-import { absoluteUrl } from "../utils/url.ts";
+import type { HeadMeta, SiteConfig } from "../../types/index.ts";
+import { absoluteUrl } from "../../utils/url.ts";
 
 const meta = (key: string, content: string) =>
   key.startsWith("og:") || key.startsWith("article:")

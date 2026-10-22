@@ -4,8 +4,8 @@ import {
   createHighlighter,
   type ThemedToken,
 } from "shiki";
-import { DEFAULT_CODE_THEME } from "../constants.ts";
-import type { CodeOptions, CodePart, CodeTheme } from "../types/index.ts";
+import { DEFAULT_CODE_THEME } from "../../config/constants.ts";
+import type { CodeOptions, CodePart, CodeTheme } from "../../types/index.ts";
 
 const ITALIC = 1;
 

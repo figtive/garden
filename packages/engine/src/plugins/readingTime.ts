@@ -1,4 +1,4 @@
-import { extractTokenText } from "../content/extractTextContent.ts";
+import { extractTokenText } from "../markdown/extractTextContent.ts";
 import { definePlugin } from "./definePlugin.ts";
 
 function readingTime(text: string): number {

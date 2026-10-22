@@ -1,6 +1,10 @@
 // @jsxRuntime automatic
 import type { CSSProperties } from "react";
-import type { BlockComponents, CodePart, Directive } from "../types/index.ts";
+import type {
+  BlockComponents,
+  CodePart,
+  Directive,
+} from "../../types/index.ts";
 import { keyed } from "./keyed.tsx";
 
 export function createBlockComponents(

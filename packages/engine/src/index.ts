@@ -1,8 +1,8 @@
 import { build } from "./build.ts";
-import { defineGardenConfig } from "./config.ts";
-import { groupBy } from "./content/groupBy.ts";
-import { defineDirective } from "./directives/directives.ts";
+import { defineGardenConfig } from "./config/loadConfig.ts";
+import { defineDirective } from "./markdown/directives/defineDirective.ts";
 import { definePage } from "./pages/definePage.ts";
+import { groupBy } from "./pages/groupBy.ts";
 import {
   generatePostPages,
   generateStaticPage,

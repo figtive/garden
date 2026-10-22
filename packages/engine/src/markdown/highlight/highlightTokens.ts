@@ -1,5 +1,5 @@
-import type { Block } from "../types/index.ts";
-import type { CodeHighlighter } from "./codeHighlighter.ts";
+import type { Block } from "../../types/index.ts";
+import type { CodeHighlighter } from "./createCodeHighlighter.ts";
 
 export function highlightTokens(
   blocks: Block[],

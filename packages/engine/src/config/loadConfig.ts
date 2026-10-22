@@ -1,12 +1,12 @@
 import { existsSync } from "node:fs";
 import { join } from "node:path";
 import { tsImport } from "tsx/esm/api";
-import { DEFAULT_CONTENT_PATH, GARDEN_CONFIG_FILE } from "./constants.ts";
 import {
   type DefaultPlugins,
   defaultPlugins,
-} from "./plugins/defaultPlugins.ts";
-import type { Config, Plugin, UserConfig } from "./types/index.ts";
+} from "../plugins/defaultPlugins.ts";
+import type { Config, Plugin, UserConfig } from "../types/index.ts";
+import { DEFAULT_CONTENT_PATH, GARDEN_CONFIG_FILE } from "./constants.ts";
 
 const defineGardenConfig = <const P extends readonly Plugin[] = DefaultPlugins>(
   config: UserConfig<P>,

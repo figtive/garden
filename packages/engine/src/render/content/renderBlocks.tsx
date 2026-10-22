@@ -1,12 +1,12 @@
 // @jsxRuntime automatic
 import type { ComponentType, CSSProperties, ReactNode } from "react";
-import { extractInlineText } from "../content/extractTextContent.ts";
+import { extractInlineText } from "../../markdown/extractTextContent.ts";
 import type {
   Block,
   BlockComponents,
   Inline,
   TokenProps,
-} from "../types/index.ts";
+} from "../../types/index.ts";
 import { keyed } from "./keyed.tsx";
 
 type AnyBlockComponent = ComponentType<TokenProps<Block["type"]>>;

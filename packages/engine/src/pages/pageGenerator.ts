@@ -1,5 +1,4 @@
 import type { ComponentType } from "react";
-import { groupBy } from "../content/groupBy.ts";
 import type {
   GroupPageProps,
   HeadMeta,
@@ -11,6 +10,7 @@ import type {
 } from "../types/index.ts";
 import { resolveOption } from "../utils/resolver.ts";
 import { definePage } from "./definePage.ts";
+import { groupBy } from "./groupBy.ts";
 
 export const generateStaticPage = <TPost>(
   url: string,

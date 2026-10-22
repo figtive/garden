@@ -1,13 +1,13 @@
 import { readFile } from "node:fs/promises";
-import { renderBlocks } from "../renderer/renderBlock.tsx";
-import { createBlockComponents } from "../renderer/tokenMapper.tsx";
+import type { CodeHighlighter } from "../markdown/highlight/createCodeHighlighter.ts";
+import { highlightTokens } from "../markdown/highlight/highlightTokens.ts";
+import { tokenizeMarkdown } from "../markdown/tokenize/index.ts";
+import { createBlockComponents } from "../render/content/blockComponents.tsx";
+import { renderBlocks } from "../render/content/renderBlocks.tsx";
 import type { Config, Post, PostFile } from "../types/index.ts";
-import type { CodeHighlighter } from "./codeHighlighter.ts";
-import { highlightTokens } from "./highlightTokens.ts";
-import { parseFrontmatter } from "./parseFrontmatter.ts";
-import { splitFrontmatter } from "./splitFrontmatter.ts";
-import { tokenizeMarkdown } from "./tokenize/index.ts";
-import { validateFrontmatter } from "./validateFrontmatter.ts";
+import { parseFrontmatter } from "./frontmatter/parseFrontmatter.ts";
+import { splitFrontmatter } from "./frontmatter/splitFrontmatter.ts";
+import { validateFrontmatter } from "./frontmatter/validateFrontmatter.ts";
 
 export async function loadPost(
   file: PostFile,

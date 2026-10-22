@@ -1,7 +1,7 @@
 import type { Paragraph } from "mdast";
 import type { Block } from "../../types/index.ts";
-import { parseDirectiveProps } from "../parseDirectiveProps.ts";
-import { parseDirectiveLine } from "../parseDirectives.ts";
+import { parseDirectiveLine } from "../directives/parseDirectiveLine.ts";
+import { parseDirectiveProps } from "../directives/parseDirectiveProps.ts";
 import type { TokenContext } from "./index.ts";
 import { convertInlines } from "./inline.ts";
 
