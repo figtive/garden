@@ -1,4 +1,5 @@
 import type { ComponentType, ReactNode } from "react";
+import type { CodePart, CodeTheme } from "./code.ts";
 import type { RawDirectiveProps } from "./directives.ts";
 
 export type ListItem = {
@@ -87,6 +88,8 @@ export type Block =
       title?: string;
       highlight: number[];
       code: string;
+      lines?: CodePart[][];
+      theme?: CodeTheme;
     }
   | {
       type: "block:image";

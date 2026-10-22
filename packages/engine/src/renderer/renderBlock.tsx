@@ -1,5 +1,6 @@
 // @jsxRuntime automatic
-import type { ComponentType, ReactNode } from "react";
+import type { ComponentType, CSSProperties, ReactNode } from "react";
+import { extractInlineText } from "../content/extractTextContent.ts";
 import type {
   Block,
   BlockComponents,
@@ -66,7 +67,14 @@ function renderChildren(
           {keyed(block.rows, (row) => (
             <tr>
               {keyed(row, (cell, column) => (
-                <td align={block.align[column] ?? undefined}>
+                <td
+                  align={block.align[column] ?? undefined}
+                  style={
+                    {
+                      "--cell-chars": extractInlineText(cell).length,
+                    } as CSSProperties
+                  }
+                >
                   {renderInlines(cell)}
                 </td>
               ))}

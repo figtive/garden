@@ -30,7 +30,7 @@ function extractBlockText(block: Block): string {
   }
 }
 
-function extractInlineText(inlines: Inline[]): string {
+export function extractInlineText(inlines: Inline[]): string {
   return inlines
     .map((inline) => {
       switch (inline.type) {

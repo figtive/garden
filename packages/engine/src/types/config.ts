@@ -1,3 +1,4 @@
+import type { CodeOptions } from "./code.ts";
 import type { Directive } from "./directives.ts";
 import type { HeadTag } from "./head.ts";
 import type { Page } from "./page.ts";
@@ -9,6 +10,7 @@ export type UserConfig<P extends readonly Plugin[] = readonly Plugin[]> = {
   directives?: Record<string, Directive>;
   pages: readonly Page<InferPost<NoInfer<P>>>[];
   styles?: string[];
+  code?: CodeOptions;
 } & {
   site: SiteConfig;
 };

@@ -1,5 +1,6 @@
 // @jsxRuntime automatic
-import type { BlockComponents, Directive } from "../types/index.ts";
+import type { CSSProperties } from "react";
+import type { BlockComponents, CodePart, Directive } from "../types/index.ts";
 import { keyed } from "./keyed.tsx";
 
 export function createBlockComponents(
@@ -21,35 +22,70 @@ export function createBlockComponents(
     "block:quote": ({ children }) => <blockquote>{children}</blockquote>,
 
     "block:code": ({ token }) => (
-      <figure className="code" data-language={token.language}>
+      <figure
+        className="code"
+        data-language={token.language}
+        style={
+          {
+            "--code-background": token.theme?.background,
+            "--code-foreground": token.theme?.foreground,
+            "--code-line-number": token.theme?.lineNumber,
+          } as CSSProperties
+        }
+      >
         {token.title && (
           <figcaption className="code__title">{token.title}</figcaption>
         )}
         <pre>
           <code>
-            {keyed(token.code.split("\n"), (line, index) => (
-              <span
-                className="code__line"
-                data-highlighted={
-                  token.highlight.includes(index + 1) || undefined
-                }
-              >
-                {`${line}\n`}
-              </span>
-            ))}
+            {keyed(
+              token.lines ??
+                token.code
+                  .split("\n")
+                  .map((line): CodePart[] =>
+                    line ? [{ content: line, italic: false }] : [],
+                  ),
+              (parts, index) => (
+                <span
+                  className="code__line"
+                  data-highlighted={
+                    token.highlight.includes(index + 1) || undefined
+                  }
+                >
+                  {parts.length
+                    ? keyed(parts, (part) => (
+                        <span
+                          style={{
+                            color: part.color,
+                            fontStyle: part.italic ? "italic" : undefined,
+                          }}
+                        >
+                          {part.content}
+                        </span>
+                      ))
+                    : " "}
+                </span>
+              ),
+            )}
           </code>
         </pre>
       </figure>
     ),
 
     "block:image": ({ token }) => (
-      <figure>
+      <figure className="image">
         <img src={token.src} alt={token.alt} />
-        {token.caption && <figcaption>{token.caption}</figcaption>}
+        {token.caption && (
+          <figcaption className="image__caption">{token.caption}</figcaption>
+        )}
       </figure>
     ),
 
-    "block:table": ({ children }) => <table>{children}</table>,
+    "block:table": ({ children }) => (
+      <div className="table">
+        <table>{children}</table>
+      </div>
+    ),
 
     "block:alert": ({ token, children }) => (
       <aside className="alert" data-kind={token.kind}>

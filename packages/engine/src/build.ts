@@ -1,5 +1,6 @@
 import { rm } from "node:fs/promises";
 import { loadConfig } from "./config.ts";
+import { createCodeHighlighter } from "./content/codeHighlighter.ts";
 import { findPosts } from "./content/findPosts.ts";
 import { loadPost } from "./content/loadPost.ts";
 import { collectRoutes } from "./pages/collectRoutes.ts";
@@ -18,7 +19,11 @@ export async function build() {
   const config = await loadConfig();
   const files = await findPosts(config);
 
-  const all = await Promise.all(files.map((file) => loadPost(file, config)));
+  const highlighter = await createCodeHighlighter(config.code);
+
+  const all = await Promise.all(
+    files.map((file) => loadPost(file, config, highlighter)),
+  );
 
   const filters = config.plugins.filter(isFilter);
   const transformers = config.plugins.filter(isTransformer);
