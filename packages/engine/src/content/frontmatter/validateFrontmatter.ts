@@ -1,5 +1,6 @@
 import { REQUIRED_FRONTMATTER_KEYS } from "../../config/constants.ts";
 import type { FrontmatterValue, PostMeta } from "../../types/index.ts";
+import { fail } from "../../utils/fail.ts";
 
 function isValidDate(dateString: string): boolean {
   if (!/^\d{4}-\d{2}-\d{2}$/.test(dateString)) {
@@ -25,9 +26,7 @@ export function validateFrontmatter(
   meta: Record<string, FrontmatterValue>,
   file: string,
 ): PostMeta {
-  const fail = (message: string): never => {
-    throw new Error(`${file}: ${message}`);
-  };
+  const location = { file };
 
   const {
     title,
@@ -45,24 +44,28 @@ export function validateFrontmatter(
 
   if (missing.length > 0) {
     fail(
+      location,
       `missing required ${missing.length === 1 ? "field" : "fields"}: ${missing.join(", ")}`,
     );
   }
 
   if (typeof title !== "string" || !title) {
-    fail(`missing "title"`);
+    fail(location, `missing "title"`);
   }
 
   if (typeof description !== "string" || !description) {
-    fail(`missing "description"`);
+    fail(location, `missing "description"`);
   }
 
   if (typeof date !== "string") {
-    fail(`missing "date"`);
+    fail(location, `missing "date"`);
   }
 
-  if (!isValidDate(date as string)) {
-    fail(`"date" must be a real date in YYYY-MM-DD format, got "${date}"`);
+  if (!isValidDate(date)) {
+    fail(
+      location,
+      `"date" must be a real date in YYYY-MM-DD format, got "${date}"`,
+    );
   }
 
   if (
@@ -70,20 +73,21 @@ export function validateFrontmatter(
     (typeof updated !== "string" || !isValidDate(updated))
   ) {
     fail(
+      location,
       `"updated" must be a real date in YYYY-MM-DD format, got "${updated}"`,
     );
   }
 
   if (image !== undefined && typeof image !== "string") {
-    fail(`"image" must be a path`);
+    fail(location, `"image" must be a path`);
   }
 
   if (!Array.isArray(tags)) {
-    fail(`"tags" must be a list, e.g. [a, b]`);
+    fail(location, `"tags" must be a list, e.g. [a, b]`);
   }
 
   if (typeof draft !== "boolean") {
-    fail(`"draft" must be true or false`);
+    fail(location, `"draft" must be true or false`);
   }
 
   return { title, date, description, tags, draft, updated, image } as PostMeta;
