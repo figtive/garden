@@ -4,11 +4,13 @@ import type {
   BlockComponents,
   CodePart,
   Directive,
+  Embed,
 } from "../../types/index.ts";
 import { keyed } from "./keyed.tsx";
 
 export function createBlockComponents(
   directives: Record<string, Directive>,
+  embeds: Record<string, Embed>,
 ): BlockComponents {
   return {
     "block:heading": ({ token, children }) => {
@@ -76,14 +78,18 @@ export function createBlockComponents(
       </figure>
     ),
 
-    "block:image": ({ token }) => (
-      <figure className="image">
-        <img src={token.src} alt={token.alt} />
-        {token.caption && (
-          <figcaption className="image__caption">{token.caption}</figcaption>
-        )}
-      </figure>
-    ),
+    "block:embed": ({ token }) => {
+      const EmbedComponent = embeds[token.source.kind]?.component;
+
+      return (
+        <figure className="figure" data-kind={token.source.kind}>
+          {EmbedComponent && <EmbedComponent {...token.source} />}
+          {token.caption && (
+            <figcaption className="figure__caption">{token.caption}</figcaption>
+          )}
+        </figure>
+      );
+    },
 
     "block:table": ({ children }) => (
       <div className="table">

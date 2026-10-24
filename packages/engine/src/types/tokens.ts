@@ -1,6 +1,7 @@
 import type { ComponentType, ReactNode } from "react";
 import type { CodePart, CodeTheme } from "./code.ts";
 import type { RawDirectiveProps } from "./directives.ts";
+import type { EmbedSource } from "./embeds.ts";
 
 export type ListItem = {
   checked?: boolean;
@@ -51,10 +52,10 @@ export type Inline =
       children: Inline[];
     }
   | {
-      type: "inline:image";
-      src: string;
-      alt: string;
+      type: "inline:embed";
+      source: EmbedSource;
       title?: string;
+      line: number;
     }
   | {
       type: "inline:break";
@@ -92,10 +93,10 @@ export type Block =
       theme?: CodeTheme;
     }
   | {
-      type: "block:image";
-      src: string;
-      alt: string;
+      type: "block:embed";
+      source: EmbedSource;
       caption?: string;
+      line: number;
     }
   | {
       type: "block:table";

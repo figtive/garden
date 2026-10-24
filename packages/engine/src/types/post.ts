@@ -19,6 +19,11 @@ export type PostMeta = {
   image?: string;
 };
 
+export type PostAsset = {
+  from: string;
+  to: string;
+};
+
 export type Post<Out = Record<never, never>> = {
   route: {
     collection: string;
@@ -29,6 +34,7 @@ export type Post<Out = Record<never, never>> = {
   content: {
     tokens: Block[];
     Content: ComponentType<ContentProps>;
+    assets: PostAsset[];
   };
   pluginOutput: Out;
 };

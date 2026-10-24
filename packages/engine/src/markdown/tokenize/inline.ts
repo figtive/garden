@@ -1,16 +1,15 @@
 import type { PhrasingContent } from "mdast";
+import {
+  createEmbedSource,
+  splitEmbedLinks,
+} from "../../embeds/parseEmbedLinks.ts";
 import type { Inline } from "../../types/index.ts";
 
 export function convertInlines(nodes: PhrasingContent[]): Inline[] {
   return nodes.flatMap((node): Inline[] => {
     switch (node.type) {
       case "text":
-        return [
-          {
-            type: "inline:text",
-            value: node.value,
-          },
-        ];
+        return splitEmbedLinks(node.value, node.position?.start.line ?? 0);
       case "strong":
         return [
           {
@@ -51,10 +50,10 @@ export function convertInlines(nodes: PhrasingContent[]): Inline[] {
       case "image":
         return [
           {
-            type: "inline:image",
-            src: node.url,
-            alt: node.alt ?? "",
+            type: "inline:embed",
+            source: createEmbedSource(node.url, (node.alt ?? "").split("|")),
             title: node.title ?? undefined,
+            line: node.position?.start.line ?? 0,
           },
         ];
       case "break":

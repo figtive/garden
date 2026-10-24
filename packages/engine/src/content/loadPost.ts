@@ -1,4 +1,5 @@
 import { readFile } from "node:fs/promises";
+import { resolveEmbeds } from "../embeds/resolveEmbeds.ts";
 import type { CodeHighlighter } from "../markdown/highlight/createCodeHighlighter.ts";
 import { highlightTokens } from "../markdown/highlight/highlightTokens.ts";
 import { tokenizeMarkdown } from "../markdown/tokenize/index.ts";
@@ -15,30 +16,50 @@ export async function loadPost(
   highlighter: CodeHighlighter,
 ) {
   const source = await readFile(file.file, "utf-8");
-  const { frontmatter, body } = splitFrontmatter(source);
+  const { frontmatter, body, bodyLineOffset } = splitFrontmatter(
+    source,
+    file.file,
+  );
   const metaObj = parseFrontmatter(frontmatter);
 
   const registeredDirectives = new Set(Object.keys(config.directives));
 
   const meta = validateFrontmatter(metaObj, file.file);
 
-  const tokens = await highlightTokens(
-    tokenizeMarkdown(body, registeredDirectives),
-    highlighter,
+  const url = `/${file.collection}/${file.slug}/`;
+
+  const tokens = tokenizeMarkdown(body, registeredDirectives);
+
+  const assets = resolveEmbeds(tokens, {
+    postFile: file.file,
+    postUrl: url,
+    lineOffset: bodyLineOffset,
+    attachments: config.attachments,
+    embeds: config.embeds,
+  });
+
+  const highlightedTokens = await highlightTokens(tokens, highlighter);
+
+  const defaultComponents = createBlockComponents(
+    config.directives,
+    config.embeds,
   );
-  const defaultComponents = createBlockComponents(config.directives);
 
   const post: Post = {
     meta,
     route: {
       collection: file.collection,
       slug: file.slug,
-      url: `/${file.collection}/${file.slug}/`,
+      url,
     },
     content: {
-      tokens,
+      tokens: highlightedTokens,
+      assets,
       Content: ({ components }) =>
-        renderBlocks(tokens, { ...defaultComponents, ...components }),
+        renderBlocks(highlightedTokens, {
+          components: { ...defaultComponents, ...components },
+          embeds: config.embeds,
+        }),
     },
     pluginOutput: {},
   };

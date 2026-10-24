@@ -1,7 +1,7 @@
 import type { Paragraph } from "mdast";
-import type { Block } from "../../types/index.ts";
-import { parseDirectiveLine } from "../directives/parseDirectiveLine.ts";
-import { parseDirectiveProps } from "../directives/parseDirectiveProps.ts";
+import { parseDirectiveLine } from "../../directives/parseDirectiveLine.ts";
+import { parseDirectiveProps } from "../../directives/parseDirectiveProps.ts";
+import type { Block, Inline } from "../../types/index.ts";
 import type { TokenContext } from "./index.ts";
 import { convertInlines } from "./inline.ts";
 
@@ -14,10 +14,12 @@ export function convertParagraph(
     return directives;
   }
 
+  const children = convertInlines(node.children);
+
   return [
-    readFigure(node) ?? {
+    readEmbed(children) ?? {
       type: "block:paragraph",
-      children: convertInlines(node.children),
+      children,
     },
   ];
 }
@@ -55,17 +57,17 @@ function readDirectives(
   return directives;
 }
 
-function readFigure(node: Paragraph): Block | null {
-  const [image] = node.children;
+function readEmbed(children: Inline[]): Block | null {
+  const [embed] = children;
 
-  if (node.children.length !== 1 || image?.type !== "image") {
+  if (children.length !== 1 || embed?.type !== "inline:embed") {
     return null;
   }
 
   return {
-    type: "block:image",
-    src: image.url,
-    alt: image.alt ?? "",
-    caption: image.title ?? undefined,
+    type: "block:embed",
+    source: embed.source,
+    caption: embed.title,
+    line: embed.line,
   };
 }

@@ -1,19 +1,29 @@
 import { existsSync } from "node:fs";
 import { join } from "node:path";
 import { tsImport } from "tsx/esm/api";
+import { defaultEmbeds } from "../embeds/defaultEmbeds.ts";
 import {
   type DefaultPlugins,
   defaultPlugins,
 } from "../plugins/defaultPlugins.ts";
 import type { Config, Plugin, UserConfig } from "../types/index.ts";
-import { DEFAULT_CONTENT_PATH, GARDEN_CONFIG_FILE } from "./constants.ts";
+import {
+  DEFAULT_ATTACHMENTS_PATH,
+  DEFAULT_CONTENT_PATH,
+  GARDEN_CONFIG_FILE,
+} from "./constants.ts";
 
 const defineGardenConfig = <const P extends readonly Plugin[] = DefaultPlugins>(
   config: UserConfig<P>,
 ): Config<P> => ({
   ...config,
   content: config.content ?? DEFAULT_CONTENT_PATH,
+  attachments: config.attachments ?? DEFAULT_ATTACHMENTS_PATH,
   plugins: (config.plugins ?? defaultPlugins) as unknown as P,
+  embeds: {
+    ...defaultEmbeds,
+    ...config.embeds,
+  },
   directives: config.directives ?? {},
 });
 

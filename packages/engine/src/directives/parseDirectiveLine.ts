@@ -26,7 +26,7 @@ export function parseDirectiveLine(line: string): FoundDirective | null {
     return null;
   }
 
-  const name = str.slice(1, open);
+  const name = str.slice(1, open).toLowerCase();
 
   if (name === "" || ![...name].every(isValidChar)) {
     return null;

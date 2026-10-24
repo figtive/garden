@@ -1,6 +1,7 @@
 export type * from "./code.ts";
 export type * from "./config.ts";
 export type * from "./directives.ts";
+export type * from "./embeds.ts";
 export type * from "./head.ts";
 export type * from "./page.ts";
 export type * from "./plugin.ts";

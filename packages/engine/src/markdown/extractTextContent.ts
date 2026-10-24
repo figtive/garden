@@ -23,7 +23,7 @@ function extractBlockText(block: Block): string {
         .join(" ");
     case "block:code":
       return block.code;
-    case "block:image":
+    case "block:embed":
       return block.caption ?? "";
     default:
       return "";
