@@ -19,7 +19,7 @@ With alt text and a fixed size:
 
 Standard markdown with a caption:
 
-![purple petunias after rain|480](petunias.jpg "fig. 1: petunias in the morning")
+![purple petunias after rain|480](petunias.jpg "fig. 1 | petunias in the morning")
 
 A shared image from `content/attachments/`, used by any post:
 

@@ -1,6 +1,5 @@
 @layer garden.base {
   .figure {
-    position: relative;
     margin: 0;
   }
 
@@ -9,20 +8,18 @@
   }
 
   .figure__caption {
-    margin-top: 8px;
-    font-family: var(--font-display);
-    font-size: var(--text-meta);
-    line-height: 1.6;
-    color: var(--color-text-faint);
+    margin-top: 10px;
+    font-family: var(--font-body);
+    font-size: calc(15 * var(--default-px));
+    line-height: 1.55;
+    color: var(--color-text-muted);
   }
 
-  @media (width >= 56.25rem) {
-    .figure__caption {
-      position: absolute;
-      top: 0;
-      left: calc(-1 * (var(--margin-width) + var(--gutter)));
-      width: var(--margin-width);
-      margin: 0;
-    }
+  .figure__label {
+    margin-right: 0.5em;
+    font-family: var(--font-display);
+    font-size: var(--text-meta);
+    font-weight: 500;
+    color: var(--color-primary);
   }
 }
