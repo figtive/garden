@@ -54,6 +54,15 @@
     color: var(--color-text-muted);
   }
 
+  .text-title + .text-lede {
+    margin-top: 18px;
+  }
+
+  .text-title + .text-lede::before {
+    content: "— ";
+    color: var(--color-primary);
+  }
+
   .text-description {
     max-width: 58ch;
     margin: 0;

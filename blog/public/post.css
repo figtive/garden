@@ -22,4 +22,18 @@
       var(--default-px)
     );
   }
+
+  .post > .row:first-child {
+    padding-bottom: clamp(
+      24 *
+      var(--default-px),
+      24 *
+      var(--default-px) +
+      16 *
+      var(--fluid),
+      40 *
+      var(--default-px)
+    );
+    border-bottom: 1px solid var(--color-divider);
+  }
 }
