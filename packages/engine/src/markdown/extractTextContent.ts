@@ -24,7 +24,7 @@ function extractBlockText(block: Block): string {
     case "block:code":
       return block.code;
     case "block:embed":
-      return block.caption ?? "";
+      return [block.label, block.caption].filter(Boolean).join(" ");
     default:
       return "";
   }

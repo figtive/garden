@@ -84,8 +84,13 @@ export function createBlockComponents(
       return (
         <figure className="figure" data-kind={token.source.kind}>
           {EmbedComponent && <EmbedComponent {...token.source} />}
-          {token.caption && (
-            <figcaption className="figure__caption">{token.caption}</figcaption>
+          {(token.label || token.caption) && (
+            <figcaption className="figure__caption">
+              {token.label && (
+                <span className="figure__label">{token.label}</span>
+              )}
+              {token.caption}
+            </figcaption>
           )}
         </figure>
       );

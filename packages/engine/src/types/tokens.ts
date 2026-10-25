@@ -95,6 +95,7 @@ export type Block =
   | {
       type: "block:embed";
       source: EmbedSource;
+      label?: string;
       caption?: string;
       line: number;
     }

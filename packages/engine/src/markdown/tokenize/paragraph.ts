@@ -1,6 +1,7 @@
 import type { Paragraph } from "mdast";
 import { parseDirectiveLine } from "../../directives/parseDirectiveLine.ts";
 import { parseDirectiveProps } from "../../directives/parseDirectiveProps.ts";
+import { parseEmbedCaption } from "../../embeds/parseEmbedCaption.ts";
 import type { Block, Inline } from "../../types/index.ts";
 import type { TokenContext } from "./index.ts";
 import { convertInlines } from "./inline.ts";
@@ -64,10 +65,13 @@ function readEmbed(children: Inline[]): Block | null {
     return null;
   }
 
+  const { label, caption } = parseEmbedCaption(embed.title);
+
   return {
     type: "block:embed",
     source: embed.source,
-    caption: embed.title,
+    label,
+    caption,
     line: embed.line,
   };
 }
