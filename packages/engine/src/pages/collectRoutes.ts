@@ -14,7 +14,7 @@ function checkUrls(routes: ResolvedRoute[]) {
       throw new Error(`Page path must be unique: "${url}"`);
     }
 
-    if (isValidUrl(url)) {
+    if (!isValidUrl(url)) {
       throw new Error(
         `URL is currently supported using only letters, numbers, and hyphens("-"): got "${url}"`,
       );
