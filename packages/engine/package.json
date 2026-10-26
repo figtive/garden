@@ -12,6 +12,7 @@
     "typecheck": "tsc"
   },
   "dependencies": {
+    "esbuild": "^0.28.2",
     "globby": "^16.2.4",
     "remark-gfm": "^4.0.1",
     "remark-parse": "^11.0.0",

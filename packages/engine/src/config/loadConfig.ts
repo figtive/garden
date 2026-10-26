@@ -1,6 +1,7 @@
 import { existsSync } from "node:fs";
+import { registerHooks } from "node:module";
 import { join } from "node:path";
-import { tsImport } from "tsx/esm/api";
+import { pathToFileURL } from "node:url";
 import { defaultEmbeds } from "../embeds/defaultEmbeds.ts";
 import {
   type DefaultPlugins,
@@ -12,6 +13,19 @@ import {
   DEFAULT_CONTENT_PATH,
   GARDEN_CONFIG_FILE,
 } from "./constants.ts";
+
+registerHooks({
+  load(url, context, nextLoad) {
+    if (!url.endsWith(".client.ts") || url.includes("/node_modules/")) {
+      return nextLoad(url, context);
+    }
+    return {
+      format: "module",
+      source: `export default ${JSON.stringify(url)};`,
+      shortCircuit: true,
+    };
+  },
+});
 
 const defineGardenConfig = <const P extends readonly Plugin[] = DefaultPlugins>(
   config: UserConfig<P>,
@@ -34,7 +48,7 @@ const loadConfig = async (root = process.cwd()): Promise<Config> => {
     throw new Error(`No ${GARDEN_CONFIG_FILE} found in ${root}`);
   }
 
-  const mod = await tsImport(file, import.meta.url);
+  const mod = await import(pathToFileURL(file).href);
   if (!mod.default) {
     throw new Error(
       `${GARDEN_CONFIG_FILE} must export default defineGardenConfig({ ... })`,

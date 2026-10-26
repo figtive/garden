@@ -209,6 +209,9 @@ importers:
 
   packages/engine:
     dependencies:
+      esbuild:
+        specifier: ^0.28.2
+        version: 0.28.2
       globby:
         specifier: ^16.2.4
         version: 16.2.4
