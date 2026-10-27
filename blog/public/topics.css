@@ -1,0 +1,226 @@
+@layer garden.base {
+  .topics {
+    padding-top: clamp(
+      32 *
+      var(--default-px),
+      32 *
+      var(--default-px) +
+      40 *
+      var(--fluid),
+      72 *
+      var(--default-px)
+    );
+  }
+
+  .topics .row__side {
+    display: none;
+  }
+
+  .topics__jump {
+    position: sticky;
+    top: 32px;
+  }
+
+  .topics__jump-letters {
+    margin-top: 12px;
+    display: grid;
+    grid-template-columns: repeat(6, 20px);
+    gap: 8px 4px;
+
+    & a,
+    & span {
+      text-align: center;
+    }
+
+    & a {
+      text-decoration: none;
+      color: var(--color-text-muted);
+
+      &:hover {
+        color: var(--color-link);
+      }
+    }
+
+    & span {
+      opacity: 0.35;
+    }
+  }
+
+  .topics__sub {
+    margin: 12px 0 0;
+  }
+
+  .topic-tabs {
+    margin-top: 24px;
+    display: flex;
+    gap: 16px;
+    font-family: var(--font-display);
+    font-size: var(--text-meta);
+    color: var(--color-text-faint);
+
+    &[hidden] {
+      display: none;
+    }
+  }
+
+  .topic-tabs__tab {
+    all: unset;
+    padding-bottom: 4px;
+    border-bottom: 1px solid transparent;
+    cursor: pointer;
+
+    &:hover,
+    &[aria-selected="true"] {
+      color: var(--color-text);
+    }
+
+    &[aria-selected="true"] {
+      border-bottom-color: var(--color-link);
+    }
+
+    &:focus-visible {
+      outline: 2px solid var(--color-link);
+      outline-offset: 4px;
+    }
+  }
+
+  .letter-rows {
+    margin-top: 32px;
+  }
+
+  .letter-row {
+    padding: 8px 0;
+    display: grid;
+    grid-template-columns: max-content minmax(0, 1fr);
+    gap: 16px;
+    border-top: 1px solid var(--color-divider);
+    scroll-margin-top: 24px;
+
+    &:first-child {
+      padding-top: 0;
+      border-top: 0;
+    }
+  }
+
+  .letter-row__letter {
+    min-width: 36px;
+    font-family: var(--font-display);
+    font-size: 0.875rem;
+    font-weight: 600;
+    line-height: 2;
+    color: var(--color-primary);
+  }
+
+  .tag-list {
+    margin: 0;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 4px 16px;
+    font-family: var(--font-display);
+    font-size: 0.875rem;
+    line-height: 2;
+  }
+
+  .tag-list__tag {
+    max-width: 100%;
+    display: inline-block;
+
+    & a {
+      overflow-wrap: anywhere;
+      text-decoration: none;
+      color: var(--color-text-muted);
+
+      &:hover {
+        color: var(--color-link);
+      }
+    }
+
+    & i {
+      margin-left: 4px;
+      font-size: 0.6875rem;
+      font-style: normal;
+      white-space: nowrap;
+      color: var(--color-text-faint);
+    }
+  }
+
+  .topics__heading {
+    margin: 48px 0 8px;
+    padding-bottom: 8px;
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    border-bottom: 1px solid var(--color-border);
+    color: var(--color-text-muted);
+
+    & span {
+      color: var(--color-text-faint);
+    }
+  }
+
+  .main-topics {
+    columns: 2;
+    column-gap: 24px;
+  }
+
+  .main-topics__tag {
+    padding: 8px 0;
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 16px;
+    border-bottom: 1px solid var(--color-divider);
+    break-inside: avoid;
+    font-family: var(--font-display);
+    font-size: 0.875rem;
+    line-height: 1.5;
+
+    & a {
+      min-width: 0;
+      overflow-wrap: anywhere;
+      text-decoration: none;
+      color: var(--color-text);
+
+      &:hover {
+        color: var(--color-link);
+      }
+    }
+
+    & span {
+      flex: none;
+      font-variant-numeric: tabular-nums;
+      color: var(--color-text-faint);
+    }
+  }
+
+  .show-all {
+    margin-top: 16px;
+
+    & summary {
+      list-style: none;
+      cursor: pointer;
+      font-family: var(--font-display);
+      font-size: var(--text-meta);
+      color: var(--color-link);
+
+      &::-webkit-details-marker {
+        display: none;
+      }
+    }
+
+    &[open] summary {
+      display: none;
+    }
+  }
+
+  @media (width >= 56.25rem) {
+    .topics .row__side {
+      display: block;
+    }
+
+    .main-topics {
+      columns: 3 180px;
+      column-gap: 32px;
+    }
+  }
+}

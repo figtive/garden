@@ -61,4 +61,10 @@
     outline: 2px solid var(--color-link);
     outline-offset: 3px;
   }
+
+  @media (prefers-reduced-motion: no-preference) {
+    html {
+      scroll-behavior: smooth;
+    }
+  }
 }

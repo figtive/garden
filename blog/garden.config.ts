@@ -8,6 +8,7 @@ import GiganticText from "./component/directives/GiganticText.tsx";
 import YoutubePlayer from "./component/directives/YoutubePlayer.tsx";
 import Home from "./pages/Home.tsx";
 import Post from "./pages/Post.tsx";
+import Topics from "./pages/Topics/Topics.tsx";
 import { plugins } from "./plugin.ts";
 
 export default defineGardenConfig({
@@ -41,6 +42,7 @@ export default defineGardenConfig({
   plugins,
   pages: [
     generateStaticPage("/", Home, { styles: ["/home.css"] }),
+    generateStaticPage("/topics/", Topics, { styles: ["/topics.css"] }),
     generatePostPages(Post, {
       meta: { image: "/figtive-icon.png" },
       styles: ["/post.css"],

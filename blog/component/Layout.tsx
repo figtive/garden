@@ -16,7 +16,7 @@ function Layout({ children, crumbs = [], footer }: LayoutProps) {
       <body>
         <div className="page">
           <header className="site-header text-meta">
-            <nav aria-label="Breadcrumb">
+            <nav aria-label="Navigation">
               <ol className="crumbs">
                 <li className="crumbs__item">
                   <a className="crumbs__link crumbs__root" href="/">
@@ -37,6 +37,14 @@ function Layout({ children, crumbs = [], footer }: LayoutProps) {
                   </li>
                 ))}
               </ol>
+
+              <div className="nav-menu">
+                <ul>
+                  <li>
+                    <a href="/topics">topics</a>
+                  </li>
+                </ul>
+              </div>
             </nav>
           </header>
 

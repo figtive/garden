@@ -38,6 +38,22 @@
     gap: 12px 24px;
   }
 
+  nav {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+  }
+
+  .nav-menu ul {
+    display: flex;
+    gap: 1.5rem;
+    list-style-type: none;
+  }
+
+  .nav-menu li {
+    word-spacing: 0.5rem;
+  }
+
   .crumbs {
     min-width: 0;
     padding: 0;
