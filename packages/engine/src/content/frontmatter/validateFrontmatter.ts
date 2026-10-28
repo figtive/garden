@@ -22,6 +22,47 @@ function isValidDate(dateString: string): boolean {
   );
 }
 
+function isAllowedChar(ch: string): boolean {
+  return (
+    (ch >= "a" && ch <= "z") ||
+    (ch >= "A" && ch <= "Z") ||
+    (ch >= "0" && ch <= "9") ||
+    ch === "-" ||
+    ch === "_" ||
+    ch === "/"
+  );
+}
+
+function isValidTag(tag: string): string | null {
+  const t = tag.startsWith("#") ? tag.slice(1) : tag;
+
+  if (t.length === 0) {
+    return "Tag is empty. Type a name after the #.";
+  }
+
+  let hasNonDigit = false;
+
+  for (const char of t) {
+    if (char.trim() === "") {
+      return `Tags can't contain spaces. Try "${t.split(/\s+/).join("-")}" instead.`;
+    }
+
+    if (!isAllowedChar(char)) {
+      return `Tags can't contain "${char}". Use only letters a–z, numbers, -, _ or /.`;
+    }
+
+    if (char < "0" || char > "9") {
+      hasNonDigit = true;
+    }
+  }
+
+  if (!hasNonDigit) {
+    return `Tags can't be only numbers. Add a letter, e.g. "y${t}".`;
+  }
+
+  return null;
+}
+
 export function validateFrontmatter(
   meta: Record<string, FrontmatterValue>,
   file: string,
@@ -84,6 +125,15 @@ export function validateFrontmatter(
 
   if (!Array.isArray(tags)) {
     fail(location, `"tags" must be a list, e.g. [a, b]`);
+  }
+
+  if (tags) {
+    for (const tag of tags) {
+      const errorMessage = isValidTag(tag);
+      if (errorMessage) {
+        fail(location, errorMessage);
+      }
+    }
   }
 
   if (typeof draft !== "boolean") {
