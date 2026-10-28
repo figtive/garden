@@ -6,6 +6,7 @@ import {
 } from "@figtive/garden-engine";
 import Layout from "../../component/Layout.tsx";
 import Row from "../../component/Row.tsx";
+import Tag from "../../component/Tag.tsx";
 import type { BlogPost } from "../../plugin.ts";
 import topicsScript from "./Topics.client.ts";
 
@@ -13,7 +14,7 @@ const alphabet = [..."abcdefghijklmnopqrstuvwxyz".split(""), "misc."];
 
 const tagLink = (tag: Group<BlogPost>) => (
   <span key={tag.key} className="tag-list__tag">
-    <a href={`/topics/${tag.key}/`}>#{tag.key}</a>
+    <Tag tag={tag.key} />
     <i>({tag.posts.length})</i>
   </span>
 );
@@ -50,7 +51,11 @@ function Topics({ posts }: PageProps<BlogPost>) {
               <nav className="topics__jump-letters" aria-label="Jump to letter">
                 {alphabet.map((letter) =>
                   usedLetters.has(letter) ? (
-                    <a key={letter} href={`#letter-${letter}`}>
+                    <a
+                      key={letter}
+                      href={`#letter-${letter}`}
+                      data-letter={letter}
+                    >
                       {letter}
                     </a>
                   ) : (
@@ -128,7 +133,7 @@ function Topics({ posts }: PageProps<BlogPost>) {
               <div className="main-topics">
                 {mainTopics.map((tag) => (
                   <div key={tag.key} className="main-topics__tag">
-                    <a href={`/topics/${tag.key}/`}>#{tag.key}</a>
+                    <Tag tag={tag.key} />
                     <span>{tag.posts.length}</span>
                   </div>
                 ))}

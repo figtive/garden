@@ -13,12 +13,19 @@ const months = [
   "dec",
 ];
 
-export function formatDate(date: string, { short = false } = {}) {
+export function formatDate(
+  date: string,
+  { short = false, year: withYear = true } = {},
+) {
   const [year, month, day] = date.split("-");
-  const label = `${day} ${months[Number(month) - 1]}`;
+  const monthName = months[Number(month) - 1];
+  const label = `${day} ${monthName}`;
 
-  if (short && Number(year) === new Date().getFullYear()) {
+  if (!withYear || (short && Number(year) === new Date().getFullYear())) {
     return label;
+  }
+  if (short) {
+    return `${label} ’${year?.slice(2)}`;
   }
   return `${label} ${year}`;
 }

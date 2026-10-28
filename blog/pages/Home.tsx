@@ -40,28 +40,12 @@ function Home({ posts }: PageProps<BlogPost>) {
         </Row>
 
         <Row side="recently tended">
-          <PostList posts={recent} />
+          <PostList posts={recent} descriptions />
         </Row>
 
-        {picks.length > 0 && (
-          <Row side="start here">
-            <ul className="start-list">
-              {picks.map((post) => (
-                <li key={post.route.url}>
-                  <a
-                    className="start-list__title text-subheading"
-                    href={post.route.url}
-                  >
-                    {post.meta.title}
-                  </a>
-                  <p className="start-list__description text-description">
-                    {post.meta.description}
-                  </p>
-                </li>
-              ))}
-            </ul>
-          </Row>
-        )}
+        <Row side="start here">
+          <PostList posts={picks} compact descriptions />
+        </Row>
 
         <Row side="stages">
           <ul className="stage-list">

@@ -58,7 +58,7 @@ function pixelPath(rows: string[], pixel: string) {
     .join("");
 }
 
-function Stage({ stage }: { stage: StageName }) {
+function Stage({ stage, label = stage }: { stage: StageName; label?: string }) {
   const rows = sprites[stage];
 
   return (
@@ -67,7 +67,7 @@ function Stage({ stage }: { stage: StageName }) {
         <path className="stage__petals" d={pixelPath(rows, "p")} />
         <path className="stage__center" d={pixelPath(rows, "c")} />
       </svg>
-      {stage}
+      {label}
     </span>
   );
 }

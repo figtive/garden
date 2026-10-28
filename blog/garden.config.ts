@@ -3,11 +3,13 @@ import {
   defineGardenConfig,
   generatePostPages,
   generateStaticPage,
+  generateTagPages,
 } from "@figtive/garden-engine";
 import GiganticText from "./component/directives/GiganticText.tsx";
 import YoutubePlayer from "./component/directives/YoutubePlayer.tsx";
 import Home from "./pages/Home.tsx";
 import Post from "./pages/Post.tsx";
+import Topic from "./pages/Topic/Topic.tsx";
 import Topics from "./pages/Topics/Topics.tsx";
 import { plugins } from "./plugin.ts";
 
@@ -47,6 +49,7 @@ export default defineGardenConfig({
       meta: { image: "/figtive-icon.png" },
       styles: ["/post.css"],
     }),
+    generateTagPages(Topic, { styles: ["/topic.css"] }),
   ],
   directives: {
     youtube: defineDirective({

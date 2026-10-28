@@ -1,0 +1,37 @@
+@layer garden.base {
+  .topic {
+    padding-top: clamp(
+      32 *
+      var(--default-px),
+      32 *
+      var(--default-px) +
+      40 *
+      var(--fluid),
+      72 *
+      var(--default-px)
+    );
+    display: grid;
+    gap: 40px;
+  }
+
+  .topic__stages {
+    margin: 16px 0 0;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 8px 16px;
+  }
+
+  .topic__year-head {
+    margin-bottom: 8px;
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+
+    & h2 {
+      margin: 0;
+      font: inherit;
+      color: inherit;
+    }
+  }
+}
