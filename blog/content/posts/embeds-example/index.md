@@ -1,6 +1,6 @@
 ---
 title: Embedding images
-date: 2026-10-24
+date: 2024-10-24
 description: How images work in garden, written the same way as in Obsidian.
 tags: [garden, embeds]
 ---

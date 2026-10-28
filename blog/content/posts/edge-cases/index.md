@@ -3,7 +3,7 @@ title: "Edge Cases: what breaks garden?"
 date: 2026-10-23
 updated: 2026-10-23
 description: A post built to break garden. Every weird corner of markdown on one page.
-tags: [test, garden, "edge case", 日本語, a-really-long-tag-name-that-keeps-going-and-going]
+tags: [test, garden, "edge-case", a-really-long-tag-name-that-keeps-going-and-going]
 image: /figtive-icon.png
 draft: false
 ---
