@@ -7,4 +7,4 @@ tags: [meta, garden]
 
 # Hello World from Second this is a sad post
 
-Second post on **garden**.
+Second post on **garden**. It follows [hello world](/posts/hello-world/), the first one.
