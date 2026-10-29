@@ -6,8 +6,6 @@ description: test, test, test. Every component on one page.
 tags: [test, garden]
 ---
 
-# Test page
-
 Hello world this is a test page. Everything **garden** can render should be on here.
 
 Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris.
