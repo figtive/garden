@@ -1,3 +1,5 @@
+/** biome-ignore-all lint/complexity/noImportantStyles: !important is only used for reduce of motion, users can adjust this if needed */
+
 @layer garden.base {
   *,
   *::before,
@@ -65,6 +67,17 @@
   @media (prefers-reduced-motion: no-preference) {
     html {
       scroll-behavior: smooth;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+      transition: none !important;
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      scroll-behavior: auto !important;
     }
   }
 }
