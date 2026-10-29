@@ -3,6 +3,7 @@ import Layout from "../component/Layout.tsx";
 import Meta from "../component/Meta.tsx";
 import Row from "../component/Row.tsx";
 import Stage from "../component/Stage.tsx";
+import TableOfContent from "../component/TableOfContent/TableOfContent.tsx";
 import Tag from "../component/Tag.tsx";
 import type { BlogPost } from "../plugin.ts";
 import { formatDate } from "../utils/date.ts";
@@ -10,6 +11,7 @@ import { formatDate } from "../utils/date.ts";
 function Post({ post, posts }: PostPageProps<BlogPost>) {
   const crumbs = [{ label: post.route.collection }, { label: post.meta.title }];
   const { tags = [] } = post.meta;
+  const { toc } = post.pluginOutput;
 
   const backlinks = posts.filter(
     (other) =>
@@ -24,6 +26,8 @@ function Post({ post, posts }: PostPageProps<BlogPost>) {
           <h1 className="text-title">{post.meta.title}</h1>
           <p className="text-lede">{post.meta.description}</p>
         </Row>
+
+        {toc.length >= 3 ? <TableOfContent toc={toc} /> : null}
 
         <Row>
           <article className="prose">
