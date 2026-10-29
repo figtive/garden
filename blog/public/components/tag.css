@@ -9,4 +9,13 @@
       color: var(--color-link);
     }
   }
+
+  .tag-group > * {
+    transition: opacity 200ms ease-out;
+  }
+
+  .tag-group:is(:hover, :has(.tag:focus-visible))
+    > :not(:hover, :focus-within) {
+    opacity: 0.5;
+  }
 }

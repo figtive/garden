@@ -45,7 +45,7 @@ function PostList({
               </span>
             )}
             {!compact && tags.length > 0 && (
-              <span className="post-list__tags">
+              <span className="post-list__tags tag-group">
                 {tags.slice(0, TAG_LIMIT).map((tag) => (
                   <Tag key={tag} tag={tag} />
                 ))}

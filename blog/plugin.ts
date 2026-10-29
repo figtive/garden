@@ -4,6 +4,7 @@ import {
   type InferPost,
 } from "@figtive/garden-engine";
 import type { StageName } from "./component/Stage.tsx";
+import { linksInBlocks, pagePath } from "./utils/links.ts";
 
 export const mood = () =>
   definePlugin({
@@ -23,5 +24,20 @@ export const gardenStage = () =>
     }),
   });
 
-export const plugins = [...defaultPlugins, mood(), gardenStage()];
+export const pageLinks = () =>
+  definePlugin({
+    name: "pageLinks",
+    pluginType: "transformer",
+    transform: (post) => ({
+      links: [
+        ...new Set(
+          linksInBlocks(post.content.tokens)
+            .filter((href) => href.startsWith("/"))
+            .map(pagePath),
+        ),
+      ],
+    }),
+  });
+
+export const plugins = [...defaultPlugins, mood(), gardenStage(), pageLinks()];
 export type BlogPost = InferPost<typeof plugins>;

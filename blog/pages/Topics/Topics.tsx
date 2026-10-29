@@ -15,7 +15,6 @@ const alphabet = [..."abcdefghijklmnopqrstuvwxyz".split(""), "misc."];
 const tagLink = (tag: Group<BlogPost>) => (
   <span key={tag.key} className="tag-list__tag">
     <Tag tag={tag.key} />
-    <i>({tag.posts.length})</i>
   </span>
 );
 
@@ -117,7 +116,7 @@ function Topics({ posts }: PageProps<BlogPost>) {
                   className="letter-row"
                 >
                   <div className="letter-row__letter">{letter}</div>
-                  <p className="tag-list">{tags.map(tagLink)}</p>
+                  <p className="tag-list tag-group">{tags.map(tagLink)}</p>
                 </div>
               ))
             )}
@@ -130,7 +129,7 @@ function Topics({ posts }: PageProps<BlogPost>) {
               <h2 className="topics__heading text-meta">
                 main topics <span>{mainTopics.length}</span>
               </h2>
-              <div className="main-topics">
+              <div className="main-topics tag-group">
                 {mainTopics.map((tag) => (
                   <div key={tag.key} className="main-topics__tag">
                     <Tag tag={tag.key} />
@@ -145,11 +144,13 @@ function Topics({ posts }: PageProps<BlogPost>) {
               <h2 className="topics__heading text-meta">
                 everything else <span>{otherTopics.length}</span>
               </h2>
-              <p className="tag-list">{shownOther.map(tagLink)}</p>
+              <p className="tag-list tag-group">{shownOther.map(tagLink)}</p>
               {hiddenOther.length > 0 && (
                 <details className="show-all">
                   <summary>show all {otherTopics.length} →</summary>
-                  <p className="tag-list">{hiddenOther.map(tagLink)}</p>
+                  <p className="tag-list tag-group">
+                    {hiddenOther.map(tagLink)}
+                  </p>
                 </details>
               )}
             </Row>

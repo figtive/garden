@@ -58,16 +58,30 @@ function pixelPath(rows: string[], pixel: string) {
     .join("");
 }
 
-function Stage({ stage, label = stage }: { stage: StageName; label?: string }) {
+function Stage({
+  stage,
+  label = stage,
+  iconOnly = false,
+}: {
+  stage: StageName;
+  label?: string;
+  iconOnly?: boolean;
+}) {
   const rows = sprites[stage];
 
   return (
     <span className="stage" data-stage={stage}>
-      <svg className="stage__icon" viewBox="0 0 11 11" aria-hidden="true">
+      <svg
+        className="stage__icon"
+        viewBox="0 0 11 11"
+        role={iconOnly ? "img" : undefined}
+        aria-hidden={!iconOnly}
+      >
+        <title>{stage}</title>
         <path className="stage__petals" d={pixelPath(rows, "p")} />
         <path className="stage__center" d={pixelPath(rows, "c")} />
       </svg>
-      {label}
+      {!iconOnly && label}
     </span>
   );
 }

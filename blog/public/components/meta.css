@@ -1,0 +1,56 @@
+@layer garden.base {
+  .post-meta {
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 4px 16px;
+    list-style: none;
+  }
+
+  .post-meta__tags {
+    color: var(--color-text-muted);
+
+    & ul {
+      margin: 0;
+      padding: 0;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 4px 12px;
+      list-style: none;
+    }
+  }
+
+  .post-meta__more {
+    margin-top: 4px;
+    display: inline-block;
+    text-decoration: none;
+    color: var(--color-link);
+
+    &:hover {
+      text-decoration: underline;
+      text-underline-offset: 0.15em;
+    }
+  }
+
+  @media (width >= 56.25rem) {
+    .post-meta {
+      display: grid;
+      gap: 4px;
+    }
+
+    .post-meta__stage {
+      margin-bottom: 8px;
+    }
+
+    .post-meta__tags {
+      margin-top: 12px;
+    }
+
+    .post-meta__tags ul {
+      flex-direction: column;
+      flex-wrap: nowrap;
+    }
+  }
+}
