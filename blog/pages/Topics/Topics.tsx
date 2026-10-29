@@ -144,15 +144,17 @@ function Topics({ posts }: PageProps<BlogPost>) {
               <h2 className="topics__heading text-meta">
                 everything else <span>{otherTopics.length}</span>
               </h2>
-              <p className="tag-list tag-group">{shownOther.map(tagLink)}</p>
-              {hiddenOther.length > 0 && (
-                <details className="show-all">
-                  <summary>show all {otherTopics.length} →</summary>
-                  <p className="tag-list tag-group">
-                    {hiddenOther.map(tagLink)}
-                  </p>
-                </details>
-              )}
+              <div className="topics__other">
+                <p className="tag-list tag-group">{shownOther.map(tagLink)}</p>
+                {hiddenOther.length > 0 && (
+                  <details className="show-all">
+                    <summary>show all {otherTopics.length} →</summary>
+                    <p className="tag-list tag-group">
+                      {hiddenOther.map(tagLink)}
+                    </p>
+                  </details>
+                )}
+              </div>
             </Row>
           )}
         </div>

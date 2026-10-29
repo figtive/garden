@@ -21,31 +21,6 @@
     top: 32px;
   }
 
-  .topics__jump-letters {
-    margin-top: 12px;
-    display: grid;
-    grid-template-columns: repeat(6, 20px);
-    gap: 8px 4px;
-
-    & a,
-    & span {
-      text-align: center;
-    }
-
-    & a {
-      text-decoration: none;
-      color: var(--color-text-muted);
-
-      &:hover {
-        color: var(--color-link);
-      }
-    }
-
-    & span {
-      opacity: 0.35;
-    }
-  }
-
   .topics__sub {
     margin: 12px 0 0;
   }
@@ -129,10 +104,6 @@
       overflow-wrap: anywhere;
       text-decoration: none;
       color: var(--color-text-muted);
-
-      &:hover {
-        color: var(--color-link);
-      }
     }
 
     & i {
@@ -180,6 +151,29 @@
       overflow-wrap: anywhere;
       text-decoration: none;
       color: var(--color-text);
+    }
+
+    & span {
+      flex: none;
+      font-variant-numeric: tabular-nums;
+      color: var(--color-text-faint);
+    }
+  }
+
+  .topics__jump-letters {
+    margin-top: 12px;
+    display: grid;
+    grid-template-columns: repeat(6, 20px);
+    gap: 8px 4px;
+
+    & a,
+    & span {
+      text-align: center;
+    }
+
+    & a {
+      text-decoration: none;
+      color: var(--color-text-muted);
 
       &:hover {
         color: var(--color-link);
@@ -187,9 +181,7 @@
     }
 
     & span {
-      flex: none;
-      font-variant-numeric: tabular-nums;
-      color: var(--color-text-faint);
+      opacity: 0.35;
     }
   }
 

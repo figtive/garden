@@ -14,7 +14,8 @@
     transition: opacity 200ms ease-out;
   }
 
-  .tag-group:is(:hover, :has(.tag:focus-visible))
+  .topics__other:has(.tag-group:is(:hover, :has(.tag:focus-visible)))
+    .tag-group
     > :not(:hover, :focus-within) {
     opacity: 0.5;
   }
