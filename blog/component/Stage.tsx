@@ -4,7 +4,7 @@ export const stages: StageName[] = ["seedling", "budding", "evergreen"];
 
 export const stageText: Record<StageName, string> = {
   seedling: "rough, early ideas.",
-  budding: "notes that have been worked on, still growing",
+  budding: "posts that have been worked on, still growing",
   evergreen: "mature and settled, still tended",
 };
 

@@ -59,7 +59,7 @@ function Home({ posts }: PageProps<BlogPost>) {
                   <Stage stage={stage} />
                   <span>
                     {stageText[stage]} · {count}{" "}
-                    {count === 1 ? "note" : "notes"}
+                    {count === 1 ? "post" : "posts"}
                   </span>
                 </li>
               );
