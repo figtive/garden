@@ -32,17 +32,6 @@ function SearchTemplates() {
           <span className="search__snippet" data-slot="snippet" />
         </a>
       </template>
-
-      <template id="search-preview">
-        <div className="text-meta search__preview-meta" data-show-stage="">
-          <StageOptions />
-          <span data-slot="tended" />
-          <span data-slot="reading-time" />
-        </div>
-        <p className="search__preview-title" data-slot="title" />
-        <p className="text-lede search__preview-lede" data-slot="lede" />
-        <div className="prose search__preview-prose" data-slot="body" />
-      </template>
     </>
   );
 }

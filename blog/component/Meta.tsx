@@ -26,7 +26,7 @@ function Meta({ meta, pluginOutput }: MetaProps) {
       )}
       <li>{pluginOutput.readingTime} min read</li>
       {tags.length > 0 && (
-        <li className="post-meta__tags">
+        <li className="post-meta__tags" data-preview-skip>
           <ul className="tag-group" aria-label="Topics">
             {tags.slice(0, SHOWN_TAGS).map((tag) => (
               <li key={tag}>

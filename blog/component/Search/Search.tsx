@@ -1,4 +1,5 @@
 import { ClientScript } from "@figtive/garden-engine";
+import Preview from "../Preview/Preview.tsx";
 import searchScript from "./Search.client.ts";
 import SearchTemplates from "./SearchTemplates.tsx";
 
@@ -35,7 +36,7 @@ function Search() {
                 aria-label="Results"
               />
             </div>
-            <div className="search__preview" />
+            <Preview className="search__preview" />
           </div>
           <p className="search__keys">
             <span>

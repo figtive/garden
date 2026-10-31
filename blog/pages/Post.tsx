@@ -20,7 +20,7 @@ function Post({ post, posts }: PostPageProps<BlogPost>) {
 
   return (
     <Layout crumbs={crumbs}>
-      <main className="post">
+      <main className="post" data-preview>
         <Row side={<Meta meta={post.meta} pluginOutput={post.pluginOutput} />}>
           {" "}
           <h1 className="text-title">{post.meta.title}</h1>
@@ -63,7 +63,7 @@ function Post({ post, posts }: PostPageProps<BlogPost>) {
         )}
 
         {tags.length > 0 && (
-          <Row side="topics">
+          <Row side="topics" skipPreview>
             <ul
               id="topics"
               className="post-topics tag-group"

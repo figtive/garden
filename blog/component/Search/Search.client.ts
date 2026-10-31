@@ -8,7 +8,13 @@ import { addKeyHandlers } from "../../utils/addKeyHandlers.ts";
 import { clamp } from "../../utils/calculation.ts";
 import { formatDate } from "../../utils/date.ts";
 import { debounce } from "../../utils/debounce.ts";
+import {
+  findTermMatches,
+  getMatchRanges,
+  tokenize,
+} from "../../utils/highlight.ts";
 import { qs } from "../../utils/query-selector.ts";
+import { createPreview } from "../Preview/createPreview.ts";
 
 const HIGHLIGHT_NAME = "search";
 const HIGHLIGHT_SLOTS =
@@ -19,9 +25,7 @@ const SNIPPET_LEAD = 40;
 
 const SECTIONS_PER_NOTE = 1;
 
-const tokenize: (text: string) => string[] = MiniSearch.getDefault("tokenize");
-
-type TextNodeOffset = { node: Text; start: number };
+const WIDE_QUERY = "(width >= 50rem)";
 
 const loadSearchIndex = async (): Promise<SearchIndex> => {
   const response = await fetch("/search-index.json");
@@ -51,7 +55,10 @@ const buildSearchEngine = async () => {
       return String(section[field as keyof SearchSection] ?? "");
     },
     searchOptions: {
-      boost: { title: 3, heading: 2 },
+      boost: {
+        title: 3,
+        heading: 2,
+      },
       combineWith: "AND",
       prefix: true,
     },
@@ -88,27 +95,6 @@ const getOwnMatchedSections = (results: SearchResult[], page: SearchPage) => {
   return intro ? [intro] : results.slice(0, 1);
 };
 
-const findTermMatches = (text: string, terms: string[]) => {
-  const termSet = new Set(terms);
-  const matches: { start: number; end: number }[] = [];
-  let cursor = 0;
-
-  for (const word of tokenize(text)) {
-    if (!word) {
-      continue;
-    }
-
-    const start = text.indexOf(word, cursor);
-    cursor = start + word.length;
-
-    if (termSet.has(word.toLowerCase())) {
-      matches.push({ start, end: cursor });
-    }
-  }
-
-  return matches;
-};
-
 const getSnippetAroundMatch = (text: string, terms: string[]) => {
   const match = findTermMatches(text, terms)[0]?.start ?? 0;
 
@@ -131,69 +117,6 @@ const getSnippetAroundMatch = (text: string, terms: string[]) => {
   const tail = end < text.length ? "…" : "";
 
   return lead + text.slice(start, end).trim() + tail;
-};
-
-const getTextNodeOffsets = (element: Element) => {
-  const walker = document.createTreeWalker(element, NodeFilter.SHOW_TEXT);
-  const offsets: TextNodeOffset[] = [];
-  let text = "";
-
-  let node: Text | null;
-
-  while (walker.nextNode()) {
-    node = walker.currentNode as Text;
-    offsets.push({
-      node,
-      start: text.length,
-    });
-    text += node.data;
-  }
-
-  return { text, offsets };
-};
-
-const findTextPosition = (
-  offsets: TextNodeOffset[],
-  offset: number,
-  edge: "start" | "end",
-) => {
-  for (const { node, start } of offsets) {
-    const end = start + node.length;
-    const isInside = edge === "start" ? offset < end : offset <= end;
-
-    if (isInside) {
-      return {
-        node,
-        offset: offset - start,
-      };
-    }
-  }
-};
-
-const getMatchRanges = (root: ParentNode, terms: string[]) => {
-  const ranges: StaticRange[] = [];
-
-  for (const slot of root.querySelectorAll(HIGHLIGHT_SLOTS)) {
-    const { text, offsets } = getTextNodeOffsets(slot);
-
-    for (const match of findTermMatches(text, terms)) {
-      const start = findTextPosition(offsets, match.start, "start");
-      const end = findTextPosition(offsets, match.end, "end");
-
-      if (start && end) {
-        ranges.push(
-          new StaticRange({
-            startContainer: start.node,
-            startOffset: start.offset,
-            endContainer: end.node,
-            endOffset: end.offset,
-          }),
-        );
-      }
-    }
-  }
-
-  return ranges;
 };
 
 const groupResultsByPage = (results: SearchResult[]) => {
@@ -223,12 +146,36 @@ export default function () {
   const rowTemplate = qs<HTMLTemplateElement>("#search-row");
   const groupTemplate = qs<HTMLTemplateElement>("#search-group");
   const resultsList = qs<HTMLElement>(".search__results");
+  const resultsScroller = qs<HTMLElement>(".search__list");
   const status = qs<HTMLElement>(".search__status");
+  const preview = createPreview(qs<HTMLElement>(".search__preview"));
+
+  const wide = matchMedia(WIDE_QUERY);
 
   let searchEngine: ReturnType<typeof buildSearchEngine> | undefined;
   let matchedTerms: string[] = [];
   let resultRows: HTMLAnchorElement[] = [];
   let activeRow: HTMLAnchorElement | undefined;
+
+  const scrollRowIntoView = (row: HTMLElement) => {
+    const scrollerBound = resultsScroller.getBoundingClientRect();
+    const rowBound = row.getBoundingClientRect();
+
+    if (rowBound.top < scrollerBound.top) {
+      resultsScroller.scrollTop -= scrollerBound.top - rowBound.top;
+    } else if (rowBound.bottom > scrollerBound.bottom) {
+      resultsScroller.scrollTop += rowBound.bottom - scrollerBound.bottom;
+    }
+  };
+
+  const showPreview = debounce((row: HTMLAnchorElement | undefined) => {
+    if (!row || !wide.matches || !dialog.open) {
+      preview.clear();
+      return;
+    }
+
+    preview.show(row.href, matchedTerms);
+  }, 80);
 
   const updateResultRows = () => {
     resultRows = [
@@ -246,6 +193,8 @@ export default function () {
 
     activeRow = resultRows[clamp(index, 0, resultRows.length - 1)];
 
+    showPreview(activeRow);
+
     if (!activeRow) {
       searchInput.removeAttribute("aria-activedescendant");
       return;
@@ -253,7 +202,7 @@ export default function () {
 
     activeRow.setAttribute("data-active", "");
     activeRow.setAttribute("aria-selected", "true");
-    activeRow.scrollIntoView({ block: "nearest" });
+    scrollRowIntoView(activeRow);
     searchInput.setAttribute("aria-activedescendant", activeRow.id);
   };
 
@@ -264,7 +213,8 @@ export default function () {
 
   const createResultRow = (result: SearchResult, page: SearchPage) => {
     const row = rowTemplate.content.cloneNode(true) as DocumentFragment;
-    const heading = result.heading === page.title ? "intro" : result.heading;
+    const isIntro = !result.heading || result.heading === page.title;
+    const heading = isIntro ? "intro" : result.heading;
     const snippet = resultMatchedField(result, "text")
       ? getSnippetAroundMatch(result.text, result.terms)
       : "";
@@ -293,7 +243,9 @@ export default function () {
     setSlotText(
       group,
       "date",
-      formatDate(page.updated ?? page.date, { short: true }),
+      formatDate(page.updated ?? page.date, {
+        short: true,
+      }),
     );
 
     rows.append(...shown.map((result) => createResultRow(result, page)));
@@ -329,7 +281,7 @@ export default function () {
   const highlightMatches = (terms: string[]) => {
     CSS.highlights.set(
       HIGHLIGHT_NAME,
-      new Highlight(...getMatchRanges(resultsList, terms)),
+      new Highlight(...getMatchRanges(resultsList, terms, HIGHLIGHT_SLOTS)),
     );
   };
 
@@ -402,7 +354,22 @@ export default function () {
     }
   });
 
-  dialog.addEventListener("close", () => CSS.highlights.delete(HIGHLIGHT_NAME));
+  const resetSearch = () => {
+    searchInput.value = "";
+    searchInput.removeAttribute("aria-activedescendant");
+    resultsList.replaceChildren();
+    resultsScroller.scrollTop = 0;
+    status.textContent = "";
+
+    matchedTerms = [];
+    resultRows = [];
+    activeRow = undefined;
+
+    CSS.highlights.delete(HIGHLIGHT_NAME);
+    preview.clear();
+  };
+
+  dialog.addEventListener("close", resetSearch);
 
   openButton.addEventListener("click", openSearch);
   closeButton.addEventListener("click", () => dialog.close());
