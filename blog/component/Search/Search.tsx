@@ -8,16 +8,16 @@ function Search() {
     <>
       <ClientScript src={searchScript} />
       <button type="button" className="search__open">
-        search<kbd className="search__shortcut">⌘K</kbd>
+        search<kbd className="search__shortcut">ctrl + k</kbd>
       </button>
-      <dialog className="search" aria-label="Search notes">
+      <dialog className="search" aria-label="Search posts">
         <div className="search__panel">
           <div className="search__bar">
             <input
               className="search__input"
               type="search"
-              placeholder="search notes"
-              aria-label="Search notes"
+              placeholder="search posts"
+              aria-label="Search posts"
               aria-controls="search-results"
               autoComplete="off"
               spellCheck={false}

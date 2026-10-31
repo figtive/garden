@@ -94,13 +94,16 @@ export function createPreview(
     );
   };
 
-  const clear = () => {
+  const clearPostPreview = () => {
     currentUrl = "";
     container.replaceChildren();
     CSS.highlights.delete(highlightName);
   };
 
-  const show = async (url: string, matchedTerms: string[] = []) => {
+  const renderPostPreview = async (
+    url: string,
+    matchedTerms: string[] = [],
+  ) => {
     const target = new URL(url, location.href);
 
     headingId = decodeURIComponent(target.hash.slice(1));
@@ -117,7 +120,7 @@ export function createPreview(
       }
 
       if (!post) {
-        clear();
+        clearPostPreview();
         return;
       }
 
@@ -129,7 +132,7 @@ export function createPreview(
   };
 
   return {
-    show,
-    clear,
+    renderPostPreview,
+    clearPostPreview,
   };
 }

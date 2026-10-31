@@ -14,6 +14,7 @@ import {
   tokenize,
 } from "../../utils/highlight.ts";
 import { qs } from "../../utils/query-selector.ts";
+import { pluralize } from "../../utils/text.ts";
 import { createPreview } from "../Preview/createPreview.ts";
 
 const HIGHLIGHT_NAME = "search";
@@ -60,15 +61,19 @@ const buildSearchEngine = async () => {
         heading: 2,
       },
       combineWith: "AND",
-      prefix: true,
     },
   });
 
   miniSearch.addAll(sections);
 
+  const sectionOrder = new Map(
+    sections.map((section, index) => [section.url, index]),
+  );
+
   return {
     miniSearch,
     pages,
+    sectionOrder,
   };
 };
 
@@ -135,12 +140,10 @@ const groupResultsByPage = (results: SearchResult[]) => {
   return groups;
 };
 
-const pluralize = (count: number, word: string) =>
-  `${count} ${word}${count === 1 ? "" : "s"}`;
-
 export default function () {
   const dialog = qs<HTMLDialogElement>(".search");
   const openButton = qs<HTMLButtonElement>(".search__open");
+  const shortcut = qs<HTMLElement>(".search__shortcut", openButton);
   const closeButton = qs<HTMLButtonElement>(".search__close");
   const searchInput = qs<HTMLInputElement>(".search__input");
   const rowTemplate = qs<HTMLTemplateElement>("#search-row");
@@ -148,9 +151,16 @@ export default function () {
   const resultsList = qs<HTMLElement>(".search__results");
   const resultsScroller = qs<HTMLElement>(".search__list");
   const status = qs<HTMLElement>(".search__status");
-  const preview = createPreview(qs<HTMLElement>(".search__preview"));
+  const { renderPostPreview, clearPostPreview } = createPreview(
+    qs<HTMLElement>(".search__preview"),
+  );
 
   const wide = matchMedia(WIDE_QUERY);
+  const isApple = /Mac|iPhone|iPad|iPod/.test(navigator.userAgent);
+
+  if (isApple) {
+    shortcut.textContent = "⌘ + k";
+  }
 
   let searchEngine: ReturnType<typeof buildSearchEngine> | undefined;
   let matchedTerms: string[] = [];
@@ -170,11 +180,11 @@ export default function () {
 
   const showPreview = debounce((row: HTMLAnchorElement | undefined) => {
     if (!row || !wide.matches || !dialog.open) {
-      preview.clear();
+      clearPostPreview();
       return;
     }
 
-    preview.show(row.href, matchedTerms);
+    renderPostPreview(row.href, matchedTerms);
   }, 80);
 
   const updateResultRows = () => {
@@ -303,11 +313,9 @@ export default function () {
     }
 
     try {
-      const { miniSearch, pages } = await searchEngine;
+      const { miniSearch, pages, sectionOrder } = await searchEngine;
       const query = searchInput.value;
       const results = miniSearch.search(query);
-
-      console.log(results);
 
       const groups = [...groupResultsByPage(results)].flatMap(
         ([pageIndex, pageResults]) => {
@@ -317,10 +325,15 @@ export default function () {
             return [];
           }
 
+          const orderedResults = pageResults.toSorted(
+            (a, b) =>
+              (sectionOrder.get(a.id) ?? 0) - (sectionOrder.get(b.id) ?? 0),
+          );
+
           return [
             {
               page,
-              sections: getOwnMatchedSections(pageResults, page),
+              sections: getOwnMatchedSections(orderedResults, page),
             },
           ];
         },
@@ -339,7 +352,7 @@ export default function () {
       selectRow(0);
 
       status.textContent = query
-        ? `${pluralize(sections.length, "section")} · ${pluralize(groups.length, "note")}`
+        ? `${pluralize(sections.length, "section")} · ${pluralize(groups.length, "post")}`
         : "";
 
       return results;
@@ -366,7 +379,7 @@ export default function () {
     activeRow = undefined;
 
     CSS.highlights.delete(HIGHLIGHT_NAME);
-    preview.clear();
+    clearPostPreview();
   };
 
   dialog.addEventListener("close", resetSearch);
