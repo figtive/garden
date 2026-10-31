@@ -1,0 +1,23 @@
+@layer garden.base {
+  .preview {
+    container: page / inline-size;
+    padding: var(--page-padding);
+    font-size: var(--text-body);
+    line-height: 1.7;
+    overflow: hidden auto;
+    overscroll-behavior: contain;
+
+    & .post {
+      padding-top: 0;
+    }
+  }
+
+  .preview ::highlight(preview) {
+    color: var(--color-text-strong);
+    background-color: color-mix(
+      in oklch,
+      var(--color-highlight) 45%,
+      transparent
+    );
+  }
+}

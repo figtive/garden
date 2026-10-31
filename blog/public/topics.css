@@ -205,7 +205,7 @@
     }
   }
 
-  @media (width >= 56.25rem) {
+  @container page (width >= 56.25rem) {
     .topics .row__side {
       display: block;
     }

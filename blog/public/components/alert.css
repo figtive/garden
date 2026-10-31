@@ -51,7 +51,7 @@
     margin-top: 0;
   }
 
-  @media (width >= 56.25rem) {
+  @container page (width >= 56.25rem) {
     .prose > .alert > .alert__label {
       position: absolute;
       top: 0;

@@ -104,7 +104,7 @@
     color: var(--color-text-faint);
   }
 
-  @media (width >= 30rem) {
+  @container page (width >= 30rem) {
     .post-list {
       grid-template-columns: minmax(0, 1fr) 6rem 5.5rem;
     }

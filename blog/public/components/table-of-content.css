@@ -116,7 +116,7 @@
     display: none;
   }
 
-  @media (width >= 73.75rem) {
+  @container page (width >= 73.75rem) {
     .post {
       grid-template-columns: minmax(0, 1fr) var(--sidebar-width);
       column-gap: var(--gutter);

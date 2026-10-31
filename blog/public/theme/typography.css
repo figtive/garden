@@ -220,7 +220,7 @@
     background: var(--color-surface);
   }
 
-  @media (width >= 56.25rem) {
+  @container page (width >= 56.25rem) {
     .prose > blockquote {
       padding-left: 0;
     }

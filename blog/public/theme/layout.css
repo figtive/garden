@@ -44,13 +44,13 @@
     justify-content: space-between;
   }
 
-  .nav-menu ul {
+  .nav-menu > ul {
     display: flex;
     gap: 1.5rem;
     list-style-type: none;
   }
 
-  .nav-menu li {
+  .nav-menu > ul > li {
     word-spacing: 0.5rem;
   }
 
@@ -129,13 +129,13 @@
     }
   }
 
-  @media (width >= 32.5rem) {
+  @container page (width >= 32.5rem) {
     .crumbs__current {
       max-width: 34ch;
     }
   }
 
-  @media (width >= 56.25rem) {
+  @container page (width >= 56.25rem) {
     .row {
       grid-template-columns: var(--margin-width) minmax(0, var(--content-width));
       column-gap: var(--gutter);

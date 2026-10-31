@@ -61,7 +61,7 @@
     color: var(--color-text-muted);
   }
 
-  @media (width >= 32.5rem) {
+  @container page (width >= 32.5rem) {
     .stage-list__item {
       grid-template-columns: 120px minmax(0, 1fr);
       gap: 16px;

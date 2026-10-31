@@ -16,7 +16,7 @@
   }
 
   .search {
-    --search-width: calc(940 * var(--default-px));
+    --search-width: calc(1040 * var(--default-px));
     --search-height: calc(600 * var(--default-px));
     --search-gutter: var(--page-padding);
     --search-space: 8px;
@@ -141,6 +141,7 @@
   .search__list {
     padding-block: var(--search-space);
     overflow-y: auto;
+    overscroll-behavior: contain;
   }
 
   .search__status {
@@ -268,46 +269,10 @@
 
   .search__preview {
     display: none;
-    padding: var(--search-gutter);
-    overflow-y: auto;
-
-    & > * {
-      margin-block: 0;
-    }
   }
 
-  .search__preview-meta {
-    display: flex;
-    flex-wrap: wrap;
-    align-items: center;
-    gap: calc(var(--search-space) / 2) calc(2 * var(--search-space));
-  }
-
-  .search__preview-title {
-    margin-top: calc(1.5 * var(--search-space));
-    font-family: var(--font-display);
-    font-size: var(--text-heading);
-    font-weight: 700;
-    line-height: 1.2;
-    letter-spacing: -0.045em;
-    text-wrap: balance;
-    color: var(--color-text);
-  }
-
-  .search__preview .search__preview-lede {
-    margin-top: var(--search-space);
-    font-size: var(--text-description);
-
-    &::before {
-      content: "— ";
-      color: var(--color-primary);
-    }
-  }
-
-  .search__preview .search__preview-prose {
-    margin-top: var(--search-gutter);
-    padding-top: var(--search-gutter);
-    border-top: 1px solid var(--search-divider);
+  :root:has(.search[open]) {
+    overflow: hidden;
   }
 
   .search__keys {
@@ -332,7 +297,7 @@
     }
 
     .search__body {
-      grid-template-columns: minmax(0, 1fr) minmax(0, 1.1fr);
+      grid-template-columns: minmax(0, 2fr) minmax(0, 3fr);
     }
 
     .search__list {

@@ -7,7 +7,9 @@
     box-sizing: border-box;
   }
 
+  /* Lets the search preview act as a page container so breakpoints use its own width */
   html {
+    container: page / inline-size;
     -webkit-text-size-adjust: 100%;
     text-size-adjust: 100%;
     background: var(--color-background);
