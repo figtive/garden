@@ -12,7 +12,12 @@
     /* display: none; */
     margin-left: 8px;
     font: inherit;
-    color: var(--color-text-faint);
+    font-size: calc(11 * var(--default-px));
+    color: color-mix(
+      in oklch,
+      var(--color-text-faint) 80%,
+      var(--color-background)
+    );
   }
 
   .search {
@@ -24,7 +29,7 @@
     --search-row-height: 44px;
     --search-title-size: var(--text-description);
     --search-heading-size: calc(14 * var(--default-px));
-    --search-snippet-size: calc(12 * var(--default-px));
+    --search-snippet-size: calc(13 * var(--default-px));
     --search-radius: 4px;
     --search-border: var(--color-border);
     --search-divider: var(--color-divider);
