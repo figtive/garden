@@ -47,7 +47,12 @@ function Topic({ group }: GroupPageProps<BlogPost>) {
                 <h2 id={`year-${year}`}>{year}</h2>
                 <span>{countPosts(yearPosts.length)}</span>
               </div>
-              <PostList posts={yearPosts} descriptions hideYear currentTag={tag} />
+              <PostList
+                posts={yearPosts}
+                descriptions
+                hideYear
+                currentTag={tag}
+              />
             </section>
           </Row>
         ))}

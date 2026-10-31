@@ -27,6 +27,8 @@
     --color-warning: oklch(84% 0.15 95);
     --color-caution: oklch(74% 0.16 55);
 
+    --color-highlight: oklch(55% 0.15 45);
+
     --font-body: Outfit, system-ui, sans-serif;
     --font-display: "IBM Plex Mono", ui-monospace, monospace;
     --font-code: "Fira Code", ui-monospace, monospace;

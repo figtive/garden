@@ -1,5 +1,6 @@
 import type { ReactNode } from "react";
 import Row from "./Row.tsx";
+import Search from "./Search/Search.tsx";
 
 export type Crumb = { label: string; href?: string };
 
@@ -42,6 +43,9 @@ function Layout({ children, crumbs = [], footer }: LayoutProps) {
                 <ul>
                   <li>
                     <a href="/topics">topics</a>
+                  </li>
+                  <li>
+                    <Search />
                   </li>
                 </ul>
               </div>

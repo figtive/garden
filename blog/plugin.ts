@@ -2,6 +2,7 @@ import {
   defaultPlugins,
   definePlugin,
   type InferPost,
+  searchPlugin,
 } from "@figtive/garden-engine";
 import type { StageName } from "./component/Stage.tsx";
 import { linksInBlocks, pagePath } from "./utils/links.ts";
@@ -39,5 +40,19 @@ export const pageLinks = () =>
     }),
   });
 
-export const plugins = [...defaultPlugins, mood(), gardenStage(), pageLinks()];
+export const gardenSearch = () =>
+  searchPlugin({
+    pageData: ({ pluginOutput }) => ({
+      stage: String(pluginOutput.stage),
+      readingTime: `${pluginOutput.readingTime} min read`,
+    }),
+  });
+
+export const plugins = [
+  ...defaultPlugins.filter((plugin) => plugin.name !== "search-content"),
+  mood(),
+  gardenStage(),
+  pageLinks(),
+  gardenSearch(),
+];
 export type BlogPost = InferPost<typeof plugins>;

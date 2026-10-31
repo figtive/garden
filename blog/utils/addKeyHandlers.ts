@@ -1,8 +1,20 @@
-type KeyHandlers = Record<string, (event: KeyboardEvent) => void>;
+type KeyHandler = (event: KeyboardEvent) => void;
 
-export function addKeyHandlers(target: HTMLElement, handlers: KeyHandlers) {
+type KeyHandlers = Record<string, KeyHandler>;
+
+function getShortcut(event: KeyboardEvent) {
+  const key = event.key.length === 1 ? event.key.toLowerCase() : event.key;
+
+  return event.metaKey || event.ctrlKey ? `Mod+${key}` : key;
+}
+
+export function addKeyHandlers(
+  target: HTMLElement | Document,
+  handlers: KeyHandlers,
+) {
   const listener = (event: KeyboardEvent) => {
-    const handler = handlers[event.key];
+    const handler = handlers[getShortcut(event)];
+
     if (!handler) {
       return;
     }
@@ -14,6 +26,6 @@ export function addKeyHandlers(target: HTMLElement, handlers: KeyHandlers) {
   target.addEventListener("keydown", listener as EventListener);
 
   return () => {
-    return target.removeEventListener("keydown", listener as EventListener);
+    target.removeEventListener("keydown", listener as EventListener);
   };
 }
