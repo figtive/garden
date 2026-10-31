@@ -11,6 +11,7 @@ import {
 } from "./pages/pageGenerator.ts";
 import { defaultPlugins } from "./plugins/defaultPlugins.ts";
 import { definePlugin } from "./plugins/definePlugin.ts";
+import { searchPlugin } from "./plugins/search.ts";
 
 export type * from "./types/index.ts";
 
@@ -26,4 +27,5 @@ export {
   generateStaticPage,
   generateTagPages,
   groupBy,
+  searchPlugin,
 };

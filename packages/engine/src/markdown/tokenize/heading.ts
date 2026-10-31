@@ -15,10 +15,16 @@ export function convertHeading(node: Heading, context: TokenContext): Block {
 
 function createHeadingId(text: string, context: TokenContext) {
   const baseId = slugify(text);
-  const occurrences = context.ids.get(baseId) ?? 0;
-  const nextOccurrence = occurrences + 1;
+  let occurrence = context.ids.get(baseId) ?? 1;
+  let id = baseId;
 
-  context.ids.set(baseId, nextOccurrence);
+  while (context.ids.has(id)) {
+    occurrence += 1;
+    id = `${baseId}-${occurrence}`;
+  }
 
-  return nextOccurrence === 1 ? baseId : `${baseId}-${nextOccurrence}`;
+  context.ids.set(baseId, occurrence);
+  context.ids.set(id, 1);
+
+  return id;
 }

@@ -4,7 +4,7 @@ export function extractTokenText(blocks: Block[]): string {
   return blocks.map(extractBlockText).join(" ");
 }
 
-function extractBlockText(block: Block): string {
+export function extractBlockText(block: Block): string {
   switch (block.type) {
     case "block:heading":
     case "block:paragraph":
@@ -25,6 +25,8 @@ function extractBlockText(block: Block): string {
       return block.code;
     case "block:embed":
       return [block.label, block.caption].filter(Boolean).join(" ");
+    case "block:directive":
+      return typeof block.props.text === "string" ? block.props.text : "";
     default:
       return "";
   }
