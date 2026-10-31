@@ -5,6 +5,7 @@ import type {
 } from "@figtive/garden-engine";
 import MiniSearch, { type SearchResult } from "minisearch";
 import { addKeyHandlers } from "../../utils/addKeyHandlers.ts";
+import { clamp } from "../../utils/calculation.ts";
 import { formatDate } from "../../utils/date.ts";
 import { debounce } from "../../utils/debounce.ts";
 import { qs } from "../../utils/query-selector.ts";
@@ -226,6 +227,40 @@ export default function () {
 
   let searchEngine: ReturnType<typeof buildSearchEngine> | undefined;
   let matchedTerms: string[] = [];
+  let resultRows: HTMLAnchorElement[] = [];
+  let activeRow: HTMLAnchorElement | undefined;
+
+  const updateResultRows = () => {
+    resultRows = [
+      ...resultsList.querySelectorAll<HTMLAnchorElement>(".search__link"),
+    ];
+
+    resultRows.forEach((row, index) => {
+      row.id = `search-option-${index}`;
+    });
+  };
+
+  const selectRow = (index: number) => {
+    activeRow?.removeAttribute("data-active");
+    activeRow?.setAttribute("aria-selected", "false");
+
+    activeRow = resultRows[clamp(index, 0, resultRows.length - 1)];
+
+    if (!activeRow) {
+      searchInput.removeAttribute("aria-activedescendant");
+      return;
+    }
+
+    activeRow.setAttribute("data-active", "");
+    activeRow.setAttribute("aria-selected", "true");
+    activeRow.scrollIntoView({ block: "nearest" });
+    searchInput.setAttribute("aria-activedescendant", activeRow.id);
+  };
+
+  const moveSelection = (step: number) => {
+    const current = activeRow ? resultRows.indexOf(activeRow) : -1;
+    selectRow(current + step);
+  };
 
   const createResultRow = (result: SearchResult, page: SearchPage) => {
     const row = rowTemplate.content.cloneNode(true) as DocumentFragment;
@@ -274,12 +309,15 @@ export default function () {
       rows.append(...hidden.map((result) => createResultRow(result, page)));
       moreButton.remove();
       highlightMatches(matchedTerms);
+      updateResultRows();
 
       const firstHidden = lastShown?.nextElementSibling;
 
-      if (firstHidden instanceof HTMLElement) {
-        firstHidden.focus();
+      if (firstHidden instanceof HTMLAnchorElement) {
+        selectRow(resultRows.indexOf(firstHidden));
       }
+
+      searchInput.focus();
     };
 
     moreButton.textContent = `show ${hidden.length} more`;
@@ -344,6 +382,10 @@ export default function () {
       );
       highlightMatches(matchedTerms);
 
+      activeRow = undefined;
+      updateResultRows();
+      selectRow(0);
+
       status.textContent = query
         ? `${pluralize(sections.length, "section")} · ${pluralize(groups.length, "note")}`
         : "";
@@ -365,6 +407,12 @@ export default function () {
   openButton.addEventListener("click", openSearch);
   closeButton.addEventListener("click", () => dialog.close());
   searchInput.addEventListener("input", runSearch);
+
+  addKeyHandlers(searchInput, {
+    ArrowDown: () => moveSelection(1),
+    ArrowUp: () => moveSelection(-1),
+    Enter: () => activeRow?.click(),
+  });
 
   addKeyHandlers(document, {
     "Mod+k": () => {
