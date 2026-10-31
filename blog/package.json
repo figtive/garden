@@ -4,7 +4,7 @@
   "type": "module",
   "scripts": {
     "build": "tsx --env-file-if-exists=.env build.ts",
-    "watch": "tsx watch --env-file-if-exists=.env --include \"./public/**\" --include \"./content/**\" --include \"./**/*.client.ts\" build.ts",
+    "watch": "tsx watch --env-file-if-exists=.env --include \"./public/**\" --include \"./content/**\" --include \"./**/*.client.ts\" --include \"./component/**/*.ts\" --include \"./utils/**/*.ts\" build.ts",
     "serve": "browser-sync start --server dist --files \"dist/**/*\" --no-notify --reload-debounce 300",
     "typecheck": "tsc",
     "dev": "concurrently -n build,serve -c magenta,yellow \"pnpm watch\" \"pnpm serve\""
