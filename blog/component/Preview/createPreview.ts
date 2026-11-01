@@ -7,32 +7,7 @@ const FOCUSABLE_SELECTOR =
 
 const postCache = new Map<string, Promise<Element | null>>();
 
-const fetchPost = (pageUrl: string) => {
-  let post = postCache.get(pageUrl);
-
-  if (!post) {
-    post = fetch(pageUrl)
-      .then((response) => {
-        if (!response.ok) {
-          throw new Error(`${pageUrl}: response status ${response.status}`);
-        }
-
-        return response.text();
-      })
-      .then((html) =>
-        new DOMParser()
-          .parseFromString(html, "text/html")
-          .querySelector(POST_SELECTOR),
-      );
-
-    post.catch(() => postCache.delete(pageUrl));
-    postCache.set(pageUrl, post);
-  }
-
-  return post;
-};
-
-const clonePost = (post: Element, pageUrl: string) => {
+const preparePost = (post: Element, pageUrl: string) => {
   const clone = document.importNode(post, true);
 
   for (const element of clone.querySelectorAll(SKIP_SELECTOR)) {
@@ -59,6 +34,32 @@ const clonePost = (post: Element, pageUrl: string) => {
   }
 
   return clone;
+};
+
+const fetchPost = (pageUrl: string) => {
+  let post = postCache.get(pageUrl);
+
+  if (!post) {
+    post = fetch(pageUrl)
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error(`${pageUrl}: response status ${response.status}`);
+        }
+
+        return response.text();
+      })
+      .then((html) =>
+        new DOMParser()
+          .parseFromString(html, "text/html")
+          .querySelector(POST_SELECTOR),
+      )
+      .then((post) => (post ? preparePost(post, pageUrl) : null));
+
+    post.catch(() => postCache.delete(pageUrl));
+    postCache.set(pageUrl, post);
+  }
+
+  return post;
 };
 
 export function createPreview(
