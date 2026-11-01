@@ -8,6 +8,7 @@ import { collectRoutes } from "./pages/collectRoutes.ts";
 import { isEmitter, isFilter, isTransformer } from "./plugins/definePlugin.ts";
 import { renderPage } from "./render/page/renderPage.tsx";
 import { withHead } from "./render/page/withHead.tsx";
+import { withLocalPostUrls } from "./render/page/withLocalPostUrls.tsx";
 import { withMeta } from "./render/page/withMeta.tsx";
 import { withStyles } from "./render/page/withStyles.tsx";
 import type { HeadMeta } from "./types/head.ts";
@@ -52,6 +53,8 @@ export async function build() {
   );
   const headTags = [...(config.site.head ?? []), ...pluginHead];
 
+  const localPostUrls = new Set(posts.map((post) => post.route.url));
+
   for (const route of routes) {
     const head: HeadMeta = {
       title: config.site.title,
@@ -61,18 +64,30 @@ export async function build() {
 
     const element = withHead(
       withMeta(
-        withStyles(route.element, config.styles ?? [], "global"),
+        withStyles(
+          withLocalPostUrls(route.element, localPostUrls),
+          config.styles ?? [],
+          "global",
+        ),
         head,
         config.site,
       ),
       headTags,
       config.site,
     );
+
     await renderPage(element, route.url);
   }
 
   const emitted = (
-    await Promise.all(emitters.map((e) => e.emit({ posts, site: config.site })))
+    await Promise.all(
+      emitters.map((e) =>
+        e.emit({
+          posts,
+          site: config.site,
+        }),
+      ),
+    )
   ).flat();
 
   await Promise.all(emitted.map(writeEmittedFile));

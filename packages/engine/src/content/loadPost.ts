@@ -1,9 +1,11 @@
 import { readFile } from "node:fs/promises";
+import { useContext } from "react";
 import { resolveEmbeds } from "../embeds/resolveEmbeds.ts";
 import type { CodeHighlighter } from "../markdown/highlight/createCodeHighlighter.ts";
 import { highlightTokens } from "../markdown/highlight/highlightTokens.ts";
 import { tokenizeMarkdown } from "../markdown/tokenize/index.ts";
 import { createBlockComponents } from "../render/content/blockComponents.tsx";
+import { LocalPostUrlsContext } from "../render/content/localPostUrls.ts";
 import { renderBlocks } from "../render/content/renderBlocks.tsx";
 import type { Config, Post, PostFile } from "../types/index.ts";
 import { parseFrontmatter } from "./frontmatter/parseFrontmatter.ts";
@@ -55,11 +57,19 @@ export async function loadPost(
     content: {
       tokens: highlightedTokens,
       assets,
-      Content: ({ components }) =>
-        renderBlocks(highlightedTokens, {
-          components: { ...defaultComponents, ...components },
+      Content: ({ components }) => {
+        const allPostUrls = useContext(LocalPostUrlsContext);
+
+        return renderBlocks(highlightedTokens, {
+          components: {
+            ...defaultComponents,
+            ...components,
+          },
           embeds: config.embeds,
-        }),
+          allPostUrls,
+          currentPostUrl: url,
+        });
+      },
     },
     pluginOutput: {},
   };

@@ -8,6 +8,7 @@ import type {
   Inline,
   TokenProps,
 } from "../../types/index.ts";
+import { pagePath } from "../../utils/url.ts";
 import { keyed } from "./keyed.tsx";
 
 type AnyBlockComponent = ComponentType<TokenProps<Block["type"]>>;
@@ -15,6 +16,8 @@ type AnyBlockComponent = ComponentType<TokenProps<Block["type"]>>;
 type RenderContext = {
   components: BlockComponents;
   embeds: Record<string, Embed>;
+  allPostUrls: ReadonlySet<string>;
+  currentPostUrl: string;
 };
 
 export function renderBlocks(
@@ -113,12 +116,24 @@ function renderInline(inline: Inline, context: RenderContext): ReactNode {
       return <s>{renderInlines(inline.children, context)}</s>;
     case "inline:code":
       return <code>{inline.value}</code>;
-    case "inline:link":
+    case "inline:link": {
+      const path = pagePath(inline.href);
+      let postLink: string | undefined;
+
+      if (
+        path &&
+        path !== context.currentPostUrl &&
+        context.allPostUrls.has(path)
+      ) {
+        postLink = path;
+      }
+
       return (
-        <a href={inline.href} title={inline.title}>
+        <a href={inline.href} title={inline.title} data-post-link={postLink}>
           {renderInlines(inline.children, context)}
         </a>
       );
+    }
     case "inline:embed": {
       const EmbedComponent = context.embeds[inline.source.kind]?.component;
       return EmbedComponent ? <EmbedComponent {...inline.source} /> : null;
