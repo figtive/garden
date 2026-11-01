@@ -99,6 +99,18 @@
     --flow-wide: 1.9em;
   }
 
+  .prose a[data-post-link] {
+    padding: 0 4px;
+    text-decoration: none;
+    background: color-mix(in oklch, var(--color-link) 12%, transparent);
+    border-radius: 4px;
+    box-decoration-break: clone;
+
+    &:hover {
+      background: color-mix(in oklch, var(--color-link) 22%, transparent);
+    }
+  }
+
   .prose :is(h2, h3) {
     scroll-margin-top: 28px;
   }

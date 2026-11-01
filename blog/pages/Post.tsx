@@ -1,4 +1,5 @@
 import type { PostPageProps } from "@figtive/garden-engine";
+import HoverPreview from "../component/HoverPreview/HoverPreview.tsx";
 import Layout from "../component/Layout.tsx";
 import Meta from "../component/Meta.tsx";
 import Row from "../component/Row.tsx";
@@ -44,7 +45,11 @@ function Post({ post, posts }: PostPageProps<BlogPost>) {
                 return (
                   <li key={other.route.url} className="backlinks__row">
                     <Stage stage={other.pluginOutput.stage} iconOnly />
-                    <a className="backlinks__link" href={other.route.url}>
+                    <a
+                      className="backlinks__link"
+                      href={other.route.url}
+                      data-post-link={other.route.url}
+                    >
                       <span className="backlinks__title">
                         {other.meta.title}
                       </span>
@@ -78,6 +83,7 @@ function Post({ post, posts }: PostPageProps<BlogPost>) {
           </Row>
         )}
       </main>
+      <HoverPreview />
     </Layout>
   );
 }

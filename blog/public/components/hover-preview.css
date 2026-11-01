@@ -1,0 +1,38 @@
+@layer garden.base {
+  .hover-preview {
+    --hover-preview-width: calc(480 * var(--default-px));
+    --hover-preview-height: calc(320 * var(--default-px));
+
+    inset: 0 auto auto 0;
+    margin: 0;
+    padding: 0;
+    color: var(--color-text);
+    background: var(--color-background);
+    border: 1px solid var(--color-border);
+    border-radius: 4px;
+    box-shadow: 0 32px 64px -32px oklch(0% 0 0 / 0.55);
+    overflow: hidden;
+    opacity: 0;
+    transition:
+      opacity 150ms ease,
+      display 150ms allow-discrete,
+      overlay 150ms allow-discrete;
+
+    &:popover-open {
+      opacity: 1;
+
+      @starting-style {
+        opacity: 0;
+      }
+    }
+
+    &:has(.preview:empty) {
+      visibility: hidden;
+    }
+  }
+
+  .hover-preview__body {
+    width: min(var(--hover-preview-width), 100vw - 16px);
+    max-height: var(--hover-preview-height);
+  }
+}
