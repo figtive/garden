@@ -105,12 +105,15 @@ export function createPreview(
     matchedTerms: string[] = [],
   ) => {
     const target = new URL(url, location.href);
+    const isNewTerms = terms !== matchedTerms;
 
     headingId = decodeURIComponent(target.hash.slice(1));
     terms = matchedTerms;
     target.hash = "";
 
-    if (currentUrl !== target.href) {
+    const isNewPost = currentUrl !== target.href;
+
+    if (isNewPost) {
       currentUrl = target.href;
 
       const post = await fetchPost(target.href).catch(() => null);
@@ -124,11 +127,14 @@ export function createPreview(
         return;
       }
 
-      container.replaceChildren(clonePost(post, target.href));
+      container.replaceChildren(post);
     }
 
     scrollToHeading();
-    highlight();
+
+    if (isNewPost || isNewTerms) {
+      highlight();
+    }
   };
 
   return {

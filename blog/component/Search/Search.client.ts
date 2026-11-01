@@ -178,14 +178,14 @@ export default function () {
     }
   };
 
-  const showPreview = debounce((row: HTMLAnchorElement | undefined) => {
+  const showPreview = (row: HTMLAnchorElement | undefined) => {
     if (!row || !wide.matches || !dialog.open) {
       clearPostPreview();
       return;
     }
 
     renderPostPreview(row.href, matchedTerms);
-  }, 80);
+  };
 
   const updateResultRows = () => {
     resultRows = [
