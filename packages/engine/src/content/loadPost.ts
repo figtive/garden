@@ -1,13 +1,7 @@
 import { readFile } from "node:fs/promises";
-import { useContext } from "react";
-import { resolveEmbeds } from "../embeds/resolveEmbeds.ts";
 import type { CodeHighlighter } from "../markdown/highlight/createCodeHighlighter.ts";
-import { highlightTokens } from "../markdown/highlight/highlightTokens.ts";
-import { tokenizeMarkdown } from "../markdown/tokenize/index.ts";
-import { createBlockComponents } from "../render/content/blockComponents.tsx";
-import { LocalPostUrlsContext } from "../render/content/localPostUrls.ts";
-import { renderBlocks } from "../render/content/renderBlocks.tsx";
 import type { Config, Post, PostFile } from "../types/index.ts";
+import { compileMarkdownContent } from "./compileMarkdownContent.ts";
 import { parseFrontmatter } from "./frontmatter/parseFrontmatter.ts";
 import { splitFrontmatter } from "./frontmatter/splitFrontmatter.ts";
 import { validateFrontmatter } from "./frontmatter/validateFrontmatter.ts";
@@ -24,28 +18,17 @@ export async function loadPost(
   );
   const metaObj = parseFrontmatter(frontmatter);
 
-  const registeredDirectives = new Set(Object.keys(config.directives));
-
   const meta = validateFrontmatter(metaObj, file.file);
 
   const url = `/${file.collection}/${file.slug}/`;
 
-  const tokens = tokenizeMarkdown(body, registeredDirectives);
-
-  const assets = resolveEmbeds(tokens, {
-    postFile: file.file,
-    postUrl: url,
+  const content = await compileMarkdownContent(body, {
+    file: file.file,
+    url,
     lineOffset: bodyLineOffset,
-    attachments: config.attachments,
-    embeds: config.embeds,
+    config,
+    highlighter,
   });
-
-  const highlightedTokens = await highlightTokens(tokens, highlighter);
-
-  const defaultComponents = createBlockComponents(
-    config.directives,
-    config.embeds,
-  );
 
   const post: Post = {
     meta,
@@ -54,23 +37,7 @@ export async function loadPost(
       slug: file.slug,
       url,
     },
-    content: {
-      tokens: highlightedTokens,
-      assets,
-      Content: ({ components }) => {
-        const allPostUrls = useContext(LocalPostUrlsContext);
-
-        return renderBlocks(highlightedTokens, {
-          components: {
-            ...defaultComponents,
-            ...components,
-          },
-          embeds: config.embeds,
-          allPostUrls,
-          currentPostUrl: url,
-        });
-      },
-    },
+    content,
     pluginOutput: {},
   };
 
