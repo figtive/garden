@@ -1,6 +1,7 @@
 import type { SiteConfig } from "./config.ts";
 import type { HeadTag } from "./head.ts";
 import type { Post, PostMeta } from "./post.ts";
+import type { TagInfo } from "./tag.ts";
 
 export type PluginHead = HeadTag[] | ((site: SiteConfig) => HeadTag[]);
 
@@ -22,6 +23,7 @@ export type TransformerPlugin<Out extends object = object> =
 export type EmitterPlugin = BasePlugin<"emitter"> & {
   emit: (options: {
     posts: Post[];
+    tagInfos: Map<string, TagInfo>;
     site: SiteConfig;
   }) => EmittedFile[] | Promise<EmittedFile[]>;
 };

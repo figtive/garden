@@ -2,10 +2,15 @@ import { rm } from "node:fs/promises";
 import { loadConfig } from "./config/loadConfig.ts";
 import { findPosts } from "./content/findPosts.ts";
 import { loadPost } from "./content/loadPost.ts";
+import { checkTagInfosAreUsed, loadTagInfos } from "./content/loadTagInfos.ts";
 import { createCodeHighlighter } from "./markdown/highlight/createCodeHighlighter.ts";
 import { writeEmittedFile } from "./output/writeEmittedFile.ts";
 import { collectRoutes } from "./pages/collectRoutes.ts";
-import { isEmitter, isFilter, isTransformer } from "./plugins/definePlugin.ts";
+import {
+  isEmitterPlugin,
+  isFilterPlugin,
+  isTransformerPlugin,
+} from "./plugins/definePlugin.ts";
 import { renderPage } from "./render/page/renderPage.tsx";
 import { withHead } from "./render/page/withHead.tsx";
 import { withLocalPostUrls } from "./render/page/withLocalPostUrls.tsx";
@@ -16,79 +21,98 @@ import { resolveOption } from "./utils/resolver.ts";
 import { byDateNewestFirst } from "./utils/sort.ts";
 
 export async function build() {
-  await rm("dist", { recursive: true, force: true });
+  await rm("dist", {
+    recursive: true,
+    force: true,
+  });
   const config = await loadConfig();
-  const files = await findPosts(config);
+  const postFiles = await findPosts(config);
 
   const highlighter = await createCodeHighlighter(config.code);
 
-  const all = await Promise.all(
-    files.map((file) => loadPost(file, config, highlighter)),
+  const allPosts = await Promise.all(
+    postFiles.map((postFile) => loadPost(postFile, config, highlighter)),
   );
 
-  const filters = config.plugins.filter(isFilter);
-  const transformers = config.plugins.filter(isTransformer);
-  const emitters = config.plugins.filter(isEmitter);
+  const tagInfos = await loadTagInfos(config, highlighter);
+  checkTagInfosAreUsed(tagInfos, allPosts);
 
-  const kept = all.filter((post) => filters.every((f) => f.filter(post.meta)));
+  console.log(allPosts, tagInfos);
 
-  const posts = kept
+  const filterPlugins = config.plugins.filter(isFilterPlugin);
+  const transformerPlugins = config.plugins.filter(isTransformerPlugin);
+  const emitterPlugins = config.plugins.filter(isEmitterPlugin);
+
+  const filteredPosts = allPosts.filter((post) =>
+    filterPlugins.every((filterPlugin) => filterPlugin.filter(post.meta)),
+  );
+
+  const posts = filteredPosts
     .map((post) =>
-      transformers.reduce(
-        (acc, curr) => ({
-          ...acc,
-          pluginOutput: { ...acc.pluginOutput, ...curr.transform(acc) },
+      transformerPlugins.reduce(
+        (transformedPost, transformerPlugin) => ({
+          ...transformedPost,
+          pluginOutput: {
+            ...transformedPost.pluginOutput,
+            ...transformerPlugin.transform(transformedPost),
+          },
         }),
         post,
       ),
     )
-    .sort((a, b) => byDateNewestFirst(a.meta.date, b.meta.date));
+    .sort((firstPost, secondPost) =>
+      byDateNewestFirst(firstPost.meta.date, secondPost.meta.date),
+    );
 
-  const site = { posts };
+  const siteData = {
+    posts,
+    tagInfos,
+  };
 
-  const routes = await collectRoutes(config.pages, site);
+  const routes = await collectRoutes(config.pages, siteData);
 
-  const pluginHead = config.plugins.flatMap((plugin) =>
+  const pluginHeadTags = config.plugins.flatMap((plugin) =>
     resolveOption(plugin.head, config.site, []),
   );
-  const headTags = [...(config.site.head ?? []), ...pluginHead];
+  const headTags = [...(config.site.head ?? []), ...pluginHeadTags];
 
   const localPostUrls = new Set(posts.map((post) => post.route.url));
 
   for (const route of routes) {
-    const head: HeadMeta = {
+    const headMeta: HeadMeta = {
       title: config.site.title,
       ...route.meta,
       url: route.url,
     };
 
-    const element = withHead(
+    const pageElement = withHead(
       withMeta(
         withStyles(
           withLocalPostUrls(route.element, localPostUrls),
           config.styles ?? [],
           "global",
         ),
-        head,
+        headMeta,
         config.site,
       ),
       headTags,
       config.site,
     );
 
-    await renderPage(element, route.url);
+    await renderPage(pageElement, route.url);
   }
 
-  const emitted = (
+  const emittedFiles = (
     await Promise.all(
-      emitters.map((e) =>
-        e.emit({
+      emitterPlugins.map((emitterPlugin) =>
+        emitterPlugin.emit({
           posts,
+          tagInfos,
           site: config.site,
         }),
       ),
     )
   ).flat();
 
-  await Promise.all(emitted.map(writeEmittedFile));
+  await Promise.all(emittedFiles.map(writeEmittedFile));
 }

@@ -54,7 +54,9 @@ export const generateTagPages = <TPost extends Post>(
   {
     url = (tag: string) => `/topics/${tag}/`,
     ...options
-  }: PageOptions & { url?: (tag: string) => string } = {},
+  }: PageOptions & {
+    url?: (tag: string) => string;
+  } = {},
 ) =>
   definePage(
     {
@@ -63,7 +65,10 @@ export const generateTagPages = <TPost extends Post>(
           return post.meta.tags ?? [];
         }).map((group) => ({
           url: url(group.key),
-          props: { group },
+          props: {
+            group,
+            tagInfo: site.tagInfos.get(group.key),
+          },
         })),
       component,
     },
@@ -71,6 +76,7 @@ export const generateTagPages = <TPost extends Post>(
       ...options,
       meta: (props) => ({
         title: `#${props.group.key}`,
+        description: props.tagInfo?.description,
         ...resolveOption(options.meta, props, {}),
       }),
     },

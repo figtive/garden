@@ -2,13 +2,18 @@ import type { ComponentType, ReactElement } from "react";
 import type { DefaultPlugins } from "../plugins/defaultPlugins.ts";
 import type { HeadMeta } from "./head.ts";
 import type { InferPost } from "./plugin.ts";
+import type { TagInfo } from "./tag.ts";
 
 export type PostWithDefaultPlugins = InferPost<DefaultPlugins>;
 
-export type Group<TPost> = { key: string; posts: TPost[] };
+export type Group<TPost> = {
+  key: string;
+  posts: TPost[];
+};
 
 export type SiteData<TPost> = {
   posts: TPost[];
+  tagInfos: Map<string, TagInfo>;
 };
 
 export type PageProps<
@@ -18,15 +23,23 @@ export type PageProps<
 
 export type PostPageProps<TPost = PostWithDefaultPlugins> = PageProps<
   TPost,
-  { post: TPost }
+  {
+    post: TPost;
+  }
 >;
 
 export type GroupPageProps<TPost = PostWithDefaultPlugins> = PageProps<
   TPost,
-  { group: Group<TPost> }
+  {
+    group: Group<TPost>;
+    tagInfo: TagInfo | undefined;
+  }
 >;
 
-export type Route<Props> = { url: string; props: Props };
+export type Route<Props> = {
+  url: string;
+  props: Props;
+};
 
 export type PageDefinition<TPost, Props> = {
   paths: (site: SiteData<TPost>) => Route<Props>[];
@@ -50,9 +63,11 @@ export type PageOptions<Props = object> = {
 };
 
 export type Page<TPost> = {
-  routes: (
-    site: SiteData<TPost>,
-  ) => Promise<
-    { url: string; element: ReactElement; meta: Partial<HeadMeta> }[]
+  routes: (site: SiteData<TPost>) => Promise<
+    {
+      url: string;
+      element: ReactElement;
+      meta: Partial<HeadMeta>;
+    }[]
   >;
 };
