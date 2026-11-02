@@ -1,4 +1,5 @@
 import { type GroupPageProps, groupBy } from "@figtive/garden-engine";
+import HoverPreview from "../../component/HoverPreview/HoverPreview.tsx";
 import Layout from "../../component/Layout.tsx";
 import PostList from "../../component/PostList.tsx";
 import Row from "../../component/Row.tsx";
@@ -8,8 +9,9 @@ import type { BlogPost } from "../../plugin.ts";
 const countPosts = (count: number) =>
   `${count} ${count === 1 ? "post" : "posts"}`;
 
-function Topic({ group }: GroupPageProps<BlogPost>) {
+function Topic({ group, tagInfo }: GroupPageProps<BlogPost>) {
   const { key: tag, posts } = group;
+  const Intro = tagInfo?.content.tokens.length ? tagInfo.content.Content : null;
 
   const stageCounts = [...stages]
     .reverse()
@@ -32,6 +34,11 @@ function Topic({ group }: GroupPageProps<BlogPost>) {
       <main className="topic">
         <Row side="topic">
           <h1 className="text-title">#{tag}</h1>
+          {tagInfo?.description && (
+            <p className="topic__description text-description">
+              {tagInfo.description}
+            </p>
+          )}
           <p className="topic__stages text-meta">
             <span>{countPosts(posts.length)}</span>
             {stageCounts.map(({ stage, count }) => (
@@ -39,6 +46,14 @@ function Topic({ group }: GroupPageProps<BlogPost>) {
             ))}
           </p>
         </Row>
+
+        {Intro && (
+          <Row>
+            <article className="prose">
+              <Intro />
+            </article>
+          </Row>
+        )}
 
         {years.map(({ key: year, posts: yearPosts }) => (
           <Row key={year}>
@@ -57,6 +72,7 @@ function Topic({ group }: GroupPageProps<BlogPost>) {
           </Row>
         ))}
       </main>
+      {Intro && <HoverPreview />}
     </Layout>
   );
 }

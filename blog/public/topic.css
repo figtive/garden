@@ -14,6 +14,10 @@
     gap: 40px;
   }
 
+  .topic__description {
+    margin-top: 16px;
+  }
+
   .topic__stages {
     margin: 16px 0 0;
     display: flex;
