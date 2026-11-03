@@ -77,6 +77,7 @@ export function validateFrontmatter(
     draft = false,
     updated,
     image,
+    ...customFields
   } = meta;
 
   const missing = REQUIRED_FRONTMATTER_KEYS.filter(
@@ -140,5 +141,14 @@ export function validateFrontmatter(
     fail(location, `"draft" must be true or false`);
   }
 
-  return { title, date, description, tags, draft, updated, image } as PostMeta;
+  return {
+    title,
+    date,
+    description,
+    tags,
+    draft,
+    updated,
+    image,
+    customFields,
+  } as PostMeta;
 }

@@ -17,6 +17,7 @@ export type PostMeta = {
   draft?: boolean;
   updated?: string;
   image?: string;
+  customFields: Record<string, FrontmatterValue>;
 };
 
 export type PostAsset = {
