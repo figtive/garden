@@ -3,7 +3,7 @@ import HoverPreview from "../../component/HoverPreview/HoverPreview.tsx";
 import Layout from "../../component/Layout.tsx";
 import PostList from "../../component/PostList.tsx";
 import Row from "../../component/Row.tsx";
-import Stage, { stages } from "../../component/Stage.tsx";
+import StageCounts from "../../component/StageCounts.tsx";
 import type { BlogPost } from "../../plugin.ts";
 
 const countPosts = (count: number) =>
@@ -12,14 +12,6 @@ const countPosts = (count: number) =>
 function Topic({ group, tagInfo }: GroupPageProps<BlogPost>) {
   const { key: tag, posts } = group;
   const Intro = tagInfo?.content.tokens.length ? tagInfo.content.Content : null;
-
-  const stageCounts = [...stages]
-    .reverse()
-    .map((stage) => ({
-      stage,
-      count: posts.filter((post) => post.pluginOutput.stage === stage).length,
-    }))
-    .filter(({ count }) => count > 0);
 
   const tended = (post: BlogPost) => post.meta.updated ?? post.meta.date;
   const byTended = [...posts].sort((a, b) =>
@@ -39,12 +31,7 @@ function Topic({ group, tagInfo }: GroupPageProps<BlogPost>) {
               {tagInfo.description}
             </p>
           )}
-          <p className="topic__stages text-meta">
-            <span>{countPosts(posts.length)}</span>
-            {stageCounts.map(({ stage, count }) => (
-              <Stage key={stage} stage={stage} label={`${count} ${stage}`} />
-            ))}
-          </p>
+          <StageCounts posts={posts} />
         </Row>
 
         {Intro && (
