@@ -10,7 +10,15 @@ import type { BlogPost } from "../plugin.ts";
 import { formatDate } from "../utils/date.ts";
 
 function Post({ post, posts }: PostPageProps<BlogPost>) {
-  const crumbs = [{ label: post.route.collection }, { label: post.meta.title }];
+  const crumbs = [
+    {
+      label: post.route.collection,
+      href: `/${post.route.collection}/`,
+    },
+    {
+      label: post.meta.title,
+    },
+  ];
   const { tags = [] } = post.meta;
   const { toc } = post.pluginOutput;
 

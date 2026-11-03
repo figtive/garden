@@ -42,6 +42,12 @@ function Layout({ children, crumbs = [], footer }: LayoutProps) {
               <div className="nav-menu">
                 <ul>
                   <li>
+                    <a href="/writings">writings</a>
+                  </li>
+                  <li>
+                    <a href="/thoughts">thoughts</a>
+                  </li>
+                  <li>
                     <a href="/topics">topics</a>
                   </li>
                   <li>

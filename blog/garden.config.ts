@@ -9,8 +9,10 @@ import GiganticText from "./component/directives/GiganticText.tsx";
 import YoutubePlayer from "./component/directives/YoutubePlayer.tsx";
 import Home from "./pages/Home.tsx";
 import Post from "./pages/Post.tsx";
+import Thoughts from "./pages/Thoughts.tsx";
 import Topic from "./pages/Topic/Topic.tsx";
 import Topics from "./pages/Topics/Topics.tsx";
+import Writings from "./pages/Writings.tsx";
 import { plugins } from "./plugin.ts";
 
 export default defineGardenConfig({
@@ -45,6 +47,12 @@ export default defineGardenConfig({
   pages: [
     generateStaticPage("/", Home, { styles: ["/home.css"] }),
     generateStaticPage("/topics/", Topics, { styles: ["/topics.css"] }),
+    generateStaticPage("/writings/", Writings, {
+      styles: ["/topic.css"],
+    }),
+    generateStaticPage("/thoughts/", Thoughts, {
+      styles: ["/topic.css"],
+    }),
     generatePostPages(Post, {
       meta: { image: "/figtive-icon.png" },
       styles: ["/post.css"],
