@@ -4,7 +4,7 @@ import {
   type InferPost,
   searchPlugin,
 } from "@figtive/garden-engine";
-import type { StageName } from "./component/Stage.tsx";
+import { isStageName, type StageName, stages } from "./component/Stage.tsx";
 import { linksInBlocks, pagePath } from "./utils/links.ts";
 
 export const mood = () =>
@@ -20,9 +20,19 @@ export const gardenStage = () =>
   definePlugin({
     name: "gardenStage",
     pluginType: "transformer",
-    transform: (): { stage: StageName } => ({
-      stage: "evergreen",
-    }),
+    transform: (post): { stage: StageName } => {
+      const { stage = "seedling" } = post.meta.customFields;
+
+      if (!isStageName(stage)) {
+        throw new Error(
+          `${post.route.collection}/${post.route.slug}: "stage" must be one of ${stages.join(", ")}, got "${stage}"`,
+        );
+      }
+
+      return {
+        stage,
+      };
+    },
   });
 
 export const pageLinks = () =>

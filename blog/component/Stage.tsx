@@ -2,6 +2,10 @@ export type StageName = "seedling" | "budding" | "evergreen";
 
 export const stages: StageName[] = ["seedling", "budding", "evergreen"];
 
+export function isStageName(value: unknown): value is StageName {
+  return stages.includes(value as StageName);
+}
+
 export const stageText: Record<StageName, string> = {
   seedling: "rough, early ideas.",
   budding: "posts that have been worked on, still growing",
