@@ -4,6 +4,7 @@ date: 2025-09-20
 updated: 2026-10-22
 description: test, test, test. Every component on one page.
 tags: [test, garden]
+stage: evergreen
 ---
 
 Hello world this is a test page. Everything **garden** can render should be on here.
