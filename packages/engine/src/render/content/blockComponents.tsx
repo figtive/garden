@@ -116,5 +116,34 @@ export function createBlockComponents(
 
     "block:directive": ({ token }) =>
       directives[token.name]?.render(token.props) ?? null,
+
+    "block:html": ({ token }) => (
+      <div
+        dangerouslySetInnerHTML={{
+          __html: token.value,
+        }}
+      />
+    ),
+
+    "block:footnotes": ({ token, render }) => (
+      <section className="footnotes">
+        <ol>
+          {keyed(token.items, ({ id, referenceIds, children }) => (
+            <li id={id}>
+              {render(children)}
+              {keyed(referenceIds, (referenceId) => (
+                <a
+                  className="footnotes__backlink"
+                  href={`#${referenceId}`}
+                  aria-label="Back to reference"
+                >
+                  ↩
+                </a>
+              ))}
+            </li>
+          ))}
+        </ol>
+      </section>
+    ),
   };
 }

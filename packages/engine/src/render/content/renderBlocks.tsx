@@ -140,5 +140,11 @@ function renderInline(inline: Inline, context: RenderContext): ReactNode {
     }
     case "inline:break":
       return <br />;
+    case "inline:footnote":
+      return (
+        <sup id={inline.referenceId}>
+          <a href={`#${inline.id}`}>{inline.number}</a>
+        </sup>
+      );
   }
 }

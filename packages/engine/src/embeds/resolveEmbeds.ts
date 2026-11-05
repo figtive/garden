@@ -76,6 +76,7 @@ function childrenOf(token: Token): Token[] {
     case "inline:link":
       return token.children;
     case "block:list":
+    case "block:footnotes":
       return token.items.flatMap((item) => item.children);
     case "block:table":
       return [...token.head.flat(), ...token.rows.flat(2)];

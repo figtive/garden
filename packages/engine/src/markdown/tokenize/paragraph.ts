@@ -15,7 +15,7 @@ export function convertParagraph(
     return directives;
   }
 
-  const children = convertInlines(node.children);
+  const children = convertInlines(node.children, context);
 
   return [
     readEmbed(children) ?? {

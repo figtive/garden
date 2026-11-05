@@ -16,6 +16,10 @@ export function extractBlockText(block: Block): string {
       return block.items
         .map((item) => extractTokenText(item.children))
         .join(" ");
+    case "block:footnotes":
+      return block.items
+        .map((item) => extractTokenText(item.children))
+        .join(" ");
     case "block:table":
       return [block.head, ...block.rows]
         .flat()

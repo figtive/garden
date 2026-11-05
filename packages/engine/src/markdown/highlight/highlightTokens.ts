@@ -35,6 +35,16 @@ async function highlightBlock(
           })),
         ),
       };
+    case "block:footnotes":
+      return {
+        ...block,
+        items: await Promise.all(
+          block.items.map(async (item) => ({
+            ...item,
+            children: await highlightTokens(item.children, highlighter),
+          })),
+        ),
+      };
     default:
       return block;
   }

@@ -4,8 +4,13 @@ import {
   splitEmbedLinks,
 } from "../../embeds/parseEmbedLinks.ts";
 import type { Inline } from "../../types/index.ts";
+import { convertFootnoteReference } from "./footnote.ts";
+import type { TokenContext } from "./index.ts";
 
-export function convertInlines(nodes: PhrasingContent[]): Inline[] {
+export function convertInlines(
+  nodes: PhrasingContent[],
+  context: TokenContext,
+): Inline[] {
   return nodes.flatMap((node): Inline[] => {
     switch (node.type) {
       case "text":
@@ -14,21 +19,21 @@ export function convertInlines(nodes: PhrasingContent[]): Inline[] {
         return [
           {
             type: "inline:strong",
-            children: convertInlines(node.children),
+            children: convertInlines(node.children, context),
           },
         ];
       case "emphasis":
         return [
           {
             type: "inline:emphasis",
-            children: convertInlines(node.children),
+            children: convertInlines(node.children, context),
           },
         ];
       case "delete":
         return [
           {
             type: "inline:strike",
-            children: convertInlines(node.children),
+            children: convertInlines(node.children, context),
           },
         ];
       case "inlineCode":
@@ -44,7 +49,7 @@ export function convertInlines(nodes: PhrasingContent[]): Inline[] {
             type: "inline:link",
             href: node.url,
             title: node.title ?? undefined,
-            children: convertInlines(node.children),
+            children: convertInlines(node.children, context),
           },
         ];
       case "image":
@@ -56,6 +61,8 @@ export function convertInlines(nodes: PhrasingContent[]): Inline[] {
             line: node.position?.start.line ?? 0,
           },
         ];
+      case "footnoteReference":
+        return [convertFootnoteReference(node, context)];
       case "break":
         return [
           {
@@ -64,7 +71,7 @@ export function convertInlines(nodes: PhrasingContent[]): Inline[] {
         ];
 
       default:
-        return "children" in node ? convertInlines(node.children) : [];
+        return "children" in node ? convertInlines(node.children, context) : [];
     }
   });
 }

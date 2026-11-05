@@ -9,7 +9,7 @@ export function convertHeading(node: Heading, context: TokenContext): Block {
     type: "block:heading",
     level: node.depth,
     id: createHeadingId(extractText(node.children), context),
-    children: convertInlines(node.children),
+    children: convertInlines(node.children, context),
   };
 }
 

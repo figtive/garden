@@ -8,6 +8,13 @@ export type ListItem = {
   children: Block[];
 };
 
+export type FootnoteItem = {
+  id: string;
+  number: number;
+  referenceIds: string[];
+  children: Block[];
+};
+
 export type Align = "left" | "center" | "right" | null;
 
 export type TokenProps<T extends Block["type"]> = {
@@ -59,6 +66,12 @@ export type Inline =
     }
   | {
       type: "inline:break";
+    }
+  | {
+      type: "inline:footnote";
+      id: string;
+      referenceId: string;
+      number: number;
     };
 
 export type Block =
@@ -119,4 +132,8 @@ export type Block =
       name: string;
       props: RawDirectiveProps;
       line: number;
+    }
+  | {
+      type: "block:footnotes";
+      items: FootnoteItem[];
     };
