@@ -11,7 +11,9 @@ export function convertCode(node: Code): Block {
     type: "block:code",
     language: node.lang ?? undefined,
     title: TITLE_META.exec(meta)?.groups?.title,
-    highlight: parseLineRanges(HIGHLIGHT_META.exec(meta)?.groups?.lines ?? ""),
+    highlightedLines: parseLineRanges(
+      HIGHLIGHT_META.exec(meta)?.groups?.lines ?? "",
+    ),
     code: node.value,
   };
 }

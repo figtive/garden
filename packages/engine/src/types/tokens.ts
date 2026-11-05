@@ -87,7 +87,7 @@ export type Block =
       type: "block:code";
       language?: string;
       title?: string;
-      highlight: number[];
+      highlightedLines: number[];
       code: string;
       lines?: CodePart[][];
       theme?: CodeTheme;

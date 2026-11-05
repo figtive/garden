@@ -55,7 +55,7 @@ export function createBlockComponents(
                 <span
                   className="code__line"
                   data-highlighted={
-                    token.highlight.includes(index + 1) || undefined
+                    token.highlightedLines.includes(index + 1) || undefined
                   }
                 >
                   {parts.length
