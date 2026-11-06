@@ -1,0 +1,96 @@
+@layer garden.base {
+  .prose sup {
+    font-family: var(--font-display);
+    font-size: 0.7em;
+    line-height: 0;
+
+    & a {
+      padding-inline: 2px;
+      text-decoration: none;
+      color: var(--color-primary);
+
+      &:hover {
+        color: var(--color-link);
+      }
+    }
+  }
+
+  .footnotes {
+    margin-top: var(--flow-section);
+    padding-top: 24px;
+    border-top: 1px solid var(--color-divider);
+    font-size: 0.875rem;
+    line-height: 1.55;
+    color: var(--color-text-muted);
+
+    &::before {
+      content: "footnotes";
+      display: block;
+      margin-bottom: 8px;
+      font-family: var(--font-display);
+      font-size: var(--text-meta);
+      font-variant-numeric: tabular-nums;
+      line-height: 1.5;
+      color: var(--color-text-faint);
+    }
+
+    @container page (width >= 56.25rem) {
+      --footnotes-offset: calc(var(--margin-width) + var(--gutter));
+
+      position: relative;
+      margin-left: calc(-1 * var(--footnotes-offset));
+      padding-left: var(--footnotes-offset);
+
+      &::before {
+        position: absolute;
+        top: 28px;
+        left: 0;
+        margin-bottom: 0;
+      }
+    }
+
+    & ol {
+      padding: 0;
+
+      @container page (width >= 56.25rem) {
+        column-count: 2;
+        column-gap: 32px;
+      }
+    }
+
+    & li,
+    & li + li {
+      position: relative;
+      isolation: isolate;
+      margin: 0 0 12px 20px;
+      break-inside: avoid;
+      scroll-margin-top: 28px;
+
+      &:target::before {
+        content: "";
+        position: absolute;
+        inset: -4px -8px -4px -28px;
+        z-index: -1;
+        border-radius: 4px;
+      }
+    }
+
+    & li > p:not(:last-of-type) {
+      margin-bottom: 8px;
+    }
+
+    & li > p:last-of-type {
+      display: inline;
+    }
+  }
+
+  .footnotes__backlink {
+    margin-left: 4px;
+    text-decoration: none;
+    color: var(--color-text-faint);
+
+    &:hover {
+      color: var(--color-link);
+    }
+  }
+}
