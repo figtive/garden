@@ -58,8 +58,7 @@
       }
     }
 
-    & li,
-    & li + li {
+    &:is(li, li + li) {
       position: relative;
       isolation: isolate;
       margin: 0 0 12px 20px;
@@ -89,6 +88,7 @@
     text-decoration: none;
     color: var(--color-text-faint);
 
+    /* biome-ignore lint/style/noDescendingSpecificity: backlinks will never sit inside .prose sup */
     &:hover {
       color: var(--color-link);
     }

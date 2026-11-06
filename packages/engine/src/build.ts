@@ -37,8 +37,6 @@ export async function build() {
   const tagInfos = await loadTagInfos(config, highlighter);
   checkTagInfosAreUsed(tagInfos, allPosts);
 
-  console.log(allPosts, tagInfos);
-
   const filterPlugins = config.plugins.filter(isFilterPlugin);
   const transformerPlugins = config.plugins.filter(isTransformerPlugin);
   const emitterPlugins = config.plugins.filter(isEmitterPlugin);

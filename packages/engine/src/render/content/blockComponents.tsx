@@ -117,14 +117,6 @@ export function createBlockComponents(
     "block:directive": ({ token }) =>
       directives[token.name]?.render(token.props) ?? null,
 
-    "block:html": ({ token }) => (
-      <div
-        dangerouslySetInnerHTML={{
-          __html: token.value,
-        }}
-      />
-    ),
-
     "block:footnotes": ({ token, render }) => (
       <section className="footnotes">
         <ol>
