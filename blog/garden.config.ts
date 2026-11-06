@@ -21,6 +21,11 @@ export default defineGardenConfig({
     title: "This is a blog site.",
     url: process.env.GARDEN_SITE_URL ?? "http://localhost:3000",
     head: [
+      {
+        tag: "meta",
+        name: "viewport",
+        content: "width=device-width, initial-scale=1",
+      },
       { tag: "link", rel: "icon", href: "/figtive-icon.png" },
       {
         tag: "link",
