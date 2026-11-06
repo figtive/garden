@@ -11,3 +11,12 @@ stage: seedling
 ## Some thoughts baby
 
 Hello world!
+
+Read the [garden guide][guide], and look at ![the map][map].
+
+Gardens grow slowly[^slow].
+
+[guide]: https://figtive.dev "Garden guide"
+[map]: /attachments/water-lily.jpg
+
+[^slow]: Most take years to fill in.
