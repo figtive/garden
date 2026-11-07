@@ -3,7 +3,7 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "build": "pnpm --filter blog build",
+    "build": "pnpm --filter garden-template build",
     "test": "vitest",
     "typecheck": "pnpm -r typecheck",
     "check": "biome check",

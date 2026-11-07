@@ -1,5 +1,5 @@
 packages:
   - "packages/*"
-  - "blog"
+  - "packages/create-garden/template"
 allowBuilds:
   esbuild: true
