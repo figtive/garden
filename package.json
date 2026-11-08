@@ -4,6 +4,7 @@
   "type": "module",
   "scripts": {
     "build": "pnpm --filter garden-template build",
+    "build:test-content": "pnpm --filter garden-template build --content ../../../test-content",
     "test": "vitest",
     "typecheck": "pnpm -r typecheck",
     "check": "biome check",
