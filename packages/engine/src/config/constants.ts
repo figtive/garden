@@ -7,9 +7,12 @@ const REQUIRED_FRONTMATTER_KEYS = ["title", "date", "description"] as const;
 
 const DEFAULT_ATTACHMENTS_PATH = "./content/attachments";
 
+const ATTACHMENTS_FOLDER = "attachments";
+
 const TAGS_FOLDER = "_tags";
 
 export {
+  ATTACHMENTS_FOLDER,
   DEFAULT_ATTACHMENTS_PATH,
   DEFAULT_CODE_THEME,
   DEFAULT_CONTENT_PATH,

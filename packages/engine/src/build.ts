@@ -1,4 +1,6 @@
 import { rm } from "node:fs/promises";
+import { posix } from "node:path";
+import { ATTACHMENTS_FOLDER } from "./config/constants.ts";
 import { loadConfig } from "./config/loadConfig.ts";
 import { findPosts } from "./content/findPosts.ts";
 import { loadPost } from "./content/loadPost.ts";
@@ -20,12 +22,24 @@ import type { HeadMeta } from "./types/head.ts";
 import { resolveOption } from "./utils/resolver.ts";
 import { byDateNewestFirst } from "./utils/sort.ts";
 
-export async function build() {
+type BuildOptions = {
+  contentPath?: string | undefined;
+};
+
+export async function build({ contentPath }: BuildOptions = {}) {
   await rm("dist", {
     recursive: true,
     force: true,
   });
-  const config = await loadConfig();
+  const loadedConfig = await loadConfig();
+  const config =
+    contentPath === undefined
+      ? loadedConfig
+      : {
+          ...loadedConfig,
+          content: contentPath,
+          attachments: posix.join(contentPath, ATTACHMENTS_FOLDER),
+        };
   const postFiles = await findPosts(config);
 
   const highlighter = await createCodeHighlighter(config.code);
