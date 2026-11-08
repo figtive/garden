@@ -7,7 +7,7 @@
     "watch": "tsx watch --env-file-if-exists=.env --include \"./public/**\" --include \"./content/**\" --include \"./**/*.client.ts\" --include \"./component/**/*.ts\" --include \"./utils/**/*.ts\" build.ts",
     "serve": "browser-sync start --server dist --files \"dist/**/*\" --no-notify --reload-debounce 300",
     "typecheck": "tsc",
-    "dev": "concurrently -n build,serve -c magenta,yellow \"pnpm watch\" \"pnpm serve\""
+    "dev": "concurrently -n build,serve -c magenta,yellow \"npm run watch\" \"npm run serve\""
   },
   "dependencies": {
     "@figtive/garden-engine": "workspace:*",
@@ -21,6 +21,7 @@
     "@types/react-dom": "^19.3.0",
     "browser-sync": "^3.0.4",
     "concurrently": "^10.0.6",
+    "tsx": "^4.23.15",
     "typescript": "^6.0.3"
   }
 }
