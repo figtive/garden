@@ -3,4 +3,4 @@ import { register } from "tsx/esm/api";
 
 register();
 
-await import("../src/cli/index.ts");
+await import("@figtive/garden-engine/cli");

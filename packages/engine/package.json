@@ -1,15 +1,37 @@
 {
   "name": "@figtive/garden-engine",
-  "version": "0.0.0",
-  "private": true,
+  "version": "0.1.0",
   "description": "A static site generator for blogs, with React components in Markdown.",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/figtive/garden.git",
+    "directory": "packages/engine"
+  },
   "type": "module",
   "exports": {
-    ".": "./src/index.ts"
+    ".": "./src/index.ts",
+    "./cli": "./src/cli/index.ts"
+  },
+  "files": [
+    "bin",
+    "dist"
+  ],
+  "publishConfig": {
+    "access": "public",
+    "exports": {
+      ".": {
+        "types": "./dist/index.d.ts",
+        "default": "./dist/index.js"
+      },
+      "./cli": "./dist/cli/index.js"
+    }
   },
   "scripts": {
     "test": "vitest",
-    "typecheck": "tsc"
+    "typecheck": "tsc",
+    "build": "tsc -p tsconfig.build.json",
+    "prepublishOnly": "pnpm build"
   },
   "bin": {
     "garden": "./bin/garden.js"
