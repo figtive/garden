@@ -15,6 +15,9 @@ const ENGINE_PACKAGE_NAME = "@figtive/garden-engine";
 const TEMPLATE_FOLDER = "template";
 const TEMPLATE_GITIGNORE_FILE = "_gitignore";
 const PACKAGE_JSON_FILE = "package.json";
+const WELCOME_POST_FILE = "content/writings/hello-world/index.md";
+
+const FRONTMATTER_DATE_PATTERN = /^date: .*$/gm;
 
 const COPY_IGNORE_LIST = ["node_modules", "dist"];
 
@@ -68,6 +71,28 @@ function getPackageManagerName() {
   return packageManagerName in NEXT_STEP_COMMANDS ? packageManagerName : "npm";
 }
 
+function getTodayDate() {
+  return new Date().toLocaleDateString("sv-SE");
+}
+
+function setWelcomePostDate(blogPath) {
+  const welcomePostFile = join(blogPath, WELCOME_POST_FILE);
+
+  if (!existsSync(welcomePostFile)) {
+    return;
+  }
+
+  const welcomePostSource = readFileSync(welcomePostFile, "utf8");
+
+  writeFileSync(
+    welcomePostFile,
+    welcomePostSource.replace(
+      FRONTMATTER_DATE_PATTERN,
+      `date: ${getTodayDate()}`,
+    ),
+  );
+}
+
 function createBlog(blogFolder) {
   const blogPath = resolve(blogFolder);
 
@@ -86,6 +111,8 @@ function createBlog(blogFolder) {
     join(blogPath, TEMPLATE_GITIGNORE_FILE),
     join(blogPath, ".gitignore"),
   );
+
+  setWelcomePostDate(blogPath);
 
   const createGardenPackageJson = loadPackageJson(
     join(import.meta.dirname, PACKAGE_JSON_FILE),
