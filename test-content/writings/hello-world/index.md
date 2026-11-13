@@ -14,5 +14,5 @@ First post on **garden**.
 console.log("hello world! garden");
 ```
 
-@youtube{videoId="kPnN4IE_a98" testWorld}
-@gigantic-text{text="This is a Big text"}
+@youtube{videoId="LqijGdqe3xM" testWorld}
+@youtube{videoId="LqijGdqe3xM" title="Example video with a caption"}

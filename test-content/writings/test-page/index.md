@@ -242,9 +242,9 @@ This is below the line.
 
 ## Directives
 
-@youtube{videoId="kPnN4IE_a98"}
+@youtube{videoId="8YRFLrlNtiY"}
 
-@gigantic-text{text="This is a Big text"}
+@youtube{videoId="LqijGdqe3xM" title="Example video with a caption"}
 
 @not-real{text="hello"}
 

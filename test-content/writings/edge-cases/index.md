@@ -126,7 +126,7 @@ A [link containing ![an image](/figtive-icon.png)](https://figtive.dev) inside i
 
 - item with a directive:
 
-  @gigantic-text{text="in a list"}
+  @youtube{videoId="LqijGdqe3xM" title="Inside a list item"}
 
 * star bullet
 + plus bullet
@@ -295,7 +295,7 @@ const b = 2;
 > | ----- | ------ |
 > | an    | alert  |
 >
-> @gigantic-text{text="directive in an alert"}
+> @youtube{videoId="LqijGdqe3xM" title="Inside an alert"}
 
 >[!TIP]No space after the bracket.
 
@@ -304,31 +304,105 @@ const b = 2;
 
 ## Directives
 
-@gigantic-text{text="two"}
-@gigantic-text{text="in one paragraph"}
+A directive is one line like `@name{key="value"}`. Each case below says what it checks and what you should see. Every video uses the same clip, so watch the captions and the plain-text lines.
 
-@gigantic-text{text="valid"}
+### Two directives in one paragraph
+
+Two directive lines with no blank line between them become one Markdown paragraph. The parser should still split them into two separate directives.
+
+**Expected:** two videos, captioned "1 of 2" and "2 of 2".
+
+@youtube{videoId="LqijGdqe3xM" title="1 of 2"}
+@youtube{videoId="LqijGdqe3xM" title="2 of 2"}
+
+### A valid directive next to an unknown one
+
+`@not-real` isn't registered. When any line in a paragraph isn't a known directive, the whole paragraph is treated as normal text.
+
+**Expected:** both lines shown as plain text, no video.
+
+@youtube{videoId="LqijGdqe3xM" title="valid"}
 @not-real{text="invalid next to valid"}
 
-@gigantic-text{text="trailing text"} after it
+### Text after the closing brace
 
-@gigantic-text{text="has a } brace"}
+A directive must end with `}`. Anything after it makes the line normal text.
 
-@gigantic-text{text="never closed}
+**Expected:** the line shown as plain text, no video.
 
-@gigantic-text{text=unquoted extra flag}
+@youtube{videoId="LqijGdqe3xM" title="trailing text"} after it
 
-@gigantic-text{}
+### A closing brace inside quotes
 
-@gigantic-text{text="   "}
+The `}` inside the quoted title must not end the directive early.
 
-   @gigantic-text{text="indented directive"}
+**Expected:** a video captioned "has a } brace".
 
-@GIGANTIC-TEXT{text="uppercase name"}
+@youtube{videoId="LqijGdqe3xM" title="has a } brace"}
 
-@youtube{videoId="kPnN4IE_a98" videoId="dQw4w9WgXcQ"}
+### A missing closing quote
 
-Inline @gigantic-text{text="mid sentence"} directive.
+The title's quote is never closed. The parser is forgiving and reads up to the end of the line.
+
+**Expected:** a video captioned "never closed".
+
+@youtube{videoId="LqijGdqe3xM" title="never closed}
+
+### An unquoted value and extra flags
+
+`videoId` has no quotes, and `extra` and `flag` are bare words with no value. Bare words become `true` flags, and youtube ignores flags it doesn't use.
+
+**Expected:** a video with no caption.
+
+@youtube{videoId=LqijGdqe3xM extra flag}
+
+### Only the required prop
+
+No title at all.
+
+**Expected:** a video with no caption.
+
+@youtube{videoId="LqijGdqe3xM"}
+
+### A title with only spaces
+
+A title of only spaces counts as no title.
+
+**Expected:** a video with no caption and no empty gap below it.
+
+@youtube{videoId="LqijGdqe3xM" title="   "}
+
+### An indented directive
+
+Up to 3 spaces of indentation is still a normal paragraph in Markdown (4 would be a code block).
+
+**Expected:** a video captioned "indented".
+
+   @youtube{videoId="LqijGdqe3xM" title="indented"}
+
+### An uppercase name
+
+Directive names are case-insensitive.
+
+**Expected:** a video captioned "uppercase".
+
+@YOUTUBE{videoId="LqijGdqe3xM" title="uppercase"}
+
+### The same prop written twice
+
+`videoId` appears twice with different videos. The last value wins.
+
+**Expected:** the dragon flying scene (`8YRFLrlNtiY`), not "Light Rain".
+
+@youtube{videoId="LqijGdqe3xM" videoId="8YRFLrlNtiY"}
+
+### A directive in the middle of a sentence
+
+Directives only work on their own line. Inline directives aren't supported yet.
+
+**Expected:** the whole sentence shown as plain text.
+
+Inline @youtube{videoId="LqijGdqe3xM" title="mid sentence"} directive.
 
 ## Dividers
 
