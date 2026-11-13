@@ -4,10 +4,10 @@
   "type": "module",
   "scripts": {
     "build": "garden build",
-    "watch": "tsx watch --env-file-if-exists=.env --include \"./public/**\" --include \"./content/**\" --include \"./**/*.client.ts\" --include \"./component/**/*.ts\" --include \"./utils/**/*.ts\" build.ts",
+    "dev": "concurrently -n build,serve -c magenta,yellow \"npm run watch\" \"npm run serve\"",
     "serve": "browser-sync start --server dist --files \"dist/**/*\" --no-notify --reload-debounce 300",
     "typecheck": "tsc",
-    "dev": "concurrently -n build,serve -c magenta,yellow \"npm run watch\" \"npm run serve\""
+    "watch": "tsx watch --env-file-if-exists=.env --include \"./public/**\" --include \"./content/**\" --include \"./**/*.client.ts\" --include \"./component/**/*.ts\" --include \"./utils/**/*.ts\" build.ts"
   },
   "dependencies": {
     "@figtive/garden-engine": "workspace:*",
@@ -23,5 +23,8 @@
     "concurrently": "^10.0.6",
     "tsx": "^4.23.15",
     "typescript": "^6.0.3"
+  },
+  "engines": {
+    "node": ">=22.15.0"
   }
 }

@@ -2,39 +2,29 @@
   "name": "@figtive/garden-engine",
   "version": "0.1.0",
   "description": "A static site generator for blogs, with React components in Markdown.",
-  "license": "MIT",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/figtive/garden.git",
     "directory": "packages/engine"
   },
+  "license": "MIT",
   "type": "module",
   "exports": {
     ".": "./src/index.ts",
     "./cli": "./src/cli/index.ts"
   },
+  "bin": {
+    "garden": "./bin/garden.js"
+  },
   "files": [
     "bin",
     "dist"
   ],
-  "publishConfig": {
-    "access": "public",
-    "exports": {
-      ".": {
-        "types": "./dist/index.d.ts",
-        "default": "./dist/index.js"
-      },
-      "./cli": "./dist/cli/index.js"
-    }
-  },
   "scripts": {
-    "test": "vitest",
-    "typecheck": "tsc",
     "build": "tsc -p tsconfig.build.json",
-    "prepublishOnly": "pnpm build"
-  },
-  "bin": {
-    "garden": "./bin/garden.js"
+    "prepublishOnly": "pnpm build",
+    "test": "vitest",
+    "typecheck": "tsc"
   },
   "dependencies": {
     "esbuild": "^0.28.2",
@@ -55,5 +45,18 @@
   "peerDependencies": {
     "react": "^19.3.0",
     "react-dom": "^19.3.0"
+  },
+  "engines": {
+    "node": ">=22.15.0"
+  },
+  "publishConfig": {
+    "access": "public",
+    "exports": {
+      ".": {
+        "types": "./dist/index.d.ts",
+        "default": "./dist/index.js"
+      },
+      "./cli": "./dist/cli/index.js"
+    }
   }
 }
