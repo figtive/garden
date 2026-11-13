@@ -288,6 +288,31 @@ const b = 2;
 > > [!TIP]
 > > An alert inside an alert.
 
+Four tips nested in each other. Each level should be its own box, lighter than the one around it:
+
+> [!TIP]
+> Level 1.
+>
+> > [!TIP]
+> > Level 2.
+> >
+> > > [!TIP]
+> > > Level 3.
+> > >
+> > > > [!TIP]
+> > > > Level 4.
+
+Three different kinds nested. Each box keeps its own color:
+
+> [!SUCCESS]
+> Level 1.
+>
+> > [!WARNING]
+> > Level 2.
+> >
+> > > [!TIP]
+> > > Level 3.
+
 > [!CAUTION]
 > ### Heading inside an alert
 >

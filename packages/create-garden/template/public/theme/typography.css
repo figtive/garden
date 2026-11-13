@@ -225,11 +225,13 @@
   }
 
   .prose :not(pre) > code {
-    padding: 2px 5px;
+    padding: 2px 4px;
+    border: 1.5px solid var(--color-border);
     border-radius: 2px;
     font-size: 0.84em;
     font-weight: 500;
-    background: var(--color-surface);
+    color: var(--color-text-strong);
+    background: var(--color-divider);
   }
 
   @container page (width >= 56.25rem) {

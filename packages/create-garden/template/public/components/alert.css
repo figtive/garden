@@ -1,11 +1,36 @@
 @layer garden.base {
   .alert {
     --alert-color: var(--color-primary);
+    --alert-surface-lightness: 16%;
+    --alert-surface-chroma: 0.025;
+    --alert-padding-block: 12px;
     position: relative;
-    padding-left: 14px;
-    border-left: 1px solid var(--alert-color);
+    padding: var(--alert-padding-block) 16px;
+    border-left: 2px solid var(--alert-color);
+    border-radius: 0 2px 2px 0;
     font-size: var(--text-description);
     line-height: 1.65;
+    background: oklch(
+      from var(--alert-color) var(--alert-surface-lightness)
+        var(--alert-surface-chroma) h
+    );
+  }
+
+  /* Each nesting level is a lighter, stronger box than the one around it.
+     Level 4 and deeper keep the level 4 look. */
+  .alert .alert {
+    --alert-surface-lightness: 21%;
+    --alert-surface-chroma: 0.04;
+  }
+
+  .alert .alert .alert {
+    --alert-surface-lightness: 26%;
+    --alert-surface-chroma: 0.055;
+  }
+
+  .alert .alert .alert .alert {
+    --alert-surface-lightness: 31%;
+    --alert-surface-chroma: 0.07;
   }
 
   .alert[data-kind="tip"] {
@@ -54,7 +79,7 @@
   @container page (width >= 56.25rem) {
     .prose > .alert > .alert__label {
       position: absolute;
-      top: 0;
+      top: var(--alert-padding-block);
       left: calc(-1 * (var(--margin-width) + var(--gutter)));
       width: var(--margin-width);
       margin: 0;
