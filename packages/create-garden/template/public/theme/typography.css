@@ -138,8 +138,8 @@
     margin-top: var(--flow-tight);
   }
 
-  .prose > * + :is(.code, .alert, .table, .figure),
-  .prose > :is(.code, .alert, .table, .figure) + :not(h2, h3) {
+  .prose > * + :is(.code, .alert, .table, .figure, .video),
+  .prose > :is(.code, .alert, .table, .figure, .video) + :not(h2, h3) {
     margin-top: var(--flow-wide);
   }
 

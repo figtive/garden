@@ -1,15 +1,22 @@
 type Props = {
   videoId: string;
+  title?: string | undefined;
 };
 
-function YoutubePlayer({ videoId }: Props) {
+function YoutubePlayer({ videoId, title }: Props) {
   return (
-    <iframe
-      className="video"
-      title="Youtube player"
-      sandbox="allow-same-origin allow-forms allow-popups allow-scripts allow-presentation"
-      src={`https://youtube.com/embed/${videoId}?autoplay=0`}
-    ></iframe>
+    <figure className="video">
+      <iframe
+        className="video__frame"
+        title={title ?? "YouTube video"}
+        src={`https://www.youtube-nocookie.com/embed/${videoId}`}
+        loading="lazy"
+        allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+        referrerPolicy="strict-origin-when-cross-origin"
+        allowFullScreen
+      ></iframe>
+      {title && <figcaption className="video__caption">{title}</figcaption>}
+    </figure>
   );
 }
 
