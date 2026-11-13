@@ -5,7 +5,6 @@ import {
   generateStaticPage,
   generateTagPages,
 } from "@figtive/garden-engine";
-import GiganticText from "./component/directives/GiganticText.tsx";
 import YoutubePlayer from "./component/directives/YoutubePlayer.tsx";
 import Home from "./pages/Home.tsx";
 import Post from "./pages/Post.tsx";
@@ -70,12 +69,15 @@ export default defineGardenConfig({
         if (typeof raw.videoId !== "string") {
           throw new Error("videoId is required");
         }
-        return { videoId: raw.videoId };
+        return {
+          videoId: raw.videoId,
+          title:
+            typeof raw.title === "string" && raw.title.trim() !== ""
+              ? raw.title
+              : undefined,
+        };
       },
       component: YoutubePlayer,
-    }),
-    "gigantic-text": defineDirective({
-      component: GiganticText,
     }),
   },
 });
