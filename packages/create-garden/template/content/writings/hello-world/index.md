@@ -7,7 +7,7 @@ stage: seedling
 draft: false
 ---
 
-Greetings stranger!
+Greetings, stranger!
 
 This is your first garden post. It lives in `content/writings/hello-world/index.md`,
 so its address is `/writings/hello-world/`.
@@ -23,7 +23,7 @@ The block at the top between the `---` lines describes the post:
 - `stage` shows how finished the post is: `seedling`, `budding` or `evergreen`.
 - `draft: true` hides a post until it's ready.
 
-If you are wondering about this posts frontmatter:
+If you are wondering about this post's frontmatter:
 
 ```md
 ---
@@ -32,6 +32,7 @@ date: 2026-11-13
 description: A quick tour of what you can write. Copy what you need, then delete this post (or set it to draft).
 tags: [garden]
 stage: seedling
+draft: false
 ---
 ```
 
@@ -52,14 +53,13 @@ export function greet(name: string) {
 
 ## Directives
 
-Currently a `@youtube` directive is the only supported directive.
-
-See on how is used at `content/writings/hello-world/index.md`, and a YouTube video will render on its own line. 
+A directive puts a component on its own line. Your garden comes with one from the template,
+`@youtube`, and you can register your own component as a directive in `garden.config.ts`.
 
 The `title` is optional and becomes the caption:
 
 ```md
-    @youtube{videoId="LqijGdqe3xM" title="Light Rain by WOOF! IT'S BILLY, and it's my favourite song!"}
+@youtube{videoId="LqijGdqe3xM" title="Light Rain by WOOF! IT'S BILLY, and it's my favourite song!"}
 ```
 
 @youtube{videoId="LqijGdqe3xM" title="Light Rain by WOOF! IT'S BILLY, and it's my favourite song!"}
@@ -67,7 +67,11 @@ The `title` is optional and becomes the caption:
 ## Next steps
 
 1. Change the site title in `garden.config.ts`.
-2. Delete this post (or set is as draft).
-3. Start to write your own writings, thoughts, directives, etc. !
+2. Delete this post (or set `draft: true`).
+3. Start writing your own posts, thoughts and directives!
 
-[^1]: Like this one. They collect at the bottom of the post.
+> [!CAREFUL]
+> For now, your site must live at a root URL, like `you.github.io` or a
+> custom domain. A sub-path like `you.github.io/my-blog/` isn't supported yet.
+
+[^1]: Like this one. It automatically collects and referenced at the bottom of the page.
