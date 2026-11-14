@@ -21,7 +21,12 @@ function SearchTemplates() {
             <span className="search__group-date" data-slot="date" />
           </div>
           <div className="search__group-rows" />
-          <button type="button" className="search__more" data-slot="more" />
+          <button
+            type="button"
+            className="search__more"
+            role="option"
+            data-slot="more"
+          />
         </div>
       </template>
 

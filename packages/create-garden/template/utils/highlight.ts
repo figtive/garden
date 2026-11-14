@@ -1,10 +1,5 @@
 import MiniSearch from "minisearch";
 
-type TextNodeOffset = {
-  node: Text;
-  start: number;
-};
-
 export const tokenize: (text: string) => string[] =
   MiniSearch.getDefault("tokenize");
 
@@ -32,68 +27,25 @@ export const findTermMatches = (text: string, terms: string[]) => {
   return matches;
 };
 
-const getTextNodeOffsets = (element: Element) => {
-  const walker = document.createTreeWalker(element, NodeFilter.SHOW_TEXT);
-  const offsets: TextNodeOffset[] = [];
-  let text = "";
-
-  while (walker.nextNode()) {
-    const node = walker.currentNode as Text;
-
-    offsets.push({
-      node,
-      start: text.length,
-    });
-    text += node.data;
-  }
-
-  return {
-    text,
-    offsets,
-  };
-};
-
-const findTextPosition = (
-  offsets: TextNodeOffset[],
-  offset: number,
-  edge: "start" | "end",
-) => {
-  for (const { node, start } of offsets) {
-    const end = start + node.length;
-    const isInside = edge === "start" ? offset < end : offset <= end;
-
-    if (isInside) {
-      return {
-        node,
-        offset: offset - start,
-      };
-    }
-  }
-};
-
 export const getMatchRanges = (
   root: ParentNode,
   terms: string[],
   slots: string,
 ) => {
-  const ranges: StaticRange[] = [];
+  const ranges: Range[] = [];
 
   for (const slot of root.querySelectorAll(slots)) {
-    const { text, offsets } = getTextNodeOffsets(slot);
+    const walker = document.createTreeWalker(slot, NodeFilter.SHOW_TEXT);
 
-    for (const match of findTermMatches(text, terms)) {
-      const start = findTextPosition(offsets, match.start, "start");
-      const end = findTextPosition(offsets, match.end, "end");
+    while (walker.nextNode()) {
+      const textNode = walker.currentNode as Text;
 
-      if (start && end) {
-        ranges.push(
-          new StaticRange({
-            startContainer: start.node,
-            startOffset: start.offset,
-            endContainer: end.node,
-            endOffset: end.offset,
-          }),
-        );
+      for (const match of findTermMatches(textNode.data, terms)) {
+        const range = document.createRange();
+
+        range.setStart(textNode, match.start);
+        range.setEnd(textNode, match.end);
+        ranges.push(range);
       }
     }
   }

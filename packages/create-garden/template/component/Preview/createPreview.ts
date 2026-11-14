@@ -5,6 +5,8 @@ const SKIP_SELECTOR = ".table-of-content, [data-preview-skip]";
 const FOCUSABLE_SELECTOR =
   "a, button, input, select, textarea, iframe, summary, [tabindex]";
 
+const MATCH_SCROLL_POSITION = 1 / 3;
+
 const postCache = new Map<string, Promise<Element | null>>();
 
 const preparePost = (post: Element, pageUrl: string) => {
@@ -69,34 +71,64 @@ export function createPreview(
   let currentUrl = "";
   let headingId = "";
   let terms: string[] = [];
+  let matchRanges: Range[] = [];
 
-  const scrollToHeading = () => {
-    const heading = headingId
+  const scrollToSectionHeading = () => {
+    const sectionHeading = headingId
       ? container.querySelector(`[data-preview-id="${CSS.escape(headingId)}"]`)
       : null;
 
-    if (!heading) {
+    if (!sectionHeading) {
       container.scrollTop = 0;
-      return;
+      return null;
     }
 
-    const scrollMargin = parseFloat(getComputedStyle(heading).scrollMarginTop);
-    const offset =
-      heading.getBoundingClientRect().top -
+    const scrollMargin = parseFloat(
+      getComputedStyle(sectionHeading).scrollMarginTop,
+    );
+    const offsetFromContainerTop =
+      sectionHeading.getBoundingClientRect().top -
       container.getBoundingClientRect().top;
 
-    container.scrollTop += offset - (scrollMargin || 0);
+    container.scrollTop += offsetFromContainerTop - (scrollMargin || 0);
+
+    return sectionHeading;
   };
 
   const highlight = () => {
-    CSS.highlights.set(
-      highlightName,
-      new Highlight(...getMatchRanges(container, terms, POST_SELECTOR)),
+    matchRanges = getMatchRanges(container, terms, POST_SELECTOR);
+    CSS.highlights.set(highlightName, new Highlight(...matchRanges));
+  };
+
+  const scrollToFirstMatchInSection = (sectionHeading: Element | null) => {
+    const firstMatchInSection = matchRanges.find(
+      (match) =>
+        !sectionHeading ||
+        sectionHeading.compareDocumentPosition(match.startContainer) &
+          Node.DOCUMENT_POSITION_FOLLOWING,
     );
+
+    if (!firstMatchInSection) {
+      return;
+    }
+
+    const containerBounds = container.getBoundingClientRect();
+    const matchBounds = firstMatchInSection.getBoundingClientRect();
+    const isMatchInsideContainer =
+      matchBounds.top >= containerBounds.top &&
+      matchBounds.bottom <= containerBounds.bottom;
+
+    if (!isMatchInsideContainer) {
+      container.scrollTop +=
+        matchBounds.top -
+        containerBounds.top -
+        containerBounds.height * MATCH_SCROLL_POSITION;
+    }
   };
 
   const clearPostPreview = () => {
     currentUrl = "";
+    matchRanges = [];
     container.replaceChildren();
     CSS.highlights.delete(highlightName);
   };
@@ -131,11 +163,13 @@ export function createPreview(
       container.replaceChildren(post);
     }
 
-    scrollToHeading();
+    const sectionHeading = scrollToSectionHeading();
 
     if (isNewPost || isNewTerms) {
       highlight();
     }
+
+    scrollToFirstMatchInSection(sectionHeading);
   };
 
   return {

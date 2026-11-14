@@ -164,8 +164,8 @@ export default function () {
 
   let searchEngine: ReturnType<typeof buildSearchEngine> | undefined;
   let matchedTerms: string[] = [];
-  let resultRows: HTMLAnchorElement[] = [];
-  let activeRow: HTMLAnchorElement | undefined;
+  let resultRows: HTMLElement[] = [];
+  let activeRow: HTMLElement | undefined;
 
   const scrollRowIntoView = (row: HTMLElement) => {
     const scrollerBound = resultsScroller.getBoundingClientRect();
@@ -178,8 +178,8 @@ export default function () {
     }
   };
 
-  const showPreview = (row: HTMLAnchorElement | undefined) => {
-    if (!row || !wide.matches || !dialog.open) {
+  const showPreview = (row: HTMLElement | undefined) => {
+    if (!(row instanceof HTMLAnchorElement) || !wide.matches || !dialog.open) {
       clearPostPreview();
       return;
     }
@@ -189,7 +189,9 @@ export default function () {
 
   const updateResultRows = () => {
     resultRows = [
-      ...resultsList.querySelectorAll<HTMLAnchorElement>(".search__link"),
+      ...resultsList.querySelectorAll<HTMLElement>(
+        ".search__link, .search__more",
+      ),
     ];
 
     resultRows.forEach((row, index) => {
@@ -218,6 +220,7 @@ export default function () {
 
   const moveSelection = (step: number) => {
     const current = activeRow ? resultRows.indexOf(activeRow) : -1;
+    searchInput.focus();
     selectRow(current + step);
   };
 
@@ -388,9 +391,12 @@ export default function () {
   closeButton.addEventListener("click", () => dialog.close());
   searchInput.addEventListener("input", runSearch);
 
-  addKeyHandlers(searchInput, {
+  addKeyHandlers(dialog, {
     ArrowDown: () => moveSelection(1),
     ArrowUp: () => moveSelection(-1),
+  });
+
+  addKeyHandlers(searchInput, {
     Enter: () => activeRow?.click(),
   });
 

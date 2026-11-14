@@ -229,9 +229,10 @@
 
   .search__more {
     display: block;
-    width: fit-content;
-    margin-left: var(--search-indent);
-    padding: calc(var(--search-space) / 2) 0;
+    width: 100%;
+    padding: calc(var(--search-space) / 2) var(--search-gutter)
+      calc(var(--search-space) / 2) var(--search-indent);
+    text-align: left;
     color: var(--color-text-muted);
     background: none;
     border: 0;
@@ -244,6 +245,12 @@
     &:hover,
     &:focus-visible {
       color: var(--search-active-color);
+    }
+
+    &[data-active] {
+      color: var(--search-active-color);
+      background: var(--search-active-background);
+      box-shadow: inset 2px 0 0 var(--search-active-color);
     }
   }
 
