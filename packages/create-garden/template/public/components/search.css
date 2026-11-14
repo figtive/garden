@@ -9,7 +9,7 @@
   }
 
   .search__shortcut {
-    /* display: none; */
+    display: none;
     margin-left: 8px;
     font: inherit;
     font-size: calc(11 * var(--default-px));

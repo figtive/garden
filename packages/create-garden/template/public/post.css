@@ -37,6 +37,11 @@
     border-bottom: 1px solid var(--color-divider);
   }
 
+  .post > .row:first-child > .row__side {
+    order: 1;
+    margin: 16px 0 0;
+  }
+
   .post > .row:has(.backlinks, .post-topics) {
     padding-top: 24px;
     border-top: 1px solid var(--color-divider);
@@ -113,5 +118,12 @@
     font-size: var(--text-meta);
     line-height: 1.6;
     color: var(--color-text-muted);
+  }
+
+  @container page (width >= 56.25rem) {
+    .post > .row:first-child > .row__side {
+      order: 0;
+      margin: 0;
+    }
   }
 }
